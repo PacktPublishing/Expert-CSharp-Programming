@@ -1,6 +1,6 @@
 ﻿namespace LiveShaping;
 
-public class Racer
+public record class Racer
 {
     public required string Name { get; set; }
     public required string Team { get; set; }

@@ -13,7 +13,7 @@ public abstract class BindableObject : INotifyPropertyChanged
 
     protected virtual void SetProperty<T>(ref T item, T value, [CallerMemberName] string? propertyName = null)
     {
-        if (!EqualityComparer<T>.ReferenceEquals(item, value))
+        if (!EqualityComparer<T>.Default.Equals(item, value))
         {
             item = value;
             OnPropertyChanged(propertyName);

@@ -7,7 +7,7 @@ namespace LiveShaping;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private LapChart _lapChart = new();
+    private readonly LapChart _lapChart = new();
     public MainWindow()
     {
         InitializeComponent();
