@@ -1,4 +1,6 @@
-﻿namespace LiveShaping;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace LiveShaping;
 
 public enum PositionChange
 {
@@ -8,25 +10,16 @@ public enum PositionChange
     Out
 }
 
-public class LapRacerInfo : BindableObject
+public partial class LapRacerInfo : ObservableObject
 {
     public required Racer Racer { get; init; }
+
+    [ObservableProperty]
     private int _lap;
-    public int Lap
-    {
-        get => _lap;
-        set => SetProperty(ref _lap, value);
-    }
+
+    [ObservableProperty]
     private int _position;
-    public int Position
-    {
-        get => _position;
-        set => SetProperty(ref _position, value);
-    }
+
+    [ObservableProperty]
     private PositionChange _positionChange;
-    public PositionChange PositionChange
-    {
-        get => _positionChange;
-        set => SetProperty(ref _positionChange, value);
-    }
 }
