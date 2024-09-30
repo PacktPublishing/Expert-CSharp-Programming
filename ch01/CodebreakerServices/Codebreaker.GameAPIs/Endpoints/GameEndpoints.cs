@@ -56,7 +56,10 @@ public static class GameEndpoints
                 {
                     Game? game = await gameService.EndGameAsync(id, cancellationToken);
                     if (game is null)
+                    {
                         return TypedResults.NotFound();
+                    }
+
                     return TypedResults.Ok(game.ToUpdateGameResponse());
                 }
                 else
