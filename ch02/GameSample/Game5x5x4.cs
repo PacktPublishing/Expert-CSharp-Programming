@@ -1,5 +1,5 @@
-﻿// Game type 3: 5 colors, 5 shapes, and 4 fields
-public class Game5x5x4 : IGame<(string color, string shape), (int correctPosition, int incorrectPosition, int partialCorrect)>
+﻿// Game type with 5 colors, 5 shapes, and 4 fields
+public class Game5x5x4 : IGame<(string color, string shape), (int CorrectPosition, int IncorrectPosition, int PartialCorrect)>
 {
     private readonly string[] _colors = ["Red", "Blue", "Green", "Yellow", "Purple"];
     private readonly string[] _shapes = [ "Circle", "Square", "Triangle", "Hexagon", "Star" ];
@@ -12,7 +12,7 @@ public class Game5x5x4 : IGame<(string color, string shape), (int correctPositio
         _solution = GenerateSolution();
     }
 
-    public (int correctPosition, int incorrectPosition, int partialCorrect) SetMove((string color, string shape)[] guesses)
+    public (int CorrectPosition, int IncorrectPosition, int PartialCorrect) SetMove((string color, string shape)[] guesses)
     {
         if (_solution == null) throw new Exception("Game has not started yet.");
 
@@ -52,4 +52,3 @@ public class Game5x5x4 : IGame<(string color, string shape), (int correctPositio
         return [.. colors.Zip(shapes).Select(x => (x.First, x.Second)) ];
     }
 }
-

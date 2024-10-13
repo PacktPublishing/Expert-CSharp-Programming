@@ -1,5 +1,5 @@
-﻿// Game type 2: 8 colors and 5 fields
-public class Game8x5 : IGame<string, (int correctPosition, int incorrectPosition)>
+﻿// Game type with 8 colors and 5 fields
+public class Game8x5 : IGame<string, (int CorrectPosition, int IncorrectPosition)>
 {
     private readonly string[] _colors = [ "Red", "Blue", "Green", "Yellow", "Purple", "Orange", "Black", "White" ];
     private readonly int _fields = 5;
@@ -11,7 +11,7 @@ public class Game8x5 : IGame<string, (int correctPosition, int incorrectPosition
         _solution = GenerateSolution();
     }
 
-    public (int correctPosition, int incorrectPosition) SetMove(string[] guesses)
+    public (int CorrectPosition, int IncorrectPosition) SetMove(string[] guesses)
     {
         if (_solution == null) throw new Exception("Game has not started yet.");
 
@@ -39,9 +39,7 @@ public class Game8x5 : IGame<string, (int correctPosition, int incorrectPosition
         return (correctPosition, incorrectPosition);
     }
 
-    private List<string> GenerateSolution()
-    {
-        return [.. Random.Shared.GetItems(_colors, _fields)];
-    }
+    private List<string> GenerateSolution() => 
+        [.. Random.Shared.GetItems(_colors, _fields)];
 }
 

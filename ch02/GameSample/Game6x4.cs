@@ -1,5 +1,5 @@
-﻿// Game type 1: 6 colors and 4 fields
-public class Game6x4 : IGame<string, (int correctPosition, int incorrectPosition)>
+﻿// Game type with 6 colors and 4 fields
+public class Game6x4 : IGame<string, (int CorrectPosition, int IncorrectPosition)>
 {
     private readonly string[] _colors = ["Red", "Blue", "Green", "Yellow", "Purple", "Orange" ];
     private readonly int _fields = 4;
@@ -7,15 +7,15 @@ public class Game6x4 : IGame<string, (int correctPosition, int incorrectPosition
 
     public void StartGame()
     {
-        Console.WriteLine("Starting Game Type 1 with 6 colors and 4 fields.");
+        Console.WriteLine("Starting Game Type with 6 colors and 4 fields.");
         _solution = GenerateSolution();
     }
 
-    public (int correctPosition, int incorrectPosition) SetMove(string[] guesses)
+    public (int CorrectPosition, int IncorrectPosition) SetMove(string[] move)
     {
         if (_solution == null) throw new Exception("Game has not started yet.");
 
-        if (guesses.Count() != _fields)
+        if (move.Count() != _fields)
         {
             throw new ArgumentException($"Move must have exactly {_fields} fields.");
         }
@@ -25,11 +25,11 @@ public class Game6x4 : IGame<string, (int correctPosition, int incorrectPosition
 
         for (int i = 0; i < _fields; i++)
         {
-            if (guesses[i] == _solution[i])
+            if (move[i] == _solution[i])
             {
                 correctPosition++;
             }
-            else if (_solution.Contains(guesses[i]))
+            else if (_solution.Contains(move[i]))
             {
                 incorrectPosition++;
             }
@@ -39,9 +39,7 @@ public class Game6x4 : IGame<string, (int correctPosition, int incorrectPosition
         return (correctPosition, incorrectPosition);
     }
 
-    private List<string> GenerateSolution()
-    {
-        return [.. Random.Shared.GetItems(_colors, _fields)];
-    }
+    private List<string> GenerateSolution() => 
+        [.. Random.Shared.GetItems(_colors, _fields)];
 }
 
