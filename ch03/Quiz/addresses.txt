@@ -1,0 +1,25 @@
+address of x1 in Main caf7e510
+address of x1 in Main.Value caf7e510
+address of x in ChangeX caf7e4f0
+address of x in ChangeX.Value caf7e4f0
+Create a new x instance
+address of x after new instance in ChangeX caf7e4f0
+address of x after new instance in ChangeX.Value caf7e4f0
+the new value of x.Value: 1
+address of y1 in Main caf7e510
+address of y1 in Main.Value 27010798
+address of y in ChangeY caf7e4f0
+address of y in ChangeY.Value 27010798
+address of y after new instance in ChangeY caf7e4f0
+address of y after new instance in ChangeY.Value 27010928
+the new value of y.Value: 2
+address of x in ChangeXRef caf7e4f0
+address of x in ChangeXRef.Value caf7e4f0
+address of x after new instance in ChangeXRef caf7e4f0
+address of x after new instance in ChangeXRef.Value caf7e4f0
+the new value of x.Value: 3
+address of y in ChangeYRef caf7e4f0
+address of y in ChangeYRef.Value 27010798
+address of y after new instance in ChangeYRef caf7e4f0
+address of y after new instance in ChangeYRef.Value 27010d90
+the new value of y.Value: 3
