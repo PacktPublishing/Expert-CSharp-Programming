@@ -6,6 +6,9 @@
 # dotenv files
 .env
 
+# tracing
+*.nettrace
+
 # User-specific files
 *.rsuser
 *.suo

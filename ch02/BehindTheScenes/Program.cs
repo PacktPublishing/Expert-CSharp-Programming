@@ -14,7 +14,6 @@ string s1 = "Hello";
 string s2 = (string)Sample1.PassAnObject(s1);
 s2 = Sample1.PassAnyType(s1);
 
-
 public class Sample1
 {
     public static object PassAnObject(object o) => o;
