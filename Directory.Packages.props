@@ -1,0 +1,31 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+    <NoWarn>$(NoWarn);NU1507</NoWarn>
+  </PropertyGroup>
+
+  <!-- ASP.NET Core packages -->
+  <ItemGroup>
+      <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0"/>
+      <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0" />
+  </ItemGroup>
+
+  <!-- Microsoft common packages -->
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.2.2"/>
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0"/>
+  </ItemGroup>
+
+  <!-- Tests and benchmarks -->
+  <ItemGroup>
+    <PackageVersion Include="BenchmarkDotNet" Version="0.14.0" />
+    <PackageVersion Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.14.0" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
+    <PackageVersion Include="Moq" Version="4.20.70" />
+    <PackageVersion Include="xunit" Version="2.6.3" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.5" />
+  </ItemGroup>
+</Project>
