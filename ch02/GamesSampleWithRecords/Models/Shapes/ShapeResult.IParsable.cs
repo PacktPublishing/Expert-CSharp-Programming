@@ -31,7 +31,7 @@ public readonly partial record struct ShapeResult : IParsable<ShapeResult>
 
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out ShapeResult result)
     {
-        bool InvalidFormat(out ShapeResult result)
+        static bool InvalidFormat(out ShapeResult result)
         {
             result = default;
             return false;
@@ -52,4 +52,3 @@ public readonly partial record struct ShapeResult : IParsable<ShapeResult>
         return InvalidFormat(out result);
     }
 }
-
