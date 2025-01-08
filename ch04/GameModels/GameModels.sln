@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameModels", "GameModels\Ga
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamesJsonSerialization", "GamesJsonSerialization\GamesJsonSerialization.csproj", "{E18AC02F-C0DE-4AD2-99DD-638EE309DCF9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamesEFCore", "GamesEFCore\GamesEFCore.csproj", "{BBA2A84C-65BF-46D7-BEE2-2811CB936853}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{E18AC02F-C0DE-4AD2-99DD-638EE309DCF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E18AC02F-C0DE-4AD2-99DD-638EE309DCF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E18AC02F-C0DE-4AD2-99DD-638EE309DCF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBA2A84C-65BF-46D7-BEE2-2811CB936853}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBA2A84C-65BF-46D7-BEE2-2811CB936853}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBA2A84C-65BF-46D7-BEE2-2811CB936853}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBA2A84C-65BF-46D7-BEE2-2811CB936853}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

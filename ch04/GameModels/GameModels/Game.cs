@@ -7,8 +7,9 @@ namespace GameModels;
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "$discriminator")]
 [JsonDerivedType(typeof(ColorGame), nameof(ColorGame))]
 [JsonDerivedType(typeof(ShapeAndColorGame), nameof(ShapeAndColorGame))]
-public abstract class Game(string playerName)
+public abstract class Game(string playerName, int gameId = 0)
 {
+    public int GameId { get; private set; } = gameId;
     public string PlayerName { get; private set; } = playerName;
     public DateTime StartTime { get; private set; } = DateTime.Now;
     public DateTime? EndTime { get; private set; }
@@ -32,9 +33,11 @@ public abstract class Game(string playerName)
     protected abstract IResult GetResult(Move move);
 }
 
-public class ColorGame(string playerName, string[] solution) : Game(playerName)
+// constructor cannot be used with EF Core
+// public class ColorGame(string playerName, string[] solution, int gameId = 0) : Game(playerName, gameId)
+public class ColorGame(string playerName, int gameId = 0) : Game(playerName, gameId)
 {
-    public string[] Solution { get; private set; } = solution;
+    public required string[] Solution { get; set; }
 
     public ColorResult SetMove(ColorMove move)
     {
@@ -49,9 +52,9 @@ public class ColorGame(string playerName, string[] solution) : Game(playerName)
     }
 }
 
-public class ShapeAndColorGame(string playerName, ShapeAndColor[] solution) : Game(playerName)
+public class ShapeAndColorGame(string playerName, int gameId = 0) : Game(playerName, gameId)
 {
-    public ShapeAndColor[] Solution { get; private set; } = solution;
+    public required ShapeAndColor[] Solution { get; set; }
 
     public ShapeAndColorResult SetMove(ShapeAndColorMove move)
     {
