@@ -1,4 +1,4 @@
-﻿namespace LINQWithInterfaceMethods;
+﻿namespace Traits;
 
 public class CachedList<T> : List<T>, IEnumerableEx<T>
 {

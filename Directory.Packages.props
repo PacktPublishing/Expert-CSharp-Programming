@@ -4,19 +4,17 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
     <NoWarn>$(NoWarn);NU1507</NoWarn>
   </PropertyGroup>
-
   <!-- ASP.NET Core packages -->
   <ItemGroup>
-      <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0"/>
-      <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
   </ItemGroup>
-
   <!-- Microsoft common packages -->
   <ItemGroup>
-    <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.2.2"/>
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0"/>
+    <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
   </ItemGroup>
-
   <!-- Tests and benchmarks -->
   <ItemGroup>
     <PackageVersion Include="BenchmarkDotNet" Version="0.14.0" />

@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace LINQWithInterfaceMethods;
+namespace Traits;
 
 public class CustomCollection<T> : Collection<T>, IEnumerableEx<T>
 {

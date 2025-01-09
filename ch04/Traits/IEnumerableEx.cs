@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace LINQWithInterfaceMethods;
+namespace Traits;
 
 [CollectionBuilder(typeof(CustomCollectionBuilder), "Create")]
 public interface IEnumerableEx<T> : IEnumerable<T>

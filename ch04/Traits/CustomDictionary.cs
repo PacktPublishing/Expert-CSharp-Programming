@@ -1,4 +1,4 @@
-﻿namespace LINQWithInterfaceMethods;
+﻿namespace Traits;
 
 public class CustomDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IEnumerableEx<KeyValuePair<TKey, TValue>>
     where TKey : notnull
