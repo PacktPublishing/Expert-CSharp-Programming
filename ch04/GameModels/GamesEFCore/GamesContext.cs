@@ -51,21 +51,15 @@ internal class GamesContext(DbContextOptions<GamesContext> options) : DbContext(
     }
 }
 
-internal class ShapeAndColorListValueConverter : ValueConverter<ShapeAndColor[], string>
+internal class ShapeAndColorListValueConverter() : ValueConverter<ShapeAndColor[], string>(
+    convertToProviderExpression: shapesAndColors => JsonSerializer.Serialize(shapesAndColors, (JsonSerializerOptions?)null),
+    convertFromProviderExpression: s => JsonSerializer.Deserialize<ShapeAndColor[]?>(s, (JsonSerializerOptions?)null) ?? Array.Empty<ShapeAndColor>())
 {
-    public ShapeAndColorListValueConverter() : base(
-        convertToProviderExpression: shapesAndColors => JsonSerializer.Serialize(shapesAndColors, (JsonSerializerOptions?)null),
-        convertFromProviderExpression: s => JsonSerializer.Deserialize<ShapeAndColor[]?>(s, (JsonSerializerOptions?)null) ?? Array.Empty<ShapeAndColor>())
-    {
-    }
 }
 
-internal class ShapeAndColorListValueComparer : ValueComparer<ShapeAndColor[]>
+internal class ShapeAndColorListValueComparer() : ValueComparer<ShapeAndColor[]>(
+    equalsExpression: (c1, c2) => c1!.SequenceEqual(c2!),
+    hashCodeExpression: c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+    snapshotExpression: c => c.ToArray())
 {
-    public ShapeAndColorListValueComparer() : base(
-        equalsExpression: (c1, c2) => c1!.SequenceEqual(c2!),
-        hashCodeExpression: c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-        snapshotExpression: c => c.ToArray())
-    {
-    }
 }
