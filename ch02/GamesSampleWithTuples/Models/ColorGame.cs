@@ -11,7 +11,7 @@ public class ColorGame : Game<string, (int CorrectPosition, int IncorrectPositio
 
     protected override (int CorrectPosition, int IncorrectPosition) GetMoveResult(string[] guesses)
     {
-        if (guesses.Count() != NumberFields)
+        if (guesses.Length != NumberFields)
         {
             throw new ArgumentException($"Guesses must have exactly {NumberFields} fields.");
         }

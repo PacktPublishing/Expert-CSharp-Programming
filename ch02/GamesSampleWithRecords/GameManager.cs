@@ -9,7 +9,7 @@ public class GameManager
     private static readonly string[] s_colors6 = ["Red", "Blue", "Green", "Yellow", "Purple", "Orange"];
     private static readonly string[] s_colors8 = ["Red", "Blue", "Green", "Yellow", "Purple", "Orange", "Pink", "Brown"];
 
-    private Dictionary<Guid, IGame> _runningGames = new();
+    private readonly Dictionary<Guid, IGame> _runningGames = new();
 
     private static string[] GenerateColorSolution(string[] colors, int numberFields) =>
     [.. Random.Shared.GetItems(colors, numberFields)];
