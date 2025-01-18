@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace GamesSample.Models;
 
+#if USERECORDS
 public readonly partial record struct ShapeResult : IParsable<ShapeResult>
 {
     public static ShapeResult Parse(string s, IFormatProvider? provider = default)
@@ -52,3 +53,4 @@ public readonly partial record struct ShapeResult : IParsable<ShapeResult>
         return InvalidFormat(out result);
     }
 }
+#endif
