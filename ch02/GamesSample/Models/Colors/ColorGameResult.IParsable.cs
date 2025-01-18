@@ -2,6 +2,7 @@
 
 namespace GamesSample.Models;
 
+#if USERECORDS
 public readonly partial record struct ColorGameResult : IParsable<ColorGameResult>
 {
     public static ColorGameResult Parse(string s, IFormatProvider? provider = default)
@@ -43,3 +44,4 @@ public readonly partial record struct ColorGameResult : IParsable<ColorGameResul
         return false;
     }
 }
+#endif

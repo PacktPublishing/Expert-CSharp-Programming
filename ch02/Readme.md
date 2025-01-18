@@ -13,9 +13,10 @@ dotnet tool install mdv -g --prerelease --add-source https://pkgs.dev.azure.com/
 In this chapter, Visual Studio 2022 can be used to build and run the applications.
 
 - BehindTheScenes - a simple console application which helps understanding generics
-- GamesSampleWithTuples - creating a generic interface using tuples
-- GamesSampleWithRecords - the games sample with records instead of tuples
+- GamesSample - creating a generic interface, generic classes, and generic methods, and using record structs and tuples as generic parameters
 - NumericSample - implementing and using operators with generics
 - AllowRefStruct - using the anti-constraint `allow ref struct`
+
+> The GamesSample project uses the conditional compilation symbol USERECORDS. If this compilation symbol is set in the project file, a C# record struct is used for the ShapeResult type. If this symbol is not set, tuples are used instead.
 
 [Class diagram game classes](GameClasses.md)

@@ -7,15 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllowsRefStruct", "AllowsRe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BehindTheScenes", "BehindTheScenes\BehindTheScenes.csproj", "{368D9F57-56AA-4A3C-ADEF-41E632CFBB03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamesSampleWithTuples", "GamesSampleWithTuples\GamesSampleWithTuples.csproj", "{D24F64FF-2B11-4686-82ED-520EAF49EAE9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamesSampleWithRecords", "GamesSampleWithRecords\GamesSampleWithRecords.csproj", "{1C0CFFFD-36B6-470D-8810-B9AB8192B58B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
 	ProjectSection(SolutionItems) = preProject
 		GameClasses.md = GameClasses.md
 		Readme.md = Readme.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GamesSample", "GamesSample\GamesSample.csproj", "{60056778-A900-F725-9EB0-C173981D58FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,14 +29,10 @@ Global
 		{368D9F57-56AA-4A3C-ADEF-41E632CFBB03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{368D9F57-56AA-4A3C-ADEF-41E632CFBB03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{368D9F57-56AA-4A3C-ADEF-41E632CFBB03}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D24F64FF-2B11-4686-82ED-520EAF49EAE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D24F64FF-2B11-4686-82ED-520EAF49EAE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D24F64FF-2B11-4686-82ED-520EAF49EAE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D24F64FF-2B11-4686-82ED-520EAF49EAE9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1C0CFFFD-36B6-470D-8810-B9AB8192B58B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1C0CFFFD-36B6-470D-8810-B9AB8192B58B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1C0CFFFD-36B6-470D-8810-B9AB8192B58B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1C0CFFFD-36B6-470D-8810-B9AB8192B58B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60056778-A900-F725-9EB0-C173981D58FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60056778-A900-F725-9EB0-C173981D58FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60056778-A900-F725-9EB0-C173981D58FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60056778-A900-F725-9EB0-C173981D58FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

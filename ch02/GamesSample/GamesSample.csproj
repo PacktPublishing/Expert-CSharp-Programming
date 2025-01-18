@@ -5,6 +5,8 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+		<DefineConstants>USERECORDS</DefineConstants>
+		<!-- Specify the constant USERECORDS build the application with C# records for the result types. Without this constant, tuples are used. -->
   </PropertyGroup>
 
 </Project>
