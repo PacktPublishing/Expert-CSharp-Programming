@@ -10,10 +10,12 @@ Currently, this tool is in preview and needs to be installed with a preview feed
 dotnet tool install mdv -g --prerelease --add-source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json 
 ```
 
-In this chapter, Visual Studio 2022 can be used to build and run the applications. For using the HTTP files with the features used in this chapter, at least version 17.12.0 is required.
+In this chapter, Visual Studio 2022 can be used to build and run the applications.
 
 - BehindTheScenes - a simple console application which helps understanding generics
 - GamesSampleWithTuples - creating a generic interface using tuples
 - GamesSampleWithRecords - the games sample with records instead of tuples
 - NumericSample - implementing and using operators with generics
 - AllowRefStruct - using the anti-constraint `allow ref struct`
+
+[Class diagram game classes](GameClasses.md)

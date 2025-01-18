@@ -1,4 +1,4 @@
-# Game Models
+# Game Models with members
 
 ```mermaid
 classDiagram
@@ -62,14 +62,24 @@ classDiagram
 
 ```
 
+# Game models
+
 ```mermaid
+---
+config:
+  class:
+    hideEmptyMembersBox: true
+---
 classDiagram
-  direction TB
+  
+  direction LR
 
   IGame <|-- IGameT~TField, TResult~
   <<interface>>IGame
+
   IGameT~TField, TResult~ <|.. Game~TField, TResult~
   <<interface>>IGameT
+
   <<abstract>>Game
 
   ColorGame --|> Game~string, ColorGameResult~
@@ -78,10 +88,8 @@ classDiagram
   ShapeGame ..> ShapeField
   ShapeGame ..> ShapeResult
   ShapeGame --|> Game
-
-  direction LR
   
-  GameManager "1" --> "*" IGame : manages
+  IGame "*" <-- "1" GameManager : manages
 
   Game "1" *-- "*" Move
 
