@@ -4,7 +4,7 @@ using BenchmarkDotNet.Running;
 
 BenchmarkRunner.Run<BenchmarkExceptions>();
 
-[SimpleJob(RuntimeMoniker.Net50)]
+// [SimpleJob(RuntimeMoniker.Net50)]
 [SimpleJob(RuntimeMoniker.Net60)]
 [SimpleJob(RuntimeMoniker.Net70)]
 [SimpleJob(RuntimeMoniker.Net80)]
