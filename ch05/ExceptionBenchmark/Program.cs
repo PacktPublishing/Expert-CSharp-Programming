@@ -4,7 +4,6 @@ using BenchmarkDotNet.Running;
 
 BenchmarkRunner.Run<BenchmarkExceptions>();
 
-// [SimpleJob(RuntimeMoniker.Net50)]
 [SimpleJob(RuntimeMoniker.Net60)]
 [SimpleJob(RuntimeMoniker.Net70)]
 [SimpleJob(RuntimeMoniker.Net80)]
@@ -24,7 +23,7 @@ public class BenchmarkExceptions
         ParseWithStatusCode();
     }
 
-    void ParseWithException()
+    internal static void ParseWithException()
     {
         string test = "test";
         int i = 0;
@@ -32,21 +31,21 @@ public class BenchmarkExceptions
         {
             int result = int.Parse(test);
         }
-        catch (FormatException ex)
+        catch (FormatException)
         {
             i++;
         }
-        catch (OverflowException ex)
+        catch (OverflowException)
         {
             i++;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             throw;
         }
     }
 
-    void ParseWithStatusCode()
+    internal static void ParseWithStatusCode()
     {
         int i = 0;
         string test = "test";
