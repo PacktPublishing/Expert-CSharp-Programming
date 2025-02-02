@@ -1,0 +1,5 @@
+# Books application
+
+```mermaid
+  info
+```
