@@ -28,6 +28,7 @@ public class ValidateMatchIdEndpointFilter(ILogger<ValidateMatchIdEndpointFilter
         Book book = context.GetArgument<Book>(1);
         if (id != book.Id)
         {
+            logger.LogWarning("Id mismatch with a request");
             return TypedResults.BadRequest();
         }
 

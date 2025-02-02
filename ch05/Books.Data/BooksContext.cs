@@ -36,10 +36,20 @@ public class BooksContext(DbContextOptions<BooksContext> options, ILogger<BooksC
         {
             throw new BookServiceException(ex.Message, ex)
             {
-                HResult = 300
+                HResult = 3000
             };
         }
+        catch (Exception ex) when (LogErrorFilter(ex))
+        {
+            throw;
+        }
     }
+
+    private bool LogErrorFilter(Exception ex)
+    {
+        logger.LogError(ex, "Error: {error}", ex.Message);
+        return false;
+    }   
 
     /// <summary>
     /// Retrieves a book by its ID asynchronously.

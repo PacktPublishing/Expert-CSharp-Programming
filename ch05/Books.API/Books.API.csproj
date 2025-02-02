@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Books.Common\Books.Data.csproj" />
+    <ProjectReference Include="..\Books.Data\Books.Data.csproj" />
     <ProjectReference Include="..\Books.ServiceDefaults\Books.ServiceDefaults.csproj" />
   </ItemGroup>
 
