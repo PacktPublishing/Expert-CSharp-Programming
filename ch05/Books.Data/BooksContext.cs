@@ -24,8 +24,8 @@ public class BooksContext(DbContextOptions<BooksContext> options, ILogger<BooksC
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A collection of books.</returns>
     /// <exception cref="OperationCanceledException">Thrown if the operation is canceled.</exception>
-    /// <exception cref="DbUpdateException">Thrown if an error occurs while accessing the database.</exception>
-    public async Task<IEnumerable<Book>> GetBooksAsync(CancellationToken cancellationToken)
+    /// <exception cref="BookServiceException">Thrown if an error occurs while accessing the database.</exception>
+    public async Task<IEnumerable<Book>> GetBooksAsync(CancellationToken cancellationToken = default)
     {
         try
         {
@@ -58,7 +58,7 @@ public class BooksContext(DbContextOptions<BooksContext> options, ILogger<BooksC
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>The book with the specified ID, or null if not found.</returns>
     /// <exception cref="OperationCanceledException">Thrown if the operation is canceled.</exception>
-    /// <exception cref="DbUpdateException">Thrown if an error occurs while accessing the database.</exception>
+    /// <exception cref="BookServiceException">Thrown if an error occurs while accessing the database.</exception>
     public async Task<Book?> GetBookByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         try
@@ -69,7 +69,7 @@ public class BooksContext(DbContextOptions<BooksContext> options, ILogger<BooksC
         }
         catch (Exception ex) when (ex is InvalidOperationException or DbUpdateException)
         {
-            throw;
+            throw new BookServiceException(ex.Message, ex);
         }
         catch (Exception)
         {
@@ -84,7 +84,7 @@ public class BooksContext(DbContextOptions<BooksContext> options, ILogger<BooksC
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>The number of affected rows.</returns>
     /// <exception cref="OperationCanceledException">Thrown if the operation is canceled.</exception>
-    /// <exception cref="DbUpdateException">Thrown if an error occurs while accessing the database.</exception>
+    /// <exception cref="BookServiceException">Thrown if an error occurs while accessing the database.</exception>
     public async Task<int> UpdateBookAsync(Book book, CancellationToken cancellationToken = default)
     {
         try
@@ -111,12 +111,7 @@ public class BooksContext(DbContextOptions<BooksContext> options, ILogger<BooksC
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>The created book.</returns>
     /// <exception cref="OperationCanceledException">Thrown if the operation is canceled.</exception>
-    /// <exception cref="DbUpdateException">An error is encountered while saving to the database.</exception>
-    /// <exception cref="DbUpdateConcurrencyException">
-    ///     A concurrency violation is encountered while saving to the database.
-    ///     A concurrency violation occurs when an unexpected number of rows are affected during save.
-    ///     This is usually because the data in the database has been modified since it was loaded into memory.
-    /// </exception>
+    /// <exception cref="BookServiceException">An error is encountered while accessing the database.</exception>
     public async Task<Book> CreateBookAsync(Book book, CancellationToken cancellationToken = default)
     {
         try
@@ -144,7 +139,7 @@ public class BooksContext(DbContextOptions<BooksContext> options, ILogger<BooksC
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>The number of affected rows.</returns>
     /// <exception cref="OperationCanceledException">Thrown if the operation is canceled.</exception>
-    /// <exception cref="DbUpdateException">Thrown if an error occurs while accessing the database.</exception>
+    /// <exception cref="BookServiceException">Thrown if an error occurs while accessing the database.</exception>
     public async Task<int> DeleteBookAsync(int id, CancellationToken cancellationToken = default)
     {
         try

@@ -6,4 +6,3 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Design", "CA1050:Declare types in namespaces", Justification = "Small sample project", Scope = "type", Target = "~T:BenchmarkExceptions")]
-[assembly: SuppressMessage("Usage", "NETSDK1138", Justification = "Compare benchmark with older .NET versions", Scope = "module")]

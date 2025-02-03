@@ -28,6 +28,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BooksApp", "BooksApp", "{87
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Data", "Books.Data\Books.Data.csproj", "{4921ED70-0546-CAF0-12B3-92C040444692}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logging", "Logging", "{49DE17C7-7D1E-4C49-87DC-60B29499C284}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggingBenchmark", "LoggingBenchmark\LoggingBenchmark.csproj", "{AD767CDA-2A9B-E48A-67FF-C8F9AD7C17CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +70,10 @@ Global
 		{4921ED70-0546-CAF0-12B3-92C040444692}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4921ED70-0546-CAF0-12B3-92C040444692}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4921ED70-0546-CAF0-12B3-92C040444692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD767CDA-2A9B-E48A-67FF-C8F9AD7C17CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD767CDA-2A9B-E48A-67FF-C8F9AD7C17CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD767CDA-2A9B-E48A-67FF-C8F9AD7C17CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD767CDA-2A9B-E48A-67FF-C8F9AD7C17CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +87,7 @@ Global
 		{75793776-7355-0768-DF21-27E19B48C532} = {87BF27B1-0E99-40FB-9A1C-7FA99FEB71BF}
 		{D92BB9A4-E012-349D-9F98-601F1D78D004} = {87BF27B1-0E99-40FB-9A1C-7FA99FEB71BF}
 		{4921ED70-0546-CAF0-12B3-92C040444692} = {87BF27B1-0E99-40FB-9A1C-7FA99FEB71BF}
+		{AD767CDA-2A9B-E48A-67FF-C8F9AD7C17CE} = {49DE17C7-7D1E-4C49-87DC-60B29499C284}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {144FA74D-FA23-4779-A2BA-F67314C23934}
