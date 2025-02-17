@@ -17,9 +17,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Games", "Games", "{02EA681E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
 	ProjectSection(SolutionItems) = preProject
-		ClassHierarchies.md = ClassHierarchies.md
-		Games.md = Games.md
+		GameRelations.md = GameRelations.md
+		HttpClient.md = HttpClient.md
+		HttpClientHandlers.md = HttpClientHandlers.md
 		Readme.md = Readme.md
+		WebClient.md = WebClient.md
+		WebRequest.md = WebRequest.md
 	EndProjectSection
 EndProject
 Global
