@@ -1,6 +1,11 @@
 # Games
 
 ```mermaid
+---
+  config:
+    class:
+      hideEmptyMembersBox: true
+---
 classDiagram
     Game <|-- ColorGame
     Game <|-- ShapeAndColorGame
@@ -14,55 +19,56 @@ classDiagram
 
     class Game{
       <<Abstract>>
-      + PlayerName string
-      + StartTime DateTime
-      + EndTime DateTime
-      + IsWon bool
-      + LastMoveNumber int
-      #virtual SetMove(IMove) IResult
-      # GetResult(Move) IResult*
+      +string PlayerName
+      +DateTime StartTime
+      +DateTime EndTime
+      +bool IsWon
+      +int LastMoveNumber
+      #virtual SetMove(IMove): IResult
+      #GetResult(Move): IResult*
     }
 
     class ColorGame{
-      + SetMove(ColorMove) ColorResult 
-      #GetResult(int) ColorResult*
+      +SetMove(ColorMove): ColorResult 
+      #GetResult(int): ColorResult*
     }
 
     class ShapeAndColorGame{
-      + SetMove(ShapeAndColorMove) ShapeAndColorResult
+      +SetMove(ShapeAndColorMove): ShapeAndColorResult
     }
 
     class Move{
       <<Abstract>>
-      + MoveNumber int
-      + MoveTime DateTime
+      +int MoveNumber
+      +DateTime MoveTime
     }
 
     class ColorMove{
-      + Colors string[]
+      +string[] Colors
     }
 
     class ShapeAndColor{
-      + Shape string
-      + Color string
+      +string Shape
+      +string Color
     }
 
     class ColorResult{
       <<Struct>>
-      + ColorCorrectPosition: int
-      + ColorCorrect: int
+      +int ColorCorrectPosition
+      +int ColorCorrect
     }
 
     class ShapeAndColorResult{
       <<Struct>>
-      + ShapeAndColorCorrectPosition: int
-      + ShapeAndColorCorrect: int
-      + ShapeOrColorCorrrectPosition: int
+      +int ShapeAndColorCorrectPosition
+      +int ShapeAndColorCorrect
+      +int ShapeOrColorCorrrectPosition
     }
 
     class IResult{
       <<Interface>>
-      + IsWon bool
+      +bool IsWon
     }
 
+%%   classDef default fill:#CDE498,font-size:16px
 ```
