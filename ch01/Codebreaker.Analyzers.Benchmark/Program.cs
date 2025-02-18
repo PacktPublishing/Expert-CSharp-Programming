@@ -56,8 +56,8 @@ public class BenchmarkAnalyzer
             IsVictory = false,
             FieldValues = new Dictionary<string, IEnumerable<string>>()
             {
-                [FieldCategories.Colors] = TestData5x5x4.Colors5.ToList(),
-                [FieldCategories.Shapes] = TestData5x5x4.Shapes5.ToList()
+                [FieldCategories.Colors] = [.. TestData5x5x4.Colors5],
+                [FieldCategories.Shapes] = [.. TestData5x5x4.Shapes5]
             },
             Codes = codes
         };
@@ -71,7 +71,7 @@ public class BenchmarkAnalyzer
         IsVictory = false,
         FieldValues = new Dictionary<string, IEnumerable<string>>()
         {
-            [FieldCategories.Colors] = TestData8x5.Colors8.ToList()
+            [FieldCategories.Colors] = [.. TestData8x5.Colors8]
         },
         Codes = codes
     };
@@ -85,7 +85,7 @@ public class BenchmarkAnalyzer
         IsVictory = false,
         FieldValues = new Dictionary<string, IEnumerable<string>>()
         {
-            [FieldCategories.Colors] = TestData6x4.Colors6.ToList()
+            [FieldCategories.Colors] = [.. TestData6x4.Colors6]
         },
         Codes = codes
     };
@@ -94,7 +94,7 @@ public class BenchmarkAnalyzer
     {
         Game game = Create5x5x4Game(codes);
 
-        ShapeGameGuessAnalyzer analyzer = new(game, guesses.ToPegs<ShapeAndColorField>().ToArray(), 1);
+        ShapeGameGuessAnalyzer analyzer = new(game, [.. guesses.ToPegs<ShapeAndColorField>()], 1);
         return analyzer.GetResult();
     }
 
@@ -102,7 +102,7 @@ public class BenchmarkAnalyzer
     {
         Game game = Create8x5Game(codes);
 
-        ColorGameGuessAnalyzer analyzer = new(game, guesses.ToPegs<ColorField>().ToArray(), 1);
+        ColorGameGuessAnalyzer analyzer = new(game, [.. guesses.ToPegs<ColorField>()], 1);
         return analyzer.GetResult();
     }
 
@@ -110,18 +110,18 @@ public class BenchmarkAnalyzer
     {
         Game game = Create6x4Game(codes);
 
-        ColorGameGuessAnalyzer analyzer = new(game, guesses.ToPegs<ColorField>().ToArray(), 1);
+        ColorGameGuessAnalyzer analyzer = new(game, [.. guesses.ToPegs<ColorField>()], 1);
         return analyzer.GetResult();
     }
 
-    private string[] codes5x5x4 = ["Square;Green", "Square;Purple", "Circle;Yellow", "Triangle;Blue"];
-    private string[] guesses5x5x4 = ["Triangle;Green", "Circle;Yellow", "Star;Yellow", "Circle;Red"];
+    private readonly string[] codes5x5x4 = ["Square;Green", "Square;Purple", "Circle;Yellow", "Triangle;Blue"];
+    private readonly string[] guesses5x5x4 = ["Triangle;Green", "Circle;Yellow", "Star;Yellow", "Circle;Red"];
 
-    private string[] codes8x5 = ["Green", "Purple", "Yellow", "Blue", "Red"];
-    private string[] guesses8x5 = ["Green", "Yellow", "Yellow", "Red", "Blue"];
+    private readonly string[] codes8x5 = ["Green", "Purple", "Yellow", "Blue", "Red"];
+    private readonly string[] guesses8x5 = ["Green", "Yellow", "Yellow", "Red", "Blue"];
 
-    private string[] codes6x4 = ["Green", "Purple", "Yellow", "Blue"];
-    private string[] guesses6x4 = ["Green", "Yellow", "Yellow", "Red"];
+    private readonly string[] codes6x4 = ["Green", "Purple", "Yellow", "Blue"];
+    private readonly string[] guesses6x4 = ["Green", "Yellow", "Yellow", "Red"];
 
 
     [Benchmark]

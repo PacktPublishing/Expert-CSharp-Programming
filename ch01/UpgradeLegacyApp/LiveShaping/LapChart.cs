@@ -43,13 +43,13 @@ public class LapChart
 
     private void SetLapInfoForStart()
     {
-        _lapInfo = _positions.Select(x => new LapRacerInfo
+        _lapInfo = [.. _positions.Select(x => new LapRacerInfo
         {
             Racer = _f1.Racers.Where(r => r.Number == x.Key).Single(),
             Lap = 0,
             Position = x.Value.First(),
             PositionChange = PositionChange.None
-        }).ToList();
+        })];
     }
 
     public IEnumerable<LapRacerInfo>? GetLapInfo() => _lapInfo;

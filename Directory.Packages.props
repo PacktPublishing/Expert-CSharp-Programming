@@ -8,28 +8,39 @@
   <ItemGroup>
     <PackageVersion Include="Aspire.Hosting.AppHost" Version="9.0.0" />
     <PackageVersion Include="Aspire.Hosting.MySql" Version="9.0.0" />
+    <PackageVersion Include="Aspire.Hosting.SqlServer" Version="9.0.0" />
+    <PackageVersion Include="Aspire.Hosting.Azure" Version="9.0.0" />
+    <PackageVersion Include="Aspire.Hosting.Azure.CosmosDB" Version="9.0.0" />
+    <PackageVersion Include="Aspire.Hosting.Azure.Storage" Version="9.0.0" />
+    <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+    <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.Cosmos" Version="9.0.0" />
     <PackageVersion Include="Aspire.Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
     <PackageVersion Include="Aspire4Wasm" Version="3.0.0" />
     <PackageVersion Include="CommunityToolkit.Aspire.Hosting.Sqlite" Version="9.1.1-beta.155" />
     <PackageVersion Include="CommunityToolkit.Aspire.Microsoft.EntityFrameworkCore.Sqlite" Version="9.1.1-beta.155" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.1" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.2" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.2" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.1" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.1" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.1" />
-    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.1" />
-    <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.1" />
-    <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="9.1.0" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.2" />
+    <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="9.2.0" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="9.0.0" />
-    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1" />
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="9.0.2" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery.Yarp" Version="9.0.0" />
     <PackageVersion Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
-    <PackageVersion Include="Swashbuckle.AspNetCore" Version="7.2.0" />
   </ItemGroup>
   <!-- Microsoft common packages -->
   <ItemGroup>
-    <PackageVersion Include="Microsoft.Data.SqlClient" Version="5.2.2" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.Data.SqlClient" Version="6.0.1" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.2" />
+  </ItemGroup>
+  <!-- Third party packages -->
+  <ItemGroup>
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="7.2.0" />
+    <PackageVersion Include="Swashbuckle.AspNetCore.Annotations" Version="7.2.0" />
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
   </ItemGroup>
   <!-- OpenTelemetry -->
   <ItemGroup>
@@ -38,16 +49,23 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.11.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.11.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.11.0" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.GrpcNetClient" Version="1.11.0-beta.1" />
   </ItemGroup>
   <!-- Tests and benchmarks -->
   <ItemGroup>
     <PackageVersion Include="BenchmarkDotNet" Version="0.14.0" />
     <PackageVersion Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.14.0" />
-    <PackageVersion Include="coverlet.collector" Version="6.0.0" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
     <PackageVersion Include="Moq" Version="4.20.70" />
-    <PackageVersion Include="xunit" Version="2.6.3" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.5" />
+    <PackageVersion Include="xunit" Version="2.9.3" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.2" />
+  </ItemGroup>
+  <!-- CN innovation packages -->
+  <ItemGroup>
+    <PackageVersion Include="CNinnovation.Codebreaker.GamesClient" Version="3.8.0" />
+    <PackageVersion Include="CNinnovation.Codebreaker.Cosmos" Version="3.8.0" />
+    <PackageVersion Include="CNinnovation.Codebreaker.SqlServer" Version="3.8.0" />
   </ItemGroup>
 </Project>
