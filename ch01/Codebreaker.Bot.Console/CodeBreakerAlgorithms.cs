@@ -21,9 +21,8 @@ public static class CodeBreakerAlgorithms
             throw new ArgumentException("invalid argument - hits need to be between 1 and 3");
         }
 
-        List<string[]> matchingValues1 = values
-            .Where(fields => fields.Where((color, ix) => color == guesses[ix]).Count() == blackHits)
-            .ToList();
+        List<string[]> matchingValues1 = [.. values
+            .Where(fields => fields.Where((color, ix) => color == guesses[ix]).Count() == blackHits) ];
 
         List<string[]> matchingValues = [];
         foreach (var fields in values)
@@ -104,7 +103,7 @@ public static class CodeBreakerAlgorithms
     public static List<string[]> ProcessNoMatches(this IList<string[]> values, string[] guesses)
     {
         List<string[]> matchingValues;
-        matchingValues = values.Where(fields => !fields.Intersect(guesses).Any()).ToList();
+        matchingValues = [.. values.Where(fields => !fields.Intersect(guesses).Any()).ToList()];
         return matchingValues;
     }
 
