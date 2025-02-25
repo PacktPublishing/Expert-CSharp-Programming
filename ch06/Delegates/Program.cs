@@ -11,10 +11,22 @@ Console.WriteLine(multiply(10, 5));
 
 Action<int, int> calcOutput = CalculationOutput.Addition;
 calcOutput += CalculationOutput.Subtraction;
-calcOutput.Invoke(7, 2);
+calcOutput(7, 2); // calcOutput.Invoke(7, 2);
 
-Action<int, int> combinedDelegate = (Action<int, int>)Delegate.Combine(CalculationOutput.Add, CalculationOutput.Subtraction);
-combinedDelegate.Invoke(11, 22);
+Action<int, int> combinedDelegate = (Action<int, int>)Delegate.Combine(CalculationOutput.Addition, CalculationOutput.Subtraction);
+combinedDelegate(11, 22);  // combinedDelegate.Invoke(11, 22);
 
-var delegates = combinedDelegate.GetInvocationList();
+Action<int, int> combinedWithExceptionDelegate = (Action<int, int>)Delegate.Combine(combinedDelegate, CalculationOutput.ThrowException);
 
+
+foreach (Action<int, int> m in combinedWithExceptionDelegate.GetInvocationList())
+{
+    try
+    {
+        m(11, 22);
+    }
+    catch (SampleException)
+    {
+        Console.WriteLine("Exception caught, but continue with others");
+    }
+}

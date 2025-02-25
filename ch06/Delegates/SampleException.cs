@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Delegates;
 
-namespace Delegates
+public class SampleException : Exception
 {
-    internal class SampleException
-    {
-    }
+	public SampleException() { }
+	public SampleException(string message) : base(message) { }
+	public SampleException(string message, Exception inner) : base(message, inner) { }
 }

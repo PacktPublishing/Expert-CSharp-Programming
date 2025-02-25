@@ -11,4 +11,6 @@ internal class CalculationOutput
     {
         Console.WriteLine($"{x} - {y} results in {x - y}");
     }
+
+    public static void ThrowException(int x, int y) => throw new SampleException();
 }
