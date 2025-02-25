@@ -10,7 +10,6 @@ using WeakEvents;
 
 BenchmarkRunner.Run<EventsBenchmark>();
 
-//[SimpleJob(RuntimeMoniker.Net90)]
 [MemoryDiagnoser]
 public class EventsBenchmark
 {
@@ -22,8 +21,6 @@ public class EventsBenchmark
         subject.SomeEvent += observer.Handler;
         subject.RaiseEvent();
         subject = null;
-        //GC.Collect();
-        //GC.WaitForFullGCComplete();
     }
 
     [Benchmark]
@@ -34,8 +31,5 @@ public class EventsBenchmark
         WeakEventManager<Subject, SubjectEventArgs>.AddHandler(subject, "SomeEvent", observer.Handler);
         subject.RaiseEvent();
         subject = null;
-        //GC.Collect();
-        //GC.WaitForFullGCComplete();
     }
-
 }
