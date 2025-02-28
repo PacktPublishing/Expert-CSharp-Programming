@@ -1,15 +1,15 @@
 ﻿namespace Delegates;
 
-internal class CalculationOutput
+internal class CalculationOutput(TextWriter writer)
 {
-    public static void Addition(int x, int y)
+    public void Add(int x, int y)
     {
-        Console.WriteLine($"{x} + {y} results in {x + y}");
+        writer.WriteLine($"{x} + {y} results in {x + y}");
     }
 
-    public static void Subtraction(int x, int y)
+    public void Subtract(int x, int y)
     {
-        Console.WriteLine($"{x} - {y} results in {x - y}");
+        writer.WriteLine($"{x} - {y} results in {x - y}");
     }
 
     public static void ThrowException(int x, int y) => throw new SampleException();
