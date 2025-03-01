@@ -1,0 +1,15 @@
+﻿
+<input type="text" @bind="message" />
+<button @onclick="RaiseEvent">Publisher - click me!</button>
+
+@code {
+    private string? message;
+
+    [Parameter]
+    public EventCallback<SampleEventArgs> OnButtonClick { get; set; }
+
+    private async Task RaiseEvent()
+    {
+        await OnButtonClick.InvokeAsync(new SampleEventArgs(message ?? string.Empty));
+    }
+}
