@@ -4,7 +4,7 @@ public class Subject(int id)
 {
     public int Id { get; } = id;
 
-    private WeakEvent<SubjectEventArgs> _weakEvent = new();
+    private readonly WeakEvent<SubjectEventArgs> _weakEvent = new();
     public event EventHandler<SubjectEventArgs> SomeEvent
     {
         add
