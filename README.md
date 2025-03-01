@@ -15,6 +15,6 @@
 - [Chapter 13 - Serialization and streaming](ch13)
 - [Chapter 14 - Application startup and builders](ch14)
 - [Chapter 15 - Interop with other languages](ch15)
-- [Chapter 16 - Creating and using source genrators](ch16)
+- [Chapter 16 - Creating and using source generators](ch16)
 - [Chapter 17 - Adding AI to applications using the Semantic Kernel](ch17)
 - [Chapter 18 - Making the application fit for Native AOT](ch18)
