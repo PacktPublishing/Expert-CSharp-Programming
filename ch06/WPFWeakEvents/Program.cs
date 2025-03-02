@@ -23,7 +23,6 @@ foreach (var subject in subjects)
     subject.RaiseEvent();
 }
 
-
 for (int i = 0; i < observers.Length; i++)
 {
     observers[i] = null;
