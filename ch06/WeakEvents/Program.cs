@@ -1,56 +1,30 @@
-﻿
-using WeakEvents;
+﻿using WeakEvents;
 
-Console.WriteLine(GC.GetTotalMemory(true));
-Observer observer = new();
+const int numberObservers = 10;
+const int numberSubjects = 10;
 
-var subjects = Enumerable.Range(1, 1000)
+Observer?[]? observers = [.. Enumerable.Range(1, numberObservers).Select(x => new Observer(x))];
+
+Subject[] subjects = [.. Enumerable.Range(1, numberSubjects)
     .Select(x =>
     {
         Subject s = new(x);
-        s.SomeEvent += observer.Handler;
+        foreach (var observer in observers)
+        {
+            s.SomeEvent += observer!.Handler; // at this time, all observers are not null
+        }
         return s;
-    })
-    .ToArray();
-
+    })];
 
 foreach (var subject in subjects)
 {
     subject.RaiseEvent();
 }
 
-GC.Collect();
 
-Console.WriteLine(GC.GetTotalMemory(true));
-
-
-for (int i = 0; i < subjects.Length; i++)
+for (int i = 0; i < observers.Length; i++)
 {
-    subjects[i] = null!;
+    observers[i] = null;
 }
-
-subjects = null;
-GC.Collect();
-GC.Collect(GC.MaxGeneration, GCCollectionMode.Aggressive);
-GC.WaitForFullGCComplete();
-
-await Task.Delay(1000);
-
-GC.Collect();
-GC.Collect(GC.MaxGeneration, GCCollectionMode.Aggressive);
-GC.WaitForFullGCComplete();
-
-GC.Collect(GC.MaxGeneration, GCCollectionMode.Aggressive);
-GC.WaitForFullGCComplete();
-
-GC.Collect(GC.MaxGeneration, GCCollectionMode.Aggressive);
-GC.WaitForFullGCComplete();
-
-Console.WriteLine(GC.GetTotalMemory(true));
-
-//foreach (var subject in subjects)
-//{
-//    Console.WriteLine(subject.ToString());
-//}
 
 Console.WriteLine("End");
