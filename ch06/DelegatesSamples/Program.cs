@@ -18,9 +18,13 @@ Action<int, int> combinedDelegate = (Action<int, int>)Delegate.Combine(calculati
 combinedDelegate(11, 22);  // combinedDelegate.Invoke(11, 22);
 
 // With the parameters of the Delegate.Combine method, it's guaranteed that the return value is not null.
-Action<int, int> combinedWithExceptionDelegate = (Action<int, int>)Delegate.Combine(calculation.Add, CalculationOutput.ThrowException, calculation.Subtract)!;
+// Action<int, int> combinedWithExceptionDelegate = (Action<int, int>)Delegate.Combine(calculation.Add, CalculationOutput.ThrowException, calculation.Subtract)!;
 
-// available before .NET 9
+Action<int, int> combinedWithExceptionDelegate = calculation.Add;
+combinedWithExceptionDelegate += CalculationOutput.ThrowException;
+combinedWithExceptionDelegate += calculation.Subtract;
+
+// use GetInvocationList with .NET versions before .NET 9
 //foreach (Action<int, int> m in combinedWithExceptionDelegate.GetInvocationList())
 //{
 //    try
