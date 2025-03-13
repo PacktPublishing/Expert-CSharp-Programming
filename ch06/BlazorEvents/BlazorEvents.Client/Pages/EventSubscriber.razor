@@ -1,0 +1,18 @@
+﻿@page "/event-subscriber"
+@rendermode InteractiveAuto
+
+<h3>Blazor Event Sample</h3>
+
+<EventPublisher OnButtonClick="HandleButtonClick" />
+
+<p>@message</p>
+
+@code {
+    private string message = "Button not clicked yet.";
+
+    private async Task HandleButtonClick(SampleEventArgs e)
+    {
+        await Task.Delay(100);
+        message = e.Message;
+    }
+}
