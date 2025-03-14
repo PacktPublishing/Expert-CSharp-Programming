@@ -13,10 +13,10 @@ public class BenchmarkLists
     private List<int>? _listSized;
     private int[]? _array;
 
-    [Params(10, 100, 1000)]
+    [Params(100, 1000, 10000, 100000)]
     public int N;
 
-    [GlobalSetup]
+    [IterationSetup]
     public void Setup()
     {
         _list = new List<int>();
@@ -27,9 +27,18 @@ public class BenchmarkLists
     [Benchmark]
     public void ListAdd()
     {
-        for (int i = 0; i < N; i++)
+        int i = 0;
+        try
         {
-            _list!.Add(i);
+            for (; i < N; i++)
+            {
+                _list!.Add(i);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            Console.WriteLine(i);
         }
     }
 
