@@ -1,0 +1,29 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="ARM64" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Blazor/">
+    <Project Path="BlazorEvents/BlazorEvents.Client/BlazorEvents.Client.csproj" />
+    <Project Path="BlazorEvents/BlazorEvents/BlazorEvents.csproj" />
+  </Folder>
+  <Folder Name="/Delegates/">
+    <Project Path="Closures/Closures.csproj" />
+    <Project Path="DelegatesSamples/DelegatesSamples.csproj" />
+    <Project Path="ThreadingTimer/ThreadingTimer.csproj" />
+  </Folder>
+  <Folder Name="/Events/">
+    <Project Path="EventsSample/EventsSample.csproj" />
+    <Project Path="TimersTimer/TimersTimer.csproj" />
+    <Project Path="WeakEvents/WeakEvents.csproj" />
+    <Project Path="WPFWeakEvents/WPFWeakEvents.csproj" />
+    <Project Path="WPFWithEvents/WPFWithEvents.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="../Directory.Packages.props" />
+    <File Path="events.md" />
+    <File Path="Readme.md" />
+  </Folder>
+</Solution>

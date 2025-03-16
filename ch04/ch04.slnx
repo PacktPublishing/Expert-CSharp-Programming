@@ -1,0 +1,22 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Games/">
+    <Project Path="GameModels/GameModels/GameModels.csproj" />
+    <Project Path="GameModels/GamesEFCore/GamesEFCore.csproj" />
+    <Project Path="GameModels/GamesJsonSerialization/GamesJsonSerialization.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="GameRelations.md" />
+    <File Path="HttpClient.md" />
+    <File Path="HttpClientHandlers.md" />
+    <File Path="Readme.md" />
+    <File Path="WebClient.md" />
+    <File Path="WebRequest.md" />
+  </Folder>
+  <Project Path="RecordsSample/RecordsSample.csproj" />
+  <Project Path="Traits/Traits.csproj" />
+</Solution>

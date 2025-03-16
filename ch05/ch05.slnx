@@ -1,0 +1,20 @@
+<Solution>
+  <Folder Name="/BooksApp/">
+    <Project Path="BlazorClient/BlazorClient.Client/BlazorClient.Client.csproj" />
+    <Project Path="BlazorClient/BlazorClient/BlazorClient.csproj" />
+    <Project Path="Books.API/Books.API.csproj" />
+    <Project Path="Books.AppHost/Books.AppHost.csproj" />
+    <Project Path="Books.Data/Books.Data.csproj" />
+    <Project Path="Books.ServiceDefaults/Books.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/Intro/">
+    <Project Path="ExceptionBenchmark/ExceptionBenchmark.csproj" />
+    <Project Path="Exceptions/Exceptions.csproj" />
+  </Folder>
+  <Folder Name="/Logging/">
+    <Project Path="LoggingBenchmark/LoggingBenchmark.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="../Directory.Packages.props" />
+  </Folder>
+</Solution>
