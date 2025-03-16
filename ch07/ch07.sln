@@ -3,7 +3,22 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListBenchmark", "ListBenchmark\ListBenchmark.csproj", "{EE47D91F-9F5F-2400-1AC2-D2CA2A3ABDB3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListBenchmark", "D:\books\Expert-CSharp-Programming\ch07\ListBenchmark\ListBenchmark.csproj", "{EE47D91F-9F5F-2400-1AC2-D2CA2A3ABDB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListElementSizeBenchmark", "D:\books\Expert-CSharp-Programming\ch07\ListElementSizeBenchmark\ListElementSizeBenchmark.csproj", "{27937752-E4E1-5487-F08C-A3F8D82CDEF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectionExpressions", "D:\books\Expert-CSharp-Programming\ch07\CollectionExpressions\CollectionExpressions.csproj", "{D9B15122-F4DD-4CFD-98BB-F779B974A8D9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		CollectionTypes.md = CollectionTypes.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Search", "D:\books\Expert-CSharp-Programming\ch07\Search\Search.csproj", "{2292AC51-60D6-40A2-AA73-A5EA383D2C76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectionTypesBenchmark", "CollectionTypesBenchmark\CollectionTypesBenchmark.csproj", "{DA39BFD6-7406-C481-A6D1-AFA684EA4757}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectionTypes", "CollectionTypes\CollectionTypes.csproj", "{533A6DD3-052D-BF24-FCEF-587292456DDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +30,26 @@ Global
 		{EE47D91F-9F5F-2400-1AC2-D2CA2A3ABDB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE47D91F-9F5F-2400-1AC2-D2CA2A3ABDB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE47D91F-9F5F-2400-1AC2-D2CA2A3ABDB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27937752-E4E1-5487-F08C-A3F8D82CDEF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27937752-E4E1-5487-F08C-A3F8D82CDEF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27937752-E4E1-5487-F08C-A3F8D82CDEF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27937752-E4E1-5487-F08C-A3F8D82CDEF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9B15122-F4DD-4CFD-98BB-F779B974A8D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9B15122-F4DD-4CFD-98BB-F779B974A8D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9B15122-F4DD-4CFD-98BB-F779B974A8D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9B15122-F4DD-4CFD-98BB-F779B974A8D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2292AC51-60D6-40A2-AA73-A5EA383D2C76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2292AC51-60D6-40A2-AA73-A5EA383D2C76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2292AC51-60D6-40A2-AA73-A5EA383D2C76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2292AC51-60D6-40A2-AA73-A5EA383D2C76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA39BFD6-7406-C481-A6D1-AFA684EA4757}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA39BFD6-7406-C481-A6D1-AFA684EA4757}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA39BFD6-7406-C481-A6D1-AFA684EA4757}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA39BFD6-7406-C481-A6D1-AFA684EA4757}.Release|Any CPU.Build.0 = Release|Any CPU
+		{533A6DD3-052D-BF24-FCEF-587292456DDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{533A6DD3-052D-BF24-FCEF-587292456DDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{533A6DD3-052D-BF24-FCEF-587292456DDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{533A6DD3-052D-BF24-FCEF-587292456DDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

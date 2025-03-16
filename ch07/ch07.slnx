@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="CollectionTypes.md" />
+  </Folder>
+  <Project Path="CollectionTypes/CollectionTypes.csproj" />
+  <Project Path="CollectionTypesBenchmark/CollectionTypesBenchmark.csproj" />
+  <Project Path="D:/books/Expert-CSharp-Programming/ch07/CollectionExpressions/CollectionExpressions.csproj" />
+  <Project Path="D:/books/Expert-CSharp-Programming/ch07/ListBenchmark/ListBenchmark.csproj" />
+  <Project Path="D:/books/Expert-CSharp-Programming/ch07/ListElementSizeBenchmark/ListElementSizeBenchmark.csproj" />
+  <Project Path="D:/books/Expert-CSharp-Programming/ch07/Search/Search.csproj" />
+</Solution>
