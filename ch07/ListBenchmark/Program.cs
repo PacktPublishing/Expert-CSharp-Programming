@@ -19,7 +19,7 @@ public class BenchmarkLists
     [IterationSetup]
     public void Setup()
     {
-        _list = new List<int>();
+        _list = [];
         _array = new int[N];
         _listSized = new List<int>(capacity: N);
     }
@@ -27,18 +27,9 @@ public class BenchmarkLists
     [Benchmark]
     public void ListAdd()
     {
-        int i = 0;
-        try
+        for (int i = 0; i < N; i++)
         {
-            for (; i < N; i++)
-            {
-                _list!.Add(i);
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            Console.WriteLine(i);
+            _list!.Add(i);
         }
     }
 
