@@ -1,0 +1,27 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Codebreaker.Analyzer/">
+    <Project Path="Codebreaker.Analyzers.Benchmark/Codebreaker.Analyzers.Benchmark.csproj" />
+    <Project Path="Codebreaker.GameAPIs.Analyzers/Codebreaker.Analyzers.csproj" />
+  </Folder>
+  <Folder Name="/CodebreakerServices/">
+    <Project Path="CodebreakerServices/Codebreaker.AppHost/Codebreaker.AppHost.csproj" />
+    <Project Path="CodebreakerServices/CodeBreaker.Bot.Tests/CodeBreaker.Bot.Tests.csproj" />
+    <Project Path="CodebreakerServices/CodeBreaker.Bot/CodeBreaker.Bot.csproj" />
+    <Project Path="CodebreakerServices/Codebreaker.GameAPIs/Codebreaker.GameAPIs.csproj" />
+    <Project Path="CodebreakerServices/Codebreaker.ServiceDefaults/Codebreaker.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="../Directory.Packages.props" />
+    <File Path="Readme.md" />
+  </Folder>
+  <Project Path="AnalyzerSample/AnalyzerSample.csproj" />
+  <Project Path="BlazorWasm/BlazorWasm.csproj" />
+  <Project Path="Codebreaker.Bot.Console/Codebreaker.Bot.Console.csproj" />
+  <Project Path="SimpleApp/SimpleApp.csproj" />
+  <Project Path="UpgradeLegacyApp/LiveShaping/LiveShaping.csproj" />
+</Solution>
