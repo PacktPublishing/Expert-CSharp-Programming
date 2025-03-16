@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="GameClasses.md" />
+    <File Path="Readme.md" />
+  </Folder>
+  <Project Path="AllowsRefStruct/AllowsRefStruct.csproj" />
+  <Project Path="BehindTheScenes/BehindTheScenes.csproj" />
+  <Project Path="GamesSample/GamesSample.csproj" />
+</Solution>
