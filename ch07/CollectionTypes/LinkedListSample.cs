@@ -1,67 +1,48 @@
-﻿
-using System.Runtime.InteropServices;
+﻿namespace CollectionTypes;
 
-namespace CollectionTypes;
-
-public class LinkedListSample
+public class LinkedListSample : IShowTitle
 {
     public static void Run()
     {
-        LinkedList<SomeValue> linkedList = new();
-        linkedList.AddFirst(new SomeValue(1, 1));
-        linkedList.AddLast(new SomeValue(2, 2));
-        linkedList.AddLast(new SomeValue(3, 3));
-        for (var node = linkedList.First; node != null; node = node.Next)
-        {
-            Utilities.ShowMemoryAddress(ref node);  // display the address of the LinkedListNode
-            Utilities.ShowMemoryAddress(ref node.ValueRef);  // display the address of the SomeValue
-            Utilities.ShowMemoryAddress1(ref node.ValueRef);  // display the address of the SomeValue
-        }
+        IShowTitle.ShowTitle(nameof(LinkedListSample));
 
-        Console.WriteLine($"First: {linkedList.First?.Value}");
-        Console.WriteLine($"Last: {linkedList.Last?.Value}");
-        linkedList.RemoveFirst();
-        linkedList.RemoveLast();
-        for (var node = linkedList.First; node != null; node = node.Next)
-        {
-            Utilities.ShowMemoryAddress(ref node);
-            Utilities.ShowMemoryAddress(ref node.ValueRef);
-        } 
+        LinkedList<int> linkedList = new();
+        linkedList.AddLast(1);
+        var second = linkedList.AddLast(2);
+        linkedList.AddLast(3);
+        ShowLinkedListElementsAddresses("before insert", linkedList);
+
+        linkedList.AddAfter(second, 4);
+            
+        ShowLinkedListElementsAddresses("after insert", linkedList);
+
+        Console.WriteLine();
     }
-}
 
-public record class SomeData(int X, int Y);
-public record struct SomeValue(int X, int Y);
-
-public static class Utilities
-{
-    //public static void ShowMemoryAddress<T>(ref readonly T item)
-    //{
-    //    GCHandle handle = GCHandle.Alloc(item, GCHandleType.Pinned);
-    //    nint address = handle.AddrOfPinnedObject();
-    //    handle.Free();
-    //    Console.WriteLine($"{item} with address {address:X}");
-    //}
-
-    public static unsafe void ShowMemoryAddress<T>(ref T item)
+    private unsafe static void ShowLinkedListElementsAddresses<T>(
+        string message, LinkedList<T> linkedList)
+        where T : struct
     {
-        TypedReference tr = __makeref(item);
+        Console.WriteLine(message);
+
+        LinkedListNode<T>? current = linkedList.First;
+        int index = 0;
+
+        while (current is not null)
+        {
+            ref T node = ref current.ValueRef;
 #pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
-        IntPtr ptr = **(IntPtr**)&tr;
-#pragma warning restore CS8500 // We just use the address to display the address, we don't access the value, thus pinning is not necessary
-        Console.WriteLine($"{item} with address {ptr:X}");
-    }
+            fixed (T* p = &node)
+            {
+                Console.WriteLine(
+                    $"Element {index} with value {current.Value} at the address {(nint)p:X}"); ;
+            }
+#pragma warning restore CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
 
-    public static unsafe void ShowMemoryAddress1<T>(ref T item)
-    {
-        fixed (T* p = &item)
-        {
-            Console.WriteLine($"{item} with address {(nint)p:X}");
+            current = current.Next;
+            index++;
         }
-//        TypedReference tr = __makeref(item);
-//#pragma warning disable CS8500 // This takes the address of, gets the size of, or declares a pointer to a managed type
-//        IntPtr ptr = **(IntPtr**)&tr;
-//#pragma warning restore CS8500 // We just use the address to display the address, we don't access the value, thus pinning is not necessary
-//        Console.WriteLine($"{item} with address {ptr:X}");
+
+        Console.WriteLine();
     }
 }

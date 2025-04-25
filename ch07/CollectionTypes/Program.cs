@@ -1,4 +1,7 @@
 ﻿
 using CollectionTypes;
 
-LinkedListSample.Run();
+// ArraySample.Run();
+// ListSample.Run();
+// LinkedListSample.Run();
+PriorityQueueSample.Run();
