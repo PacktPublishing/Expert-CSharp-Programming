@@ -4,4 +4,5 @@ using CollectionTypes;
 // ArraySample.Run();
 // ListSample.Run();
 // LinkedListSample.Run();
-PriorityQueueSample.Run();
+// PriorityQueueSample.Run();
+DictionarySample.Run();

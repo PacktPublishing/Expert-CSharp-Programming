@@ -1,4 +1,6 @@
-﻿namespace CollectionTypes;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace CollectionTypes;
 
 public class SomeData(long value) : IComparable<SomeData>
 {
@@ -38,4 +40,11 @@ public struct SomeValue(long value)
     public long D { get; set; } = value;
     public long E { get; set; } = value;
     public override readonly string ToString() => $"{A}";
+}
+
+public record class Racer (string Name, RacerId RacerId);
+
+public readonly partial record struct RacerId(string Prefix, int Id)
+{
+    public override string ToString() => $"{Prefix}-{Id}";
 }

@@ -21,8 +21,6 @@ public static class Utilities
         }
 #pragma warning restore CS8500
     }
-
-
 }
 
 public interface IShowTitle
