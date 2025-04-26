@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="../.editorconfig" />
+    <File Path="CollectionTypes.md" />
+    <File Path="Diagrams.md" />
+  </Folder>
+  <Project Path="CollectionTypes/CollectionTypes.csproj" />
+  <Project Path="D:/books/Expert-CSharp-Programming/ch07/CollectionExpressions/CollectionExpressions.csproj" />
+  <Project Path="D:/books/Expert-CSharp-Programming/ch07/Search/Search.csproj" />
+  <Project Path="DataLib/DataLib.csproj" Id="f05cbdc1-3448-4d51-b5b2-4cf47d2685e9" />
+  <Project Path="Sorting/Sorting.csproj" />
+</Solution>
