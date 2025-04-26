@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace CollectionTypes;
+
 public readonly partial record struct RacerId : IParsable<RacerId>
 {
     public static RacerId Parse(string s, IFormatProvider? provider = null)

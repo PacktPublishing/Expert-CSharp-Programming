@@ -7,6 +7,7 @@ public class LinkedListSample : IShowTitle
         IShowTitle.ShowTitle(nameof(LinkedListSample));
 
         LinkedList<int> linkedList = new();
+        
         linkedList.AddLast(1);
         var second = linkedList.AddLast(2);
         linkedList.AddLast(3);

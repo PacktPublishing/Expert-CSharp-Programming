@@ -1,7 +1,4 @@
-﻿
-using System.Runtime.InteropServices;
-
-namespace CollectionTypes;
+﻿namespace CollectionTypes;
 
 public class StackSample : IShowTitle
 {
@@ -13,7 +10,6 @@ public class StackSample : IShowTitle
         stack.Push(new SomeValue(1));
         stack.Push(new SomeValue(2));
         stack.Push(new SomeValue(3));
-        Utilities.ShowMemoryAddress(ref stack);
         Console.WriteLine($"First: {stack.Peek()}");
         Console.WriteLine($"Pop: {stack.Pop()}");
         Console.WriteLine($"Pop: {stack.Pop()}");

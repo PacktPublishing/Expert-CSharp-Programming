@@ -1,17 +1,17 @@
 ﻿namespace CollectionTypes;
 
-public class DictionarySample : IShowTitle
+public class SortedDictionarySample : IShowTitle
 {
     public static void Run()
     {
-        IShowTitle.ShowTitle(nameof(DictionarySample));
+        IShowTitle.ShowTitle(nameof(SortedDictionarySample));
         RacerId mc81 = new("mc", 81);
         RacerId mc4 = new("mc", 4);
         RacerId rb1 = new("rb", 1);
         RacerId rb16 = new("rb", 16);
         RacerId f47 = new("f", 47);
         RacerId f44 = new("f", 44);
-        Dictionary<RacerId, Racer> racers = new()
+        SortedDictionary<RacerId, Racer> racers = new()
         {
             { mc81, new Racer("Oscar", "Piastri", mc81) },
             { mc4, new Racer("Lando", "Norris", mc4) },

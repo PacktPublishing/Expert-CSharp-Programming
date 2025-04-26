@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace CollectionTypes;
 internal class ArraySample : IShowTitle
@@ -63,6 +62,4 @@ internal class ArraySample : IShowTitle
         }
         Console.WriteLine();
     }
-
 }
-

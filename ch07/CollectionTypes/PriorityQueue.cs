@@ -11,7 +11,6 @@ public class PriorityQueueSample : IShowTitle
             queue.Enqueue(new SomeData(i), i % 3);
         }
 
-//        Utilities.ShowMemoryAddress(ref queue);
         Console.WriteLine($"First: {queue.Peek()}");
         while (queue.Count > 0)
         {

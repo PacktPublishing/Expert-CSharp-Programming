@@ -8,7 +8,7 @@ public class ListSample : IShowTitle
     {
         IShowTitle.ShowTitle(nameof(ListSample));
 
-        // ShowCapacity();
+        ShowCapacity();
         InsertItems();
     }
 
@@ -36,7 +36,7 @@ public class ListSample : IShowTitle
     {
         List<int> list = [1, 2, 3, 4, 5];
         list.EnsureCapacity(50);
-
+        
         ShowListElementsAddresses("before insert", list);
         list.Insert(3, 42);
         ShowListElementsAddresses("after insert", list);
