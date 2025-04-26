@@ -1,0 +1,4 @@
+﻿
+using Sorting;
+
+ListSortingRacers.Run();
