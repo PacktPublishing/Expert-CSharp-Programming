@@ -9,6 +9,9 @@
 # tracing
 *.nettrace
 
+# memory dump
+*.dmp
+
 # User-specific files
 *.rsuser
 *.suo
