@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="CustomExtensions/CustomExtensions.csproj" Id="3a34d838-5948-40cb-a38f-5770c48fcf46" />
+  <Project Path="DataLib/DataLib.csproj" Id="d1fecbef-62b6-48c6-89aa-e25065645ce8" />
+  <Project Path="LINQQuery/LINQQuery.csproj" Id="db9a2757-c9a0-44b4-a4fa-5e495ca279ee" />
+</Solution>
