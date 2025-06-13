@@ -12,4 +12,10 @@
     <ProjectReference Include="..\DataLib\DataLib.csproj" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);CA1050</NoWarn>
+    <WarningsNotAsErrors>$(WarningsNotAsErrors);CA1050</WarningsNotAsErrors>
+    <WarningsNotAsErrorsReason>small sample</WarningsNotAsErrorsReason>
+  </PropertyGroup>
+
 </Project>
