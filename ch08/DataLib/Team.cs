@@ -1,2 +1,2 @@
 ﻿namespace DataLib;
-public record class Team(string Name, string Country, params IEnumerable<int> Champtionships);
+public record class Team(string Name, string Country, params IEnumerable<int> Championships);
