@@ -1,10 +1,15 @@
 ﻿namespace DataLib;
 
-public record class Racer(string FirstName, string LastName, string Country, string TeamName, DateOnly DayOfBirth, DateOnly? DayOfDeath = default)
+public record class Racer(
+    string FirstName, 
+    string LastName, 
+    string Country, 
+    DateOnly DayOfBirth, 
+    DateOnly? DayOfDeath = default,
+    int Wins = 0,
+    int PolePositions = 0)
 {
-    public Dictionary<int, Team> Teams { get; } = [];
-    public int Wins { get; set; }
-    public int PolePositions { get; set; }
-    public List<int> Championships { get; internal set; } = [];
-} 
+    public IList<Team> Teams { get; internal set; } = [];
+    public IEnumerable<int> Championships { get; internal set; } = [];
+}
 
