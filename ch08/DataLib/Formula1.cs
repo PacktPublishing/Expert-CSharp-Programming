@@ -23,21 +23,21 @@ public class Formula1
         new("Mercedes", "Germany", 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021)
     ];
 
-    private static readonly Dictionary<string, Team> s_teamLookup =
+    private static readonly Dictionary<string, Team> teamsLookup =
       GetConstructorChampions().ToDictionary(
           t => t.Name, StringComparer.OrdinalIgnoreCase);
 
     private static Team GetTeam(string name) =>
-        s_teamLookup.TryGetValue(name, out var team)
+        teamsLookup.TryGetValue(name, out var team)
             ? team
             : throw new InvalidOperationException($"Team '{name}' not found.");
 
-    private static List<Racer> s_champions;
+    private static List<Racer>? s_champions;
     public static IEnumerable<Racer> GetFormula1Champions() => s_champions ??=
     [
 
         // 1950s champions...
-        new("Giuseppe", "Farina", "Italy", new DateOnly(1906, 10, 30), new DateOnly(1966, 6, 30))
+        new("Nino", "Farina", "Italy", new DateOnly(1906, 10, 30), new DateOnly(1966, 6, 30))
         {
             Wins = 5,
             PolePositions = 5,
@@ -70,7 +70,7 @@ public class Formula1
             Wins = 14,
             PolePositions = 13,
             Championships = [1959, 1960, 1966],
-            Teams = [GetTeam("cooper")]
+            Teams = [GetTeam("cooper"), GetTeam("brabham")]
         },
         // 1960s champions...
         new("Phil", "Hill", "United States", new DateOnly(1927, 4, 20), new DateOnly(2008, 8, 28))
