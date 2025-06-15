@@ -69,7 +69,7 @@ public class Formula1
         {
             Wins = 14,
             PolePositions = 13,
-            Championships = [1959, 1960],
+            Championships = [1959, 1960, 1966],
             Teams = [GetTeam("cooper")]
         },
         // 1960s champions...
@@ -100,13 +100,6 @@ public class Formula1
             PolePositions = 8,
             Championships = [1964],
             Teams = [GetTeam("ferrari")]
-        },
-        new("Jack", "Brabham", "Australia", new DateOnly(1926, 4, 2), new DateOnly(2014, 5, 19))
-        {
-            Wins = 14,
-            PolePositions = 13,
-            Championships = [1959, 1960, 1966],
-            Teams = [GetTeam("Brabham")]
         },
         new("Denny", "Hulme", "New Zealand", new DateOnly(1936, 6, 18), new DateOnly(1992, 10, 4))
         {
