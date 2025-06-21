@@ -65,3 +65,55 @@ flowchart TD
 ```
 
 LeftOuterJoin includes all racers, even if no matching team exists for a year.
+
+## Expression Tree Visitor Pattern
+
+```mermaid
+classDiagram
+    class ExpressionVisitor {
+        <<abstract>>
+        +Visit(Expression) Expression
+        #VisitBinary(BinaryExpression) Expression
+        #VisitConstant(ConstantExpression) Expression
+        #VisitMember(MemberExpression) Expression
+        #VisitLambda~T~(Expression~T~) Expression
+    }
+    class SqlWhereExpressionVisitor {
+        -StringBuilder _sql
+        -ParameterExpression? _parameter
+        +Translate(Expression) string
+        #VisitBinary(BinaryExpression) Expression
+        #VisitConstant(ConstantExpression) Expression
+        #VisitMember(MemberExpression) Expression
+        #VisitLambda~T~(Expression~T~) Expression
+    }
+    class Expression {
+        <<abstract>>
+        +NodeType ExpressionType
+    }
+    class BinaryExpression {
+        +Left Expression
+        +Right Expression
+    }
+    class ConstantExpression {
+        +Value object
+    }
+    class MemberExpression {
+        +Expression Expression
+        +MemberInfo Member
+    }
+    class Expression~T~ {
+        +Parameters IReadOnlyList
+        +Body Expression
+    }
+
+    
+    ExpressionVisitor <|-- SqlWhereExpressionVisitor
+    Expression <|-- BinaryExpression
+    Expression <|-- ConstantExpression
+    Expression <|-- MemberExpression
+    Expression <|-- Expression~T~
+    SqlWhereExpressionVisitor ..> Expression : visits
+```
+
+The Expression Tree Visitor Pattern diagram shows how the SqlWhereExpressionVisitor implements the visitor pattern to traverse and convert expression trees into SQL WHERE clauses. The visitor inherits from the base ExpressionVisitor class and overrides specific visit methods for different expression types (Binary, Constant, Member, and Lambda expressions). Each expression type is a specialized version of the base Expression class. The visitor maintains state using a StringBuilder to construct the SQL query and tracks the current parameter being processed.
