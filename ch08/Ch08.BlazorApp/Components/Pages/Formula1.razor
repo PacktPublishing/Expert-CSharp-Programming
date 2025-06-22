@@ -1,6 +1,7 @@
 @page "/formula1"
 @using Ch08.DataLib
 @using Microsoft.EntityFrameworkCore
+@using System.Text.Json
 @inject IFormula1Repository Repository
 @inject IServiceProvider ServiceProvider
 @rendermode InteractiveServer
@@ -127,7 +128,7 @@
                 }
                 else
                 {
-                    <pre class="bg-light p-3">@System.Text.Json.JsonSerializer.Serialize(queryResults, new System.Text.Json.JsonSerializerOptions { WriteIndented = true })</pre>
+                    <pre class="bg-light p-3">@System.Text.Json.JsonSerializer.Serialize(queryResults, new JsonSerializerOptions { WriteIndented = true })</pre>
                 }
             </div>
         }

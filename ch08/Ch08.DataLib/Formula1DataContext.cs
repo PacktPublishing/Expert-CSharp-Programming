@@ -2,12 +2,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ch08.DataLib;
 
-public class Formula1DataContext : DbContext
+public class Formula1DataContext(DbContextOptions<Formula1DataContext> options) : DbContext(options)
 {
-    public Formula1DataContext(DbContextOptions<Formula1DataContext> options) : base(options)
-    {
-    }
-
     public DbSet<Racer> Racers => Set<Racer>();
     public DbSet<Team> Teams => Set<Team>();
 

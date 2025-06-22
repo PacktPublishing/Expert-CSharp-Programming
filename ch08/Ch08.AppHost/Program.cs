@@ -3,7 +3,8 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 var postgres = builder.AddPostgres("postgres")
-    .WithDataVolume();
+    .WithDataVolume("formula1-data")
+    .WithPgWeb();
 
 var postgresdb = postgres.AddDatabase("formula1db");
 

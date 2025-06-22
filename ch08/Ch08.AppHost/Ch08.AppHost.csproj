@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsAspireHost>true</IsAspireHost>
+    <UserSecretsId>e27f20a7-c506-45d6-aa48-a91246ffdd41</UserSecretsId>
   </PropertyGroup>
 
   <Sdk Name="Aspire.AppHost.Sdk" Version="9.0.0" />

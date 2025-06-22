@@ -3,9 +3,9 @@ namespace Ch08.DataLib;
 public class Racer
 {
     public int Id { get; set; }
-    public string FirstName { get; set; } = string.Empty;
-    public string LastName { get; set; } = string.Empty;
-    public string Country { get; set; } = string.Empty;
+    public required string FirstName { get; set; }
+    public required string LastName { get; set; }
+    public required string Country { get; set; }
     public DateOnly BirthDay { get; set; }
     public int NumberWins { get; set; }
     public int? TeamId { get; set; }

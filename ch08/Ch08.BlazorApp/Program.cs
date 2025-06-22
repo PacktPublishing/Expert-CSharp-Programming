@@ -12,13 +12,15 @@ builder.Services.AddRazorComponents()
 builder.Services.AddSingleton<SqlQueryLogger>();
 builder.Services.AddSingleton<SqlLoggingInterceptor>();
 
-// Add database context
 builder.Services.AddDbContext<Formula1DataContext>((serviceProvider, options) =>
 {
     var sqlInterceptor = serviceProvider.GetRequiredService<SqlLoggingInterceptor>();
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options.UseNpgsql(builder.Configuration.GetConnectionString("formula1db"))
            .AddInterceptors(sqlInterceptor);
 });
+
+builder.EnrichNpgsqlDbContext<Formula1DataContext>();
+
 
 // Add repository
 builder.Services.AddScoped<IFormula1Repository, Formula1Repository>();

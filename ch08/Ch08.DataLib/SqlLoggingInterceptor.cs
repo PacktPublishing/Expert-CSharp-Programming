@@ -34,7 +34,7 @@ public class SqlLoggingInterceptor : DbCommandInterceptor
 
 public class SqlQueryLogger
 {
-    private readonly List<string> _queries = new();
+    private readonly List<string> _queries = [];
 
     public void LogQuery(string sql)
     {
