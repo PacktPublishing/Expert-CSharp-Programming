@@ -1,0 +1,203 @@
+@page "/formula1"
+@using Ch08.DataLib
+@using Microsoft.EntityFrameworkCore
+@inject IFormula1Repository Repository
+@inject IServiceProvider ServiceProvider
+@rendermode InteractiveServer
+
+<PageTitle>Formula 1 Data Queries</PageTitle>
+
+<h1>Formula 1 Data Queries</h1>
+
+<p>This page demonstrates Entity Framework Core queries with SQL generation display.</p>
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Query Options</h3>
+        
+        <div class="mb-3">
+            <label class="form-label">Select Query Type:</label>
+            <select class="form-select" @bind="selectedQueryType">
+                <option value="allRacers">All Racers</option>
+                <option value="allTeams">All Teams</option>
+                <option value="racersByCountry">Racers by Country</option>
+                <option value="racersWithMinWins">Racers with Min Wins</option>
+                <option value="racersGroupedByCountry">Racers Grouped by Country</option>
+                <option value="teamsWithRacerCount">Teams with Racer Count</option>
+            </select>
+        </div>
+
+        @if (selectedQueryType == "racersByCountry")
+        {
+            <div class="mb-3">
+                <label class="form-label">Country:</label>
+                <input type="text" class="form-control" @bind="countryFilter" placeholder="e.g., United Kingdom" />
+            </div>
+        }
+
+        @if (selectedQueryType == "racersWithMinWins")
+        {
+            <div class="mb-3">
+                <label class="form-label">Minimum Wins:</label>
+                <input type="number" class="form-control" @bind="minWinsFilter" min="0" />
+            </div>
+        }
+
+        <button class="btn btn-primary" @onclick="ExecuteQuery">Execute Query</button>
+    </div>
+    
+    <div class="col-md-6">
+        <h3>Generated SQL</h3>
+        <div class="bg-light p-3" style="border: 1px solid #ccc; border-radius: 5px; font-family: monospace; white-space: pre-wrap; height: 200px; overflow-y: auto;">
+            @if (!string.IsNullOrEmpty(generatedSql))
+            {
+                @generatedSql
+            }
+            else
+            {
+                <span class="text-muted">Execute a query to see the generated SQL...</span>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <h3>Query Results</h3>
+        @if (isLoading)
+        {
+            <div class="text-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        }
+        else if (queryResults != null)
+        {
+            <div class="table-responsive">
+                @if (selectedQueryType == "allRacers" || selectedQueryType == "racersByCountry" || selectedQueryType == "racersWithMinWins")
+                {
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Country</th>
+                                <th>Birthday</th>
+                                <th>Wins</th>
+                                <th>Team</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var racer in ((IEnumerable<Racer>)queryResults))
+                            {
+                                <tr>
+                                    <td>@racer.FirstName @racer.LastName</td>
+                                    <td>@racer.Country</td>
+                                    <td>@racer.BirthDay.ToString("yyyy-MM-dd")</td>
+                                    <td>@racer.NumberWins</td>
+                                    <td>@(racer.Team?.Name ?? "No Team")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else if (selectedQueryType == "allTeams")
+                {
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Team Name</th>
+                                <th>Country</th>
+                                <th>Founded Year</th>
+                                <th>Racers Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var team in ((IEnumerable<Team>)queryResults))
+                            {
+                                <tr>
+                                    <td>@team.Name</td>
+                                    <td>@team.Country</td>
+                                    <td>@team.FoundedYear</td>
+                                    <td>@team.Racers.Count</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <pre class="bg-light p-3">@System.Text.Json.JsonSerializer.Serialize(queryResults, new System.Text.Json.JsonSerializerOptions { WriteIndented = true })</pre>
+                }
+            </div>
+        }
+        else if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-danger">
+                @errorMessage
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private string selectedQueryType = "allRacers";
+    private string countryFilter = "United Kingdom";
+    private int minWinsFilter = 10;
+    private object? queryResults;
+    private string generatedSql = "";
+    private bool isLoading = false;
+    private string errorMessage = "";
+
+    private async Task ExecuteQuery()
+    {
+        isLoading = true;
+        errorMessage = "";
+        queryResults = null;
+        generatedSql = "";
+        StateHasChanged();
+
+        try
+        {
+            switch (selectedQueryType)
+            {
+                case "allRacers":
+                    queryResults = await Repository.GetRacersAsync();
+                    break;
+                case "allTeams":
+                    queryResults = await Repository.GetTeamsAsync();
+                    break;
+                case "racersByCountry":
+                    queryResults = await Repository.GetRacersByCountryAsync(countryFilter);
+                    break;
+                case "racersWithMinWins":
+                    queryResults = await Repository.GetRacersWithMostWinsAsync(minWinsFilter);
+                    break;
+                case "racersGroupedByCountry":
+                    queryResults = await Repository.GetRacersGroupedByCountryAsync();
+                    break;
+                case "teamsWithRacerCount":
+                    queryResults = await Repository.GetTeamsWithRacerCountAsync();
+                    break;
+            }
+
+            // Get the executed SQL from the repository
+            generatedSql = Repository.GetLastExecutedSql();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error executing query: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private string GetLastGeneratedSql(Formula1DataContext context, string sampleSql)
+    {
+        // This method is no longer needed since we get SQL from the repository
+        return sampleSql;
+    }
+}
