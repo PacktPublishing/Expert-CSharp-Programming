@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ch08.TestConsole", "Ch08.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ch08.AppHost", "Ch08.AppHost\Ch08.AppHost.csproj", "{81FD0622-31AE-AE6C-07B7-9D9195C048FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ch08.ServiceDefaults", "Ch08.ServiceDefaults\Ch08.ServiceDefaults.csproj", "{37E168E4-C8DE-45A9-B17D-65459CDE7AE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,8 +35,15 @@ Global
 		{81FD0622-31AE-AE6C-07B7-9D9195C048FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81FD0622-31AE-AE6C-07B7-9D9195C048FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81FD0622-31AE-AE6C-07B7-9D9195C048FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37E168E4-C8DE-45A9-B17D-65459CDE7AE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37E168E4-C8DE-45A9-B17D-65459CDE7AE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37E168E4-C8DE-45A9-B17D-65459CDE7AE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37E168E4-C8DE-45A9-B17D-65459CDE7AE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5DCDAD1A-EA7B-4698-9699-B13BD5ADD2EA}
 	EndGlobalSection
 EndGlobal
