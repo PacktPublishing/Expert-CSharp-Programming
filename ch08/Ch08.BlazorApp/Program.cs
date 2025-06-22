@@ -16,7 +16,7 @@ builder.Services.AddSingleton<SqlLoggingInterceptor>();
 builder.Services.AddDbContext<Formula1DataContext>((serviceProvider, options) =>
 {
     var sqlInterceptor = serviceProvider.GetRequiredService<SqlLoggingInterceptor>();
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
            .AddInterceptors(sqlInterceptor);
 });
 

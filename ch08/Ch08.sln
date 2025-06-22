@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ch08.BlazorApp", "Ch08.Blaz
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ch08.DataLib", "Ch08.DataLib\Ch08.DataLib.csproj", "{B06FF112-0E27-4B00-90D8-BFABB45616A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ch08.TestConsole", "Ch08.TestConsole\Ch08.TestConsole.csproj", "{CFC210AC-B47A-4FA8-AE8B-EC349147DC4D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{B06FF112-0E27-4B00-90D8-BFABB45616A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B06FF112-0E27-4B00-90D8-BFABB45616A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B06FF112-0E27-4B00-90D8-BFABB45616A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFC210AC-B47A-4FA8-AE8B-EC349147DC4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFC210AC-B47A-4FA8-AE8B-EC349147DC4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFC210AC-B47A-4FA8-AE8B-EC349147DC4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFC210AC-B47A-4FA8-AE8B-EC349147DC4D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
