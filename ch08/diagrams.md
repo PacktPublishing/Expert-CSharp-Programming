@@ -102,7 +102,7 @@ classDiagram
         +Expression Expression
         +MemberInfo Member
     }
-    class Expression~T~ {
+    class Expression_T {
         +Parameters IReadOnlyList
         +Body Expression
     }
@@ -112,7 +112,7 @@ classDiagram
     Expression <|-- BinaryExpression
     Expression <|-- ConstantExpression
     Expression <|-- MemberExpression
-    Expression <|-- Expression~T~
+    Expression <|-- Expression_T
     SqlWhereExpressionVisitor ..> Expression : visits
 ```
 
