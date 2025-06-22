@@ -1,11 +1,14 @@
-﻿var builder = DistributedApplication.CreateBuilder(args);
+﻿using Aspire.Hosting;
 
-var postgres = builder.AddPostgreSQL("postgres")
+var builder = DistributedApplication.CreateBuilder(args);
+
+var postgres = builder.AddPostgres("postgres")
     .WithDataVolume();
 
 var postgresdb = postgres.AddDatabase("formula1db");
 
 var blazorApp = builder.AddProject<Projects.Ch08_BlazorApp>("blazorapp")
-    .WithReference(postgresdb);
+    .WithReference(postgresdb)
+    .WaitFor(postgresdb);
 
 builder.Build().Run();

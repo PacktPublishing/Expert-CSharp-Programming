@@ -9,13 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ch08.DataLib", "Ch08.DataLi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ch08.TestConsole", "Ch08.TestConsole\Ch08.TestConsole.csproj", "{CFC210AC-B47A-4FA8-AE8B-EC349147DC4D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ch08.AppHost", "Ch08.AppHost\Ch08.AppHost.csproj", "{81FD0622-31AE-AE6C-07B7-9D9195C048FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E2D38FF2-CEB0-4529-8BBF-FE2B86A50E57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -30,5 +29,12 @@ Global
 		{CFC210AC-B47A-4FA8-AE8B-EC349147DC4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFC210AC-B47A-4FA8-AE8B-EC349147DC4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFC210AC-B47A-4FA8-AE8B-EC349147DC4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81FD0622-31AE-AE6C-07B7-9D9195C048FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81FD0622-31AE-AE6C-07B7-9D9195C048FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81FD0622-31AE-AE6C-07B7-9D9195C048FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81FD0622-31AE-AE6C-07B7-9D9195C048FD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
