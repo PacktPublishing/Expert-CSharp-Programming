@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Ch08.AppHost/Ch08.AppHost.csproj" />
+  <Project Path="Ch08.BlazorApp/Ch08.BlazorApp.csproj" />
+  <Project Path="Ch08.DataLib/Ch08.DataLib.csproj" />
+  <Project Path="Ch08.ServiceDefaults/Ch08.ServiceDefaults.csproj" />
+  <Project Path="Ch08.TestConsole/Ch08.TestConsole.csproj" />
+</Solution>
