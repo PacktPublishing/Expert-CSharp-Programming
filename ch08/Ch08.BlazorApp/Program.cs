@@ -1,6 +1,11 @@
+using System.Threading;
+
 using Ch08.BlazorApp.Components;
 using Ch08.DataLib;
+
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,16 +19,39 @@ builder.Services.AddRazorComponents()
 builder.Services.AddSingleton<SqlQueryLogger>();
 builder.Services.AddSingleton<SqlLoggingInterceptor>();
 
-builder.Services.AddDbContext<Formula1DataContext>((serviceProvider, optionsBuilder) =>
+var dataStore = builder.Configuration["DataStore"] ??= "PostgreSQL";
+
+if (dataStore == "PostgreSQL")
 {
-    var sqlInterceptor = serviceProvider.GetRequiredService<SqlLoggingInterceptor>();
-    optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString("formula1db"))
-           .AddInterceptors(sqlInterceptor);
-});
+    builder.Services.AddDbContextFactory<Formula1DataContext>((services, optionsBuilder) =>
+    {
+        var sqlInterceptor = services.GetRequiredService<SqlLoggingInterceptor>();
+        optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString("formula1db"))
+            .AddInterceptors(sqlInterceptor)
+            .ConfigureWarnings(warnings => warnings.Ignore(CoreEventId.NavigationBaseIncludeIgnored));
+    });
 
-builder.EnrichNpgsqlDbContext<Formula1DataContext>();
+    builder.EnrichNpgsqlDbContext<Formula1DataContext>();
+}
+else if (dataStore == "SqlServer")
+{
+    builder.Services.AddDbContextFactory<Formula1DataContext>((services, optionsBuilder) =>
+    {
+        var sqlInterceptor = services.GetRequiredService<SqlLoggingInterceptor>();
+        optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("formula1db"))
+            .AddInterceptors(sqlInterceptor)
+            .ConfigureWarnings(warnings => warnings.Ignore(CoreEventId.NavigationBaseIncludeIgnored));
+    });
+    builder.EnrichSqlServerDbContext<Formula1DataContext>();
 
-// Add repository
+}
+else
+{
+    throw new InvalidOperationException("Unsupported data store specified in configuration.");
+}
+
+
+// Add repository as scoped service
 builder.Services.AddScoped<IFormula1Repository, Formula1Repository>();
 
 var app = builder.Build();
@@ -44,10 +72,11 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
-// Seed data on startup using the correct execution strategy
+// Seed data on startup using DbContextFactory
 using (var scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<Formula1DataContext>();
+    var contextFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<Formula1DataContext>>();
+    await using var context = await contextFactory.CreateDbContextAsync();
     var strategy = context.Database.CreateExecutionStrategy();
     await strategy.ExecuteAsync(async () =>
     {

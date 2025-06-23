@@ -2,13 +2,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ch08.DataLib;
 
-public class Formula1Repository(Formula1DataContext context, SqlQueryLogger sqlLogger) : IFormula1Repository
+public class Formula1Repository(IDbContextFactory<Formula1DataContext> contextFactory, SqlQueryLogger sqlLogger) : IFormula1Repository
 {
     public async Task<(IEnumerable<Racer> Racers, int TotalCount)> GetRacersAsync(int skip = 0, int take = 10)
     {
         sqlLogger.Clear();
+        await using var context = await contextFactory.CreateDbContextAsync();
         var query = context.Racers
-            .Include(r => r.Teams)
+            .Include(r => r.Teams.OrderBy(rt => rt.Year))
             .ThenInclude(rt => rt.Team);
 
         var totalCount = await query.CountAsync();
@@ -24,6 +25,7 @@ public class Formula1Repository(Formula1DataContext context, SqlQueryLogger sqlL
     public async Task<IEnumerable<string>> GetAllCountriesAsync()
     {
         sqlLogger.Clear();
+        await using var context = await contextFactory.CreateDbContextAsync();
         return await context.Racers
             .Select(r => r.Country)
             .Distinct()
@@ -34,8 +36,9 @@ public class Formula1Repository(Formula1DataContext context, SqlQueryLogger sqlL
     public async Task<IEnumerable<Team>> GetTeamsAsync()
     {
         sqlLogger.Clear();
+        await using var context = await contextFactory.CreateDbContextAsync();
         return await context.Teams
-            .Include(t => t.Racers)
+            .Include(t => t.Racers.OrderBy(rt => rt.Year))
             .ThenInclude(rt => rt.Racer)
             .OrderBy(t => t.Name)
             .ToListAsync();
@@ -44,8 +47,9 @@ public class Formula1Repository(Formula1DataContext context, SqlQueryLogger sqlL
     public async Task<IEnumerable<Racer>> GetRacersByCountryAsync(string country)
     {
         sqlLogger.Clear();
+        await using var context = await contextFactory.CreateDbContextAsync();
         return await context.Racers
-            .Include(r => r.Teams)
+            .Include(r => r.Teams.OrderBy(rt => rt.Year))
             .ThenInclude(rt => rt.Team)
             .Where(r => r.Country == country)
             .OrderBy(r => r.LastName)
@@ -55,8 +59,9 @@ public class Formula1Repository(Formula1DataContext context, SqlQueryLogger sqlL
     public async Task<IEnumerable<Racer>> GetRacersWithMostWinsAsync(int minWins)
     {
         sqlLogger.Clear();
+        await using var context = await contextFactory.CreateDbContextAsync();
         return await context.Racers
-            .Include(r => r.Teams)
+            .Include(r => r.Teams.OrderBy(rt => rt.Year))
             .ThenInclude(rt => rt.Team)
             .Where(r => r.Wins >= minWins)
             .OrderByDescending(r => r.Wins)
@@ -66,6 +71,7 @@ public class Formula1Repository(Formula1DataContext context, SqlQueryLogger sqlL
     public async Task<IEnumerable<object>> GetRacersGroupedByCountryAsync()
     {
         sqlLogger.Clear();
+        await using var context = await contextFactory.CreateDbContextAsync();
         return await context.Racers
             .GroupBy(r => r.Country)
             .Select(g => new { 
@@ -80,15 +86,14 @@ public class Formula1Repository(Formula1DataContext context, SqlQueryLogger sqlL
     public async Task<IEnumerable<object>> GetTeamsWithRacerCountAsync()
     {
         sqlLogger.Clear();
+        await using var context = await contextFactory.CreateDbContextAsync();
         return await context.Teams
             .Select(t => new { 
                 TeamName = t.Name, 
                 Country = t.Country,
                 FoundedYear = t.FoundedYear,
                 RacerCount = t.Racers.Count(),
-                TotalWins = context.Racers
-                    .Where(r => r.Teams.Any(rt => rt.TeamId == t.Id))
-                    .Sum(r => r.Wins)
+                TotalWins = t.Racers.Sum(rt => rt.Racer.Wins)
             })
             .OrderByDescending(x => x.RacerCount)
             .ToListAsync();
@@ -97,8 +102,9 @@ public class Formula1Repository(Formula1DataContext context, SqlQueryLogger sqlL
     public async Task<Racer?> GetRacerByIdAsync(int id)
     {
         sqlLogger.Clear();
+        await using var context = await contextFactory.CreateDbContextAsync();
         return await context.Racers
-            .Include(r => r.Teams)
+            .Include(r => r.Teams.OrderBy(rt => rt.Year))
             .ThenInclude(rt => rt.Team)
             .FirstOrDefaultAsync(r => r.Id == id);
     }
@@ -106,8 +112,9 @@ public class Formula1Repository(Formula1DataContext context, SqlQueryLogger sqlL
     public async Task<Team?> GetTeamByIdAsync(int id)
     {
         sqlLogger.Clear();
+        await using var context = await contextFactory.CreateDbContextAsync();
         return await context.Teams
-            .Include(t => t.Racers)
+            .Include(t => t.Racers.OrderBy(rt => rt.Year))
             .ThenInclude(rt => rt.Racer)
             .FirstOrDefaultAsync(t => t.Id == id);
     }

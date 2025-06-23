@@ -17,16 +17,16 @@
     <QueryOptions 
         @key="selectedQueryType"
         SelectedQueryType="@selectedQueryType"
-        SelectedQueryTypeChanged="@(async (string s) => await OnQueryTypeChangedAsync(s))"
+        SelectedQueryTypeChanged="@OnQueryTypeChangedAsync"
         CountryFilter="@countryFilter"
-        CountryFilterChanged="@((string s) => { countryFilter = s; StateHasChanged(); })"
+        CountryFilterChanged="@OnCountryFilterChanged"
         MinWinsFilter="@minWinsFilter"
-        MinWinsFilterChanged="@((int i) => { minWinsFilter = i; StateHasChanged(); })"
-        OnExecuteQuery="@(async () => await ExecuteQuery())"
+        MinWinsFilterChanged="@OnMinWinsFilterChanged"
+        OnExecuteQuery="@ExecuteQuery"
         CurrentPage="@currentPage"
-        CurrentPageChanged="@((int i) => { currentPage = i; StateHasChanged(); })"
+        CurrentPageChanged="@OnCurrentPageChanged"
         PageSize="@pageSize"
-        PageSizeChanged="@((int i) => { pageSize = i; StateHasChanged(); })"
+        PageSizeChanged="@OnPageSizeChanged"
         TotalRecords="@totalRecords" />
     
     <SqlDisplay Sql="@generatedSql" />
@@ -47,9 +47,9 @@
                     <RacersTable 
                         Racers="((IEnumerable<Racer>)queryResults)"
                         PageSize="@pageSize"
-                        PageSizeChanged="@(async i => await OnPageSizeChanged(i))"
+                        PageSizeChanged="@OnPageSizeChanged"
                         CurrentPage="@currentPage"
-                        CurrentPageChanged="@(async i => await OnCurrentPageChanged(i))" />
+                        CurrentPageChanged="@OnCurrentPageChanged" />
                 }
                 else if (selectedQueryType == "allTeams")
                 {
@@ -82,45 +82,63 @@
     private int pageSize = 10;
     private int totalRecords = 0;
 
-    private async Task OnQueryTypeChangedAsync(string value)
+    protected override async Task OnInitializedAsync()
     {
-        if (selectedQueryType != value)
-        {
-            selectedQueryType = value;
-            currentPage = 1;
-            await ExecuteQuery();
-        }
+        await ExecuteQuery();
     }
 
-    private async Task OnPageSizeChanged(int value)
+    private Task OnQueryTypeChangedAsync(string value)
+    {
+        selectedQueryType = value;
+        currentPage = 1;
+        return ExecuteQuery();
+    }
+
+    private Task OnCountryFilterChanged(string value)
+    {
+        countryFilter = value;
+        return Task.CompletedTask;
+    }
+
+    private Task OnMinWinsFilterChanged(int value)
+    {
+        minWinsFilter = value;
+        return Task.CompletedTask;
+    }
+
+    private Task OnCurrentPageChanged(int value)
+    {
+        if (currentPage != value)
+        {
+            currentPage = value;
+            return ExecuteQuery();
+        }
+        return Task.CompletedTask;
+    }
+
+    private Task OnPageSizeChanged(int value)
     {
         if (pageSize != value)
         {
             pageSize = value;
             currentPage = 1;
-            await ExecuteQuery();
+            return ExecuteQuery();
         }
-    }
-
-    private async Task OnCurrentPageChanged(int value)
-    {
-        if (currentPage != value)
-        {
-            currentPage = value;
-            await ExecuteQuery();
-        }
+        return Task.CompletedTask;
     }
 
     private async Task ExecuteQuery()
     {
-        isLoading = true;
-        errorMessage = "";
-        queryResults = null;
-        generatedSql = "";
-        StateHasChanged();
-
         try
         {
+            isLoading = true;
+            errorMessage = "";
+            queryResults = null;
+            generatedSql = "";
+            StateHasChanged();
+
+            await Task.Yield();  // Allow UI to update
+
             switch (selectedQueryType)
             {
                 case "allRacers":

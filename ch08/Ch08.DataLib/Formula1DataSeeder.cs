@@ -6,6 +6,8 @@ public static class Formula1DataSeeder
 {
     public static async Task SeedDataAsync(Formula1DataContext context, CancellationToken cancellationToken = default)
     {
+
+
         await context.Database.EnsureCreatedAsync(cancellationToken);
 
         if (await context.Teams.AnyAsync(cancellationToken) || await context.Racers.AnyAsync(cancellationToken))
@@ -40,7 +42,6 @@ public static class Formula1DataSeeder
 
     public static IEnumerable<Team> GetTeams()
     {
-        // Add teams first
         List<Team> teams =
         [
             new() { Name = "Alfa Romeo", Country = "Italy", FoundedYear = 1950 },
@@ -66,7 +67,6 @@ public static class Formula1DataSeeder
 
     public static IEnumerable<Racer> GetRacers()
     {
-        // Add racers with team references
         List<Racer> racers =
         [
             new() { FirstName = "Nino", LastName = "Farina", Country = "Italy", BirthDay = new DateOnly(1906, 10, 30),
@@ -93,14 +93,7 @@ public static class Formula1DataSeeder
         return racers;
     }
 
-    // Original method for backward compatibility
-    public static IEnumerable<RacerTeamMap> GetRacersTeamsMap()
-    {
-        return GetRacersTeamsMap(GetTeams().ToList(), GetRacers().ToList());
-    }
-
-    // New overload that takes teams and racers
-    public static IEnumerable<RacerTeamMap> GetRacersTeamsMap(List<Team> teams, List<Racer> racers)
+    private static IEnumerable<RacerTeamMap> GetRacersTeamsMap(List<Team> teams, List<Racer> racers)
     {
         var ferrari = teams.First(t => t.Name == "Ferrari");
         var mercedes = teams.First(t => t.Name == "Mercedes");

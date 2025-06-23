@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+
 using System.Text.Json;
 
 namespace Ch08.DataLib;
@@ -21,6 +23,12 @@ public class Formula1DataContext(DbContextOptions<Formula1DataContext> options) 
             entity.Property(r => r.Country).IsRequired().HasMaxLength(50);
             entity.Property(r => r.BirthDay).IsRequired();
             entity.Property(r => r.Wins).IsRequired();
+
+            // Configure relationship with Teams through RacerTeamMap
+            entity.HasMany(r => r.Teams)
+                  .WithOne(rt => rt.Racer)
+                  .HasForeignKey(rt => rt.RacerId)
+                  .OnDelete(DeleteBehavior.Cascade);
 
             // Configure Championships as JSON column
             var championshipsProperty = entity.Property(r => r.Championships);
@@ -48,7 +56,18 @@ public class Formula1DataContext(DbContextOptions<Formula1DataContext> options) 
         modelBuilder.Entity<RacerTeamMap>(entity =>
         {
             // combined key
-            entity.HasKey("RacerId", "TeamId", "Year");
+            entity.HasKey(rt => new { rt.RacerId, rt.TeamId, rt.Year });
+
+            // Configure relationships
+            entity.HasOne(rt => rt.Team)
+                  .WithMany(t => t.Racers)
+                  .HasForeignKey(rt => rt.TeamId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            
+            entity.HasOne(rt => rt.Racer)
+                  .WithMany(r => r.Teams)
+                  .HasForeignKey(rt => rt.RacerId)
+                  .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<Team>(entity =>
@@ -57,6 +76,12 @@ public class Formula1DataContext(DbContextOptions<Formula1DataContext> options) 
             entity.Property(t => t.Name).IsRequired().HasMaxLength(100);
             entity.Property(t => t.Country).IsRequired().HasMaxLength(50);
             entity.Property(t => t.FoundedYear).IsRequired();
+
+            // Configure relationship with Racers through RacerTeamMap
+            entity.HasMany(t => t.Racers)
+                  .WithOne(rt => rt.Team)
+                  .HasForeignKey(rt => rt.TeamId)
+                  .OnDelete(DeleteBehavior.Cascade);
 
             // Configure Championships as JSON column
             var championshipsProperty = entity.Property(t => t.Championships);
