@@ -36,7 +36,8 @@ public class Formula1Repository(Formula1DataContext context, SqlQueryLogger sqlL
         sqlLogger.Clear();
         return await context.Teams
             .Include(t => t.Racers)
-            .ThenInclude(rt => rt.Team)
+            .ThenInclude(rt => rt.Racer)
+            .OrderBy(t => t.Name)
             .ToListAsync();
     }
 
@@ -98,7 +99,7 @@ public class Formula1Repository(Formula1DataContext context, SqlQueryLogger sqlL
         sqlLogger.Clear();
         return await context.Racers
             .Include(r => r.Teams)
-            .ThenInclude(rt => rt.TeamId)
+            .ThenInclude(rt => rt.Team)
             .FirstOrDefaultAsync(r => r.Id == id);
     }
 

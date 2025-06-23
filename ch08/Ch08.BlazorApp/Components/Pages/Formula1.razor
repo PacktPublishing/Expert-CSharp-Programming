@@ -15,17 +15,18 @@
 
 <div class="row">
     <QueryOptions 
+        @key="selectedQueryType"
         SelectedQueryType="@selectedQueryType"
-        SelectedQueryTypeChanged="@(async s => await OnQueryTypeChangedAsync(s))"
+        SelectedQueryTypeChanged="@(async (string s) => await OnQueryTypeChangedAsync(s))"
         CountryFilter="@countryFilter"
-        CountryFilterChanged="@(s => countryFilter = s)"
+        CountryFilterChanged="@((string s) => { countryFilter = s; StateHasChanged(); })"
         MinWinsFilter="@minWinsFilter"
-        MinWinsFilterChanged="@(i => minWinsFilter = i)"
+        MinWinsFilterChanged="@((int i) => { minWinsFilter = i; StateHasChanged(); })"
         OnExecuteQuery="@(async () => await ExecuteQuery())"
         CurrentPage="@currentPage"
-        CurrentPageChanged="@(i => OnCurrentPageChanged(i))"
+        CurrentPageChanged="@((int i) => { currentPage = i; StateHasChanged(); })"
         PageSize="@pageSize"
-        PageSizeChanged="@(i => OnPageSizeChanged(i))"
+        PageSizeChanged="@((int i) => { pageSize = i; StateHasChanged(); })"
         TotalRecords="@totalRecords" />
     
     <SqlDisplay Sql="@generatedSql" />

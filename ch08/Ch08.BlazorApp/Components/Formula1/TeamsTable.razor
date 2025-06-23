@@ -7,7 +7,7 @@
             <th>Team Name</th>
             <th>Country</th>
             <th>Founded Year</th>
-            <th>Racers Count</th>
+            <th>Racers</th>
         </tr>
     </thead>
     <tbody>
@@ -17,7 +17,21 @@
                 <td>@team.Name</td>
                 <td>@team.Country</td>
                 <td>@team.FoundedYear</td>
-                <td>@team.Racers.Count</td>
+                <td>
+                    @if (team.Racers.Any())
+                    {
+                        <ul class="list-unstyled mb-0">
+                            @foreach (var racerMap in team.Racers.OrderBy(r => r.Year))
+                            {
+                                <li>@racerMap.Racer?.FirstName @racerMap.Racer?.LastName (@racerMap.Year)</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <span>No Racers</span>
+                    }
+                </td>
             </tr>
         }
     </tbody>
