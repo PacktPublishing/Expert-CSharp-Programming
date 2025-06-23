@@ -8,15 +8,15 @@ public class Formula1Repository(IDbContextFactory<Formula1DataContext> contextFa
     {
         sqlLogger.Clear();
         await using var context = await contextFactory.CreateDbContextAsync();
-        var query = context.Racers
-            .Include(r => r.Teams.OrderBy(rt => rt.Year))
-            .ThenInclude(rt => rt.Team);
+        var query = context.Racers;
 
         var totalCount = await query.CountAsync();
         var racers = await query
-            .OrderBy(r => r.LastName)
+            .OrderByDescending(r => r.Wins)
+            .ThenBy(r => r.LastName)
             .Skip(skip)
             .Take(take)
+            .TagWith(nameof(GetRacersAsync))
             .ToListAsync();
 
         return (racers, totalCount);
@@ -61,10 +61,9 @@ public class Formula1Repository(IDbContextFactory<Formula1DataContext> contextFa
         sqlLogger.Clear();
         await using var context = await contextFactory.CreateDbContextAsync();
         return await context.Racers
-            .Include(r => r.Teams.OrderBy(rt => rt.Year))
-            .ThenInclude(rt => rt.Team)
             .Where(r => r.Wins >= minWins)
             .OrderByDescending(r => r.Wins)
+            .TagWith(nameof(GetRacersWithMostWinsAsync))
             .ToListAsync();
     }
 

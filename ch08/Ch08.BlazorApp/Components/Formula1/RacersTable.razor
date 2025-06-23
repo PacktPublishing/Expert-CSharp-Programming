@@ -31,7 +31,6 @@
             <th>Country</th>
             <th>Birthday</th>
             <th>Wins</th>
-            <th>Teams</th>
         </tr>
     </thead>
     <tbody>
@@ -42,21 +41,6 @@
                 <td>@racer.Country</td>
                 <td>@racer.BirthDay.ToString("yyyy-MM-dd")</td>
                 <td>@racer.Wins</td>
-                <td>
-                    @if (racer.Teams.Any())
-                    {
-                        <ul class="list-unstyled mb-0">
-                            @foreach (var teamMap in racer.Teams.OrderBy(t => t.Year))
-                            {
-                                <li>@teamMap.Team?.Name (@teamMap.Year)</li>
-                            }
-                        </ul>
-                    }
-                    else
-                    {
-                        <span>No Teams</span>
-                    }
-                </td>
             </tr>
         }
     </tbody>

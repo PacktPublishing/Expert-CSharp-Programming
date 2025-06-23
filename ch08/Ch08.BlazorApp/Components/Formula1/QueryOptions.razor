@@ -64,94 +64,90 @@
 </div>
 
 @code {
-  private List<string> countries = new();
-  private int totalRecords;
+    private List<string> countries = new();
 
-  [Parameter]
-  public required string SelectedQueryType { get; set; }
+    [Parameter]
+    public required string SelectedQueryType { get; set; }
 
-  [Parameter]
-  public EventCallback<string> SelectedQueryTypeChanged { get; set; }
+    [Parameter]
+    public EventCallback<string> SelectedQueryTypeChanged { get; set; }
 
-  [Parameter]
-  public required string CountryFilter { get; set; }
+    [Parameter]
+    public required string CountryFilter { get; set; }
 
-  [Parameter]
-  public EventCallback<string> CountryFilterChanged { get; set; }
+    [Parameter]
+    public EventCallback<string> CountryFilterChanged { get; set; }
 
-  [Parameter]
-  public required int MinWinsFilter { get; set; }
+    [Parameter]
+    public required int MinWinsFilter { get; set; }
 
-  [Parameter]
-  public EventCallback<int> MinWinsFilterChanged { get; set; }
+    [Parameter]
+    public EventCallback<int> MinWinsFilterChanged { get; set; }
 
-  [Parameter]
-  public EventCallback OnExecuteQuery { get; set; }
+    [Parameter]
+    public EventCallback OnExecuteQuery { get; set; }
 
-  [Parameter]
-  public required int CurrentPage { get; set; }
+    [Parameter]
+    public required int CurrentPage { get; set; }
 
-  [Parameter]
-  public EventCallback<int> CurrentPageChanged { get; set; }
+    [Parameter]
+    public EventCallback<int> CurrentPageChanged { get; set; }
 
-  [Parameter]
-  public required int PageSize { get; set; }
+    [Parameter]
+    public required int PageSize { get; set; }
 
-  [Parameter]
-  public EventCallback<int> PageSizeChanged { get; set; }
+    [Parameter]
+    public EventCallback<int> PageSizeChanged { get; set; }
 
-  [Parameter]
-  public int TotalRecords {
-    get => totalRecords;
-    set {
-      if (totalRecords != value)
-      {
-        totalRecords = value;
-        TotalPages = (int)Math.Ceiling(totalRecords / (double)PageSize);
-      }
-    }
-  }
+    [Parameter]
+    public int TotalRecords { get; set; }
 
-  public int TotalPages { get; private set; } = 1;
+    public int TotalPages { get; private set; } = 1;
 
-  protected override async Task OnInitializedAsync()
-  {
-    await LoadCountries();
-  }
-
-  private async Task LoadCountries()
-  {
-    countries = (await Repository.GetAllCountriesAsync()).ToList();
-    if (countries.Any() && !countries.Contains(CountryFilter))
+    protected override async Task OnInitializedAsync()
     {
-      await CountryFilterChanged.InvokeAsync(countries[0]);
+        await LoadCountries();
     }
-  }
 
-  private async Task OnQueryTypeChange(string value)
-  {
-    if (SelectedQueryType != value)
+    protected override void OnParametersSet()
     {
-      await SelectedQueryTypeChanged.InvokeAsync(value);
+        // Calculate TotalPages whenever TotalRecords or PageSize changes
+        TotalPages = (int)Math.Ceiling(TotalRecords / (double)PageSize);
     }
-  }
 
-  private async Task OnPageChange(int delta)
-  {
-    var newPage = CurrentPage + delta;
-    if (newPage >= 1 && newPage <= TotalPages)
+    private async Task LoadCountries()
     {
-      await CurrentPageChanged.InvokeAsync(newPage);
-      await OnExecuteQuery.InvokeAsync();
+        countries = (await Repository.GetAllCountriesAsync()).ToList();
+        if (countries.Any() && !countries.Contains(CountryFilter))
+        {
+            await CountryFilterChanged.InvokeAsync(countries[0]);
+        }
     }
-  }
 
-  private async Task ExecuteQueryClick()
-  {
-    if (SelectedQueryType == "allRacers")
+    private async Task OnQueryTypeChange(string value)
     {
-      await CurrentPageChanged.InvokeAsync(1);
+        if (SelectedQueryType != value)
+        {
+            await SelectedQueryTypeChanged.InvokeAsync(value);
+        }
     }
-    await OnExecuteQuery.InvokeAsync();
-  }
+
+    private async Task OnPageChange(int delta)
+    {
+        var newPage = CurrentPage + delta;
+        if (newPage >= 1 && newPage <= TotalPages)
+        {
+            await CurrentPageChanged.InvokeAsync(newPage);
+            await OnExecuteQuery.InvokeAsync();
+        }
+    }
+
+    private async Task ExecuteQueryClick()
+    {
+        if (SelectedQueryType == "allRacers")
+        {
+            await CurrentPageChanged.InvokeAsync(1);
+        }
+        await OnExecuteQuery.InvokeAsync();
+    }
 }

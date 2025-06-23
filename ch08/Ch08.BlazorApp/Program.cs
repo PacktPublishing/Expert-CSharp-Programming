@@ -1,11 +1,8 @@
-using System.Threading;
-
 using Ch08.BlazorApp.Components;
 using Ch08.DataLib;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
 
