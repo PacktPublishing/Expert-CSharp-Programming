@@ -7,20 +7,27 @@ public class Formula1Repository(Formula1DataContext context, SqlQueryLogger sqlL
     public async Task<IEnumerable<Racer>> GetRacersAsync()
     {
         sqlLogger.Clear();
-        return await context.Racers.Include(r => r.Team).ToListAsync();
+        return await context.Racers
+            .Include(r => r.Teams)
+            .ThenInclude(rt => rt.TeamId)
+            .ToListAsync();
     }
 
     public async Task<IEnumerable<Team>> GetTeamsAsync()
     {
         sqlLogger.Clear();
-        return await context.Teams.Include(t => t.Racers).ToListAsync();
+        return await context.Teams
+            .Include(t => t.Racers)
+            .ThenInclude(rt => rt.RacerId)
+            .ToListAsync();
     }
 
     public async Task<IEnumerable<Racer>> GetRacersByCountryAsync(string country)
     {
         sqlLogger.Clear();
         return await context.Racers
-            .Include(r => r.Team)
+            .Include(r => r.Teams)
+            .ThenInclude(rt => rt.TeamId)
             .Where(r => r.Country == country)
             .ToListAsync();
     }
@@ -29,9 +36,10 @@ public class Formula1Repository(Formula1DataContext context, SqlQueryLogger sqlL
     {
         sqlLogger.Clear();
         return await context.Racers
-            .Include(r => r.Team)
-            .Where(r => r.NumberWins >= minWins)
-            .OrderByDescending(r => r.NumberWins)
+            .Include(r => r.Teams)
+            .ThenInclude(rt => rt.TeamId)
+            .Where(r => r.Wins >= minWins)
+            .OrderByDescending(r => r.Wins)
             .ToListAsync();
     }
 
@@ -40,7 +48,11 @@ public class Formula1Repository(Formula1DataContext context, SqlQueryLogger sqlL
         sqlLogger.Clear();
         return await context.Racers
             .GroupBy(r => r.Country)
-            .Select(g => new { Country = g.Key, Count = g.Count(), TotalWins = g.Sum(r => r.NumberWins) })
+            .Select(g => new { 
+                Country = g.Key, 
+                Count = g.Count(), 
+                TotalWins = g.Sum(r => r.Wins) 
+            })
             .OrderByDescending(x => x.Count)
             .ToListAsync();
     }
@@ -54,7 +66,9 @@ public class Formula1Repository(Formula1DataContext context, SqlQueryLogger sqlL
                 Country = t.Country,
                 FoundedYear = t.FoundedYear,
                 RacerCount = t.Racers.Count(),
-                TotalWins = t.Racers.Sum(r => r.NumberWins)
+                TotalWins = context.Racers
+                    .Where(r => r.Teams.Any(rt => rt.TeamId == t.Id))
+                    .Sum(r => r.Wins)
             })
             .OrderByDescending(x => x.RacerCount)
             .ToListAsync();
@@ -64,7 +78,8 @@ public class Formula1Repository(Formula1DataContext context, SqlQueryLogger sqlL
     {
         sqlLogger.Clear();
         return await context.Racers
-            .Include(r => r.Team)
+            .Include(r => r.Teams)
+            .ThenInclude(rt => rt.TeamId)
             .FirstOrDefaultAsync(r => r.Id == id);
     }
 
@@ -73,6 +88,7 @@ public class Formula1Repository(Formula1DataContext context, SqlQueryLogger sqlL
         sqlLogger.Clear();
         return await context.Teams
             .Include(t => t.Racers)
+            .ThenInclude(rt => rt.RacerId)
             .FirstOrDefaultAsync(t => t.Id == id);
     }
 

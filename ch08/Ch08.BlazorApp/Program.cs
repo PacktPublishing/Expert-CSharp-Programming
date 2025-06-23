@@ -14,15 +14,14 @@ builder.Services.AddRazorComponents()
 builder.Services.AddSingleton<SqlQueryLogger>();
 builder.Services.AddSingleton<SqlLoggingInterceptor>();
 
-builder.Services.AddDbContext<Formula1DataContext>((serviceProvider, options) =>
+builder.Services.AddDbContext<Formula1DataContext>((serviceProvider, optionsBuilder) =>
 {
     var sqlInterceptor = serviceProvider.GetRequiredService<SqlLoggingInterceptor>();
-    options.UseNpgsql(builder.Configuration.GetConnectionString("formula1db"))
+    optionsBuilder.UseNpgsql(builder.Configuration.GetConnectionString("formula1db"))
            .AddInterceptors(sqlInterceptor);
 });
 
 builder.EnrichNpgsqlDbContext<Formula1DataContext>();
-
 
 // Add repository
 builder.Services.AddScoped<IFormula1Repository, Formula1Repository>();
@@ -45,11 +44,15 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
-// Seed data on startup
+// Seed data on startup using the correct execution strategy
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<Formula1DataContext>();
-    await Formula1DataSeeder.SeedDataAsync(context);
+    var strategy = context.Database.CreateExecutionStrategy();
+    await strategy.ExecuteAsync(async () =>
+    {
+        await Formula1DataSeeder.SeedDataAsync(context);
+    });
 }
 
 app.Run();

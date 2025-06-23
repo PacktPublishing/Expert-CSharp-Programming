@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace Ch08.DataLib;
 
@@ -6,9 +7,12 @@ public class Formula1DataContext(DbContextOptions<Formula1DataContext> options) 
 {
     public DbSet<Racer> Racers => Set<Racer>();
     public DbSet<Team> Teams => Set<Team>();
+    public DbSet<RacerTeamMap> RacersTeamsMap => Set<RacerTeamMap>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        var isPostgres = Database.ProviderName?.Contains("Npgsql") ?? false;
+
         modelBuilder.Entity<Racer>(entity =>
         {
             entity.HasKey(r => r.Id);
@@ -16,12 +20,35 @@ public class Formula1DataContext(DbContextOptions<Formula1DataContext> options) 
             entity.Property(r => r.LastName).IsRequired().HasMaxLength(50);
             entity.Property(r => r.Country).IsRequired().HasMaxLength(50);
             entity.Property(r => r.BirthDay).IsRequired();
-            entity.Property(r => r.NumberWins).IsRequired();
-            
-            entity.HasOne(r => r.Team)
-                  .WithMany(t => t.Racers)
-                  .HasForeignKey(r => r.TeamId)
-                  .OnDelete(DeleteBehavior.SetNull);
+            entity.Property(r => r.Wins).IsRequired();
+
+            // Configure Championships as JSON column
+            var championshipsProperty = entity.Property(r => r.Championships);
+            if (isPostgres)
+            {
+                championshipsProperty
+                    .HasColumnType("jsonb")
+                    .HasConversion(
+                        v => JsonSerializer.Serialize(v, JsonContext.Default.ListInt32),
+                        v => JsonSerializer.Deserialize(v, JsonContext.Default.ListInt32) ?? new List<int>()
+                    );
+            }
+            else
+            {
+                // SQL Server
+                championshipsProperty
+                    .HasColumnType("nvarchar(max)")
+                    .HasConversion(
+                        v => JsonSerializer.Serialize(v, JsonContext.Default.ListInt32),
+                        v => JsonSerializer.Deserialize(v, JsonContext.Default.ListInt32) ?? new List<int>()
+                    );
+            }
+        });
+
+        modelBuilder.Entity<RacerTeamMap>(entity =>
+        {
+            // combined key
+            entity.HasKey("RacerId", "TeamId", "Year");
         });
 
         modelBuilder.Entity<Team>(entity =>
@@ -30,6 +57,28 @@ public class Formula1DataContext(DbContextOptions<Formula1DataContext> options) 
             entity.Property(t => t.Name).IsRequired().HasMaxLength(100);
             entity.Property(t => t.Country).IsRequired().HasMaxLength(50);
             entity.Property(t => t.FoundedYear).IsRequired();
+
+            // Configure Championships as JSON column
+            var championshipsProperty = entity.Property(t => t.Championships);
+            if (isPostgres)
+            {
+                championshipsProperty
+                    .HasColumnType("jsonb")
+                    .HasConversion(
+                        v => JsonSerializer.Serialize(v, JsonContext.Default.ListInt32),
+                        v => JsonSerializer.Deserialize(v, JsonContext.Default.ListInt32) ?? new List<int>()
+                    );
+            }
+            else
+            {
+                // SQL Server
+                championshipsProperty
+                    .HasColumnType("nvarchar(max)")
+                    .HasConversion(
+                        v => JsonSerializer.Serialize(v, JsonContext.Default.ListInt32),
+                        v => JsonSerializer.Deserialize(v, JsonContext.Default.ListInt32) ?? new List<int>()
+                    );
+            }
         });
 
         base.OnModelCreating(modelBuilder);

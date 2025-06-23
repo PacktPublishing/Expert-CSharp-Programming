@@ -7,9 +7,11 @@ public class Racer
     public required string LastName { get; set; }
     public required string Country { get; set; }
     public DateOnly BirthDay { get; set; }
-    public int NumberWins { get; set; }
-    public int? TeamId { get; set; }
-    public Team? Team { get; set; }
+    public DateOnly? DayOfDeath = default;
+    public int Wins { get; set; }
+    public int PolePositions { get; set; }
+    public List<RacerTeamMap> Teams { get; private set; } = [];
+    public List<int> Championships { get; private set; } = [];
 
     public override string ToString() => $"{FirstName} {LastName}";
 }
