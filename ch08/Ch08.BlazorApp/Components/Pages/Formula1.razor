@@ -2,6 +2,7 @@
 @using Ch08.DataLib
 @using Microsoft.EntityFrameworkCore
 @using System.Text.Json
+@using Ch08.BlazorApp.Components.Formula1
 @inject IFormula1Repository Repository
 @inject IServiceProvider ServiceProvider
 @rendermode InteractiveServer
@@ -13,53 +14,16 @@
 <p>This page demonstrates Entity Framework Core queries with SQL generation display.</p>
 
 <div class="row">
-    <div class="col-md-6">
-        <h3>Query Options</h3>
-        
-        <div class="mb-3">
-            <label class="form-label">Select Query Type:</label>
-            <select class="form-select" @bind="selectedQueryType">
-                <option value="allRacers">All Racers</option>
-                <option value="allTeams">All Teams</option>
-                <option value="racersByCountry">Racers by Country</option>
-                <option value="racersWithMinWins">Racers with Min Wins</option>
-                <option value="racersGroupedByCountry">Racers Grouped by Country</option>
-                <option value="teamsWithRacerCount">Teams with Racer Count</option>
-            </select>
-        </div>
-
-        @if (selectedQueryType == "racersByCountry")
-        {
-            <div class="mb-3">
-                <label class="form-label">Country:</label>
-                <input type="text" class="form-control" @bind="countryFilter" placeholder="e.g., United Kingdom" />
-            </div>
-        }
-
-        @if (selectedQueryType == "racersWithMinWins")
-        {
-            <div class="mb-3">
-                <label class="form-label">Minimum Wins:</label>
-                <input type="number" class="form-control" @bind="minWinsFilter" min="0" />
-            </div>
-        }
-
-        <button class="btn btn-primary" @onclick="ExecuteQuery">Execute Query</button>
-    </div>
+    <QueryOptions 
+        SelectedQueryType="@selectedQueryType"
+        SelectedQueryTypeChanged="@OnQueryTypeChanged"
+        CountryFilter="@countryFilter"
+        CountryFilterChanged="@((value) => { countryFilter = value; })"
+        MinWinsFilter="@minWinsFilter"
+        MinWinsFilterChanged="@((value) => { minWinsFilter = value; })"
+        OnExecuteQuery="@ExecuteQuery" />
     
-    <div class="col-md-6">
-        <h3>Generated SQL</h3>
-        <div class="bg-light p-3" style="border: 1px solid #ccc; border-radius: 5px; font-family: monospace; white-space: pre-wrap; height: 200px; overflow-y: auto;">
-            @if (!string.IsNullOrEmpty(generatedSql))
-            {
-                @generatedSql
-            }
-            else
-            {
-                <span class="text-muted">Execute a query to see the generated SQL...</span>
-            }
-        </div>
-    </div>
+    <SqlDisplay Sql="@generatedSql" />
 </div>
 
 <div class="row mt-4">
@@ -67,68 +31,22 @@
         <h3>Query Results</h3>
         @if (isLoading)
         {
-            <div class="text-center">
-                <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </div>
+            <LoadingSpinner />
         }
         else if (queryResults != null)
         {
             <div class="table-responsive">
                 @if (selectedQueryType == "allRacers" || selectedQueryType == "racersByCountry" || selectedQueryType == "racersWithMinWins")
                 {
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Country</th>
-                                <th>Birthday</th>
-                                <th>Wins</th>
-                                <th>Team</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var racer in ((IEnumerable<Racer>)queryResults))
-                            {
-                                <tr>
-                                    <td>@racer.FirstName @racer.LastName</td>
-                                    <td>@racer.Country</td>
-                                    <td>@racer.BirthDay.ToString("yyyy-MM-dd")</td>
-                                    <td>@racer.Wins</td>
-      @*                               <td>@(racer.Team?.Name ?? "No Team")</td> *@
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                    <RacersTable Racers="((IEnumerable<Racer>)queryResults)" />
                 }
                 else if (selectedQueryType == "allTeams")
                 {
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Team Name</th>
-                                <th>Country</th>
-                                <th>Founded Year</th>
-                                <th>Racers Count</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var team in ((IEnumerable<Team>)queryResults))
-                            {
-                                <tr>
-                                    <td>@team.Name</td>
-                                    <td>@team.Country</td>
-                                    <td>@team.FoundedYear</td>
-                                    <td>@team.Racers.Count</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                    <TeamsTable Teams="((IEnumerable<Team>)queryResults)" />
                 }
                 else
                 {
-                    <pre class="bg-light p-3">@System.Text.Json.JsonSerializer.Serialize(queryResults, new JsonSerializerOptions { WriteIndented = true })</pre>
+                    <JsonResults Data="queryResults" />
                 }
             </div>
         }
@@ -149,6 +67,14 @@
     private string generatedSql = "";
     private bool isLoading = false;
     private string errorMessage = "";
+
+    private void OnQueryTypeChanged(string value)
+    {
+        selectedQueryType = value;
+        queryResults = null;
+        generatedSql = "";
+        errorMessage = "";
+    }
 
     private async Task ExecuteQuery()
     {
@@ -182,7 +108,6 @@
                     break;
             }
 
-            // Get the executed SQL from the repository
             generatedSql = Repository.GetLastExecutedSql();
         }
         catch (Exception ex)
@@ -194,11 +119,5 @@
             isLoading = false;
             StateHasChanged();
         }
-    }
-
-    private string GetLastGeneratedSql(Formula1DataContext context, string sampleSql)
-    {
-        // This method is no longer needed since we get SQL from the repository
-        return sampleSql;
     }
 }

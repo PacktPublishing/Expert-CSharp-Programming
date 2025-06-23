@@ -1,0 +1,32 @@
+@namespace Ch08.BlazorApp.Components.Formula1
+@using Ch08.DataLib
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Country</th>
+            <th>Birthday</th>
+            <th>Wins</th>
+            <th>Team</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var racer in Racers)
+        {
+            var currentTeam = racer.Teams.FirstOrDefault()?.Team;
+            <tr>
+                <td>@racer.FirstName @racer.LastName</td>
+                <td>@racer.Country</td>
+                <td>@racer.BirthDay.ToString("yyyy-MM-dd")</td>
+                <td>@racer.Wins</td>
+                <td>@(currentTeam?.Name ?? "No Team")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public required IEnumerable<Racer> Racers { get; set; }
+}

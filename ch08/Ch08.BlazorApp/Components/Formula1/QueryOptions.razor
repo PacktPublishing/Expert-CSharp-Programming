@@ -1,0 +1,58 @@
+@namespace Ch08.BlazorApp.Components.Formula1
+
+<div class="col-md-6">
+    <h3>Query Options</h3>
+    
+    <div class="mb-3">
+        <label class="form-label">Select Query Type:</label>
+        <select class="form-select" @bind="SelectedQueryType">
+            <option value="allRacers">All Racers</option>
+            <option value="allTeams">All Teams</option>
+            <option value="racersByCountry">Racers by Country</option>
+            <option value="racersWithMinWins">Racers with Min Wins</option>
+            <option value="racersGroupedByCountry">Racers Grouped by Country</option>
+            <option value="teamsWithRacerCount">Teams with Racer Count</option>
+        </select>
+    </div>
+
+    @if (SelectedQueryType == "racersByCountry")
+    {
+        <div class="mb-3">
+            <label class="form-label">Country:</label>
+            <input type="text" class="form-control" @bind="CountryFilter" placeholder="e.g., United Kingdom" />
+        </div>
+    }
+
+    @if (SelectedQueryType == "racersWithMinWins")
+    {
+        <div class="mb-3">
+            <label class="form-label">Minimum Wins:</label>
+            <input type="number" class="form-control" @bind="MinWinsFilter" min="0" />
+        </div>
+    }
+
+    <button class="btn btn-primary" @onclick="OnExecuteQuery">Execute Query</button>
+</div>
+
+@code {
+    [Parameter]
+    public string SelectedQueryType { get; set; } = "allRacers";
+
+    [Parameter]
+    public EventCallback<string> SelectedQueryTypeChanged { get; set; }
+
+    [Parameter]
+    public string CountryFilter { get; set; } = "United Kingdom";
+
+    [Parameter]
+    public EventCallback<string> CountryFilterChanged { get; set; }
+
+    [Parameter]
+    public int MinWinsFilter { get; set; } = 10;
+
+    [Parameter]
+    public EventCallback<int> MinWinsFilterChanged { get; set; }
+
+    [Parameter]
+    public EventCallback OnExecuteQuery { get; set; }
+}
