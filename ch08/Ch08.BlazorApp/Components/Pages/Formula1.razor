@@ -15,18 +15,18 @@
 
 <div class="row">
     <QueryOptions 
-        SelectedQueryType="selectedQueryType"
-        SelectedQueryTypeChanged="@OnQueryTypeChangedAsync"
-        CountryFilter="countryFilter"
-        CountryFilterChanged="@((s) => { countryFilter = s; })"
-        MinWinsFilter="minWinsFilter"
-        MinWinsFilterChanged="@((i) => { minWinsFilter = i; })"
-        OnExecuteQuery="ExecuteQuery"
-        CurrentPage="currentPage"
-        CurrentPageChanged="@((i) => { currentPage = i; })"
-        PageSize="pageSize"
-        PageSizeChanged="@((i) => { pageSize = i; })"
-        TotalRecords="totalRecords" />
+        SelectedQueryType="@selectedQueryType"
+        SelectedQueryTypeChanged="@(async s => await OnQueryTypeChangedAsync(s))"
+        CountryFilter="@countryFilter"
+        CountryFilterChanged="@(s => countryFilter = s)"
+        MinWinsFilter="@minWinsFilter"
+        MinWinsFilterChanged="@(i => minWinsFilter = i)"
+        OnExecuteQuery="@(async () => await ExecuteQuery())"
+        CurrentPage="@currentPage"
+        CurrentPageChanged="@(i => OnCurrentPageChanged(i))"
+        PageSize="@pageSize"
+        PageSizeChanged="@(i => OnPageSizeChanged(i))"
+        TotalRecords="@totalRecords" />
     
     <SqlDisplay Sql="@generatedSql" />
 </div>
@@ -43,7 +43,12 @@
             <div class="table-responsive">
                 @if (selectedQueryType == "allRacers" || selectedQueryType == "racersByCountry" || selectedQueryType == "racersWithMinWins")
                 {
-                    <RacersTable Racers="((IEnumerable<Racer>)queryResults)" />
+                    <RacersTable 
+                        Racers="((IEnumerable<Racer>)queryResults)"
+                        PageSize="@pageSize"
+                        PageSizeChanged="@(async i => await OnPageSizeChanged(i))"
+                        CurrentPage="@currentPage"
+                        CurrentPageChanged="@(async i => await OnCurrentPageChanged(i))" />
                 }
                 else if (selectedQueryType == "allTeams")
                 {
@@ -82,6 +87,25 @@
         {
             selectedQueryType = value;
             currentPage = 1;
+            await ExecuteQuery();
+        }
+    }
+
+    private async Task OnPageSizeChanged(int value)
+    {
+        if (pageSize != value)
+        {
+            pageSize = value;
+            currentPage = 1;
+            await ExecuteQuery();
+        }
+    }
+
+    private async Task OnCurrentPageChanged(int value)
+    {
+        if (currentPage != value)
+        {
+            currentPage = value;
             await ExecuteQuery();
         }
     }

@@ -1,6 +1,29 @@
 @namespace Ch08.BlazorApp.Components.Formula1
 @using Ch08.DataLib
 
+<div class="mb-3 d-flex justify-content-between align-items-center">
+    <div>
+        <label class="me-2">Page Size:</label>
+        <select class="form-select d-inline-block w-auto" @bind="PageSize">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+        </select>
+    </div>
+    <div class="btn-group">
+        <button class="btn btn-outline-secondary" 
+                @onclick="() => OnPageChanged(CurrentPage - 1)" 
+                disabled="@(CurrentPage <= 1)">Previous</button>
+        <button class="btn btn-outline-secondary" disabled>
+            Page @CurrentPage of @TotalPages
+        </button>
+        <button class="btn btn-outline-secondary" 
+                @onclick="() => OnPageChanged(CurrentPage + 1)" 
+                disabled="@(CurrentPage >= TotalPages)">Next</button>
+    </div>
+</div>
+
 <table class="table table-striped">
     <thead>
         <tr>
@@ -8,19 +31,32 @@
             <th>Country</th>
             <th>Birthday</th>
             <th>Wins</th>
-            <th>Team</th>
+            <th>Teams</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var racer in Racers)
+        @foreach (var racer in DisplayedRacers)
         {
-            var currentTeam = racer.Teams.FirstOrDefault()?.Team;
             <tr>
                 <td>@racer.FirstName @racer.LastName</td>
                 <td>@racer.Country</td>
                 <td>@racer.BirthDay.ToString("yyyy-MM-dd")</td>
                 <td>@racer.Wins</td>
-                <td>@(currentTeam?.Name ?? "No Team")</td>
+                <td>
+                    @if (racer.Teams.Any())
+                    {
+                        <ul class="list-unstyled mb-0">
+                            @foreach (var teamMap in racer.Teams.OrderBy(t => t.Year))
+                            {
+                                <li>@teamMap.Team?.Name (@teamMap.Year)</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <span>No Teams</span>
+                    }
+                </td>
             </tr>
         }
     </tbody>
@@ -29,4 +65,40 @@
 @code {
     [Parameter]
     public required IEnumerable<Racer> Racers { get; set; }
+
+    [Parameter]
+    public int PageSize { get; set; } = 10;
+
+    [Parameter]
+    public EventCallback<int> PageSizeChanged { get; set; }
+
+    [Parameter]
+    public int CurrentPage { get; set; } = 1;
+
+    [Parameter]
+    public EventCallback<int> CurrentPageChanged { get; set; }
+
+    private int TotalPages => (int)Math.Ceiling(Racers.Count() / (double)PageSize);
+
+    private IEnumerable<Racer> DisplayedRacers =>
+        Racers.Skip((CurrentPage - 1) * PageSize).Take(PageSize);
+
+    private async Task OnPageChanged(int newPage)
+    {
+        if (newPage >= 1 && newPage <= TotalPages)
+        {
+            CurrentPage = newPage;
+            await CurrentPageChanged.InvokeAsync(CurrentPage);
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        // Reset to page 1 when Racers collection changes
+        if (CurrentPage > TotalPages)
+        {
+            CurrentPage = 1;
+            CurrentPageChanged.InvokeAsync(CurrentPage);
+        }
+    }
 }
