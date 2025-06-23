@@ -4,12 +4,30 @@ namespace Ch08.DataLib;
 
 public class Formula1Repository(Formula1DataContext context, SqlQueryLogger sqlLogger) : IFormula1Repository
 {
-    public async Task<IEnumerable<Racer>> GetRacersAsync()
+    public async Task<(IEnumerable<Racer> Racers, int TotalCount)> GetRacersAsync(int skip = 0, int take = 10)
+    {
+        sqlLogger.Clear();
+        var query = context.Racers
+            .Include(r => r.Teams)
+            .ThenInclude(rt => rt.Team);
+
+        var totalCount = await query.CountAsync();
+        var racers = await query
+            .OrderBy(r => r.LastName)
+            .Skip(skip)
+            .Take(take)
+            .ToListAsync();
+
+        return (racers, totalCount);
+    }
+
+    public async Task<IEnumerable<string>> GetAllCountriesAsync()
     {
         sqlLogger.Clear();
         return await context.Racers
-            .Include(r => r.Teams)
-            .ThenInclude(rt => rt.Team)
+            .Select(r => r.Country)
+            .Distinct()
+            .OrderBy(c => c)
             .ToListAsync();
     }
 
@@ -29,6 +47,7 @@ public class Formula1Repository(Formula1DataContext context, SqlQueryLogger sqlL
             .Include(r => r.Teams)
             .ThenInclude(rt => rt.Team)
             .Where(r => r.Country == country)
+            .OrderBy(r => r.LastName)
             .ToListAsync();
     }
 

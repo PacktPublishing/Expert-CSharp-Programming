@@ -15,13 +15,18 @@
 
 <div class="row">
     <QueryOptions 
-        SelectedQueryType="@selectedQueryType"
-        SelectedQueryTypeChanged="@OnQueryTypeChanged"
-        CountryFilter="@countryFilter"
-        CountryFilterChanged="@((value) => { countryFilter = value; })"
-        MinWinsFilter="@minWinsFilter"
-        MinWinsFilterChanged="@((value) => { minWinsFilter = value; })"
-        OnExecuteQuery="@ExecuteQuery" />
+        SelectedQueryType="selectedQueryType"
+        SelectedQueryTypeChanged="@OnQueryTypeChangedAsync"
+        CountryFilter="countryFilter"
+        CountryFilterChanged="@((s) => { countryFilter = s; })"
+        MinWinsFilter="minWinsFilter"
+        MinWinsFilterChanged="@((i) => { minWinsFilter = i; })"
+        OnExecuteQuery="ExecuteQuery"
+        CurrentPage="currentPage"
+        CurrentPageChanged="@((i) => { currentPage = i; })"
+        PageSize="pageSize"
+        PageSizeChanged="@((i) => { pageSize = i; })"
+        TotalRecords="totalRecords" />
     
     <SqlDisplay Sql="@generatedSql" />
 </div>
@@ -67,13 +72,18 @@
     private string generatedSql = "";
     private bool isLoading = false;
     private string errorMessage = "";
+    private int currentPage = 1;
+    private int pageSize = 10;
+    private int totalRecords = 0;
 
-    private void OnQueryTypeChanged(string value)
+    private async Task OnQueryTypeChangedAsync(string value)
     {
-        selectedQueryType = value;
-        queryResults = null;
-        generatedSql = "";
-        errorMessage = "";
+        if (selectedQueryType != value)
+        {
+            selectedQueryType = value;
+            currentPage = 1;
+            await ExecuteQuery();
+        }
     }
 
     private async Task ExecuteQuery()
@@ -89,7 +99,9 @@
             switch (selectedQueryType)
             {
                 case "allRacers":
-                    queryResults = await Repository.GetRacersAsync();
+                    var result = await Repository.GetRacersAsync((currentPage - 1) * pageSize, pageSize);
+                    queryResults = result.Racers;
+                    totalRecords = result.TotalCount;
                     break;
                 case "allTeams":
                     queryResults = await Repository.GetTeamsAsync();
