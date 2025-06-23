@@ -1,0 +1,153 @@
+@namespace Ch08.BlazorApp.Components.Formula1
+@using Ch08.DataLib
+@inject IFormula1Repository Repository
+
+<div class="col-md-6">
+  <h3>Query Options</h3>
+  <div class="mb-3">
+    <label class="form-label">Select Query Type</label>
+    <select class="form-select" value="@SelectedQueryType" @onchange="async (e) => await OnQueryTypeChange(e.Value?.ToString() ?? SelectedQueryType)">
+      <option value="allRacers">All Racers</option>
+      <option value="allTeams">All Teams</option>
+      <option value="racersByCountry">Racers by Country</option>
+      <option value="racersWithMinWins">Racers with Min Wins</option>
+      <option value="racersGroupedByCountry">Racers Grouped by Country</option>
+      <option value="teamsWithRacerCount">Teams with Racer Count</option>
+    </select>
+  </div>
+
+  @if (SelectedQueryType == "allRacers")
+  {
+    <div class="mb-3 row">
+      <div class="col-md-4">
+        <label class="form-label">Page Size</label>
+        <select class="form-select" value="@PageSize" @onchange="@(e => PageSizeChanged.InvokeAsync(int.Parse(e.Value?.ToString() ?? "10")))">
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+      <div class="col-md-8">
+        <label class="form-label">Page Navigation</label>
+        <div class="btn-group w-100">
+          <button class="btn btn-outline-secondary" @onclick="() => OnPageChange(-1)" disabled="@(CurrentPage <= 1)">Previous</button>
+          <button class="btn btn-outline-secondary" disabled>Page @CurrentPage of @TotalPages</button>
+          <button class="btn btn-outline-secondary" @onclick="() => OnPageChange(1)" disabled="@(CurrentPage >= TotalPages)">Next</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (SelectedQueryType == "racersByCountry")
+  {
+    <div class="mb-3">
+      <label class="form-label">Country</label>
+      <select class="form-select" value="@CountryFilter" @onchange="@(e => CountryFilterChanged.InvokeAsync(e.Value?.ToString() ?? CountryFilter))">
+        @foreach (var country in countries)
+        {
+          <option value="@country">@country</option>
+        }
+      </select>
+    </div>
+  }
+
+  @if (SelectedQueryType == "racersWithMinWins")
+  {
+    <div class="mb-3">
+      <label class="form-label">Minimum Wins</label>
+      <input type="number" class="form-control" value="@MinWinsFilter" @onchange="@(e => MinWinsFilterChanged.InvokeAsync(int.Parse(e.Value?.ToString() ?? MinWinsFilter.ToString())))" min="0" />
+    </div>
+  }
+
+  <button class="btn btn-primary" @onclick="ExecuteQueryClick">Execute Query</button>
+</div>
+
+@code {
+    private List<string> countries = new();
+
+    [Parameter]
+    public required string SelectedQueryType { get; set; }
+
+    [Parameter]
+    public EventCallback<string> SelectedQueryTypeChanged { get; set; }
+
+    [Parameter]
+    public required string CountryFilter { get; set; }
+
+    [Parameter]
+    public EventCallback<string> CountryFilterChanged { get; set; }
+
+    [Parameter]
+    public required int MinWinsFilter { get; set; }
+
+    [Parameter]
+    public EventCallback<int> MinWinsFilterChanged { get; set; }
+
+    [Parameter]
+    public EventCallback OnExecuteQuery { get; set; }
+
+    [Parameter]
+    public required int CurrentPage { get; set; }
+
+    [Parameter]
+    public EventCallback<int> CurrentPageChanged { get; set; }
+
+    [Parameter]
+    public required int PageSize { get; set; }
+
+    [Parameter]
+    public EventCallback<int> PageSizeChanged { get; set; }
+
+    [Parameter]
+    public int TotalRecords { get; set; }
+
+    public int TotalPages { get; private set; } = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCountries();
+    }
+
+    protected override void OnParametersSet()
+    {
+        // Calculate TotalPages whenever TotalRecords or PageSize changes
+        TotalPages = (int)Math.Ceiling(TotalRecords / (double)PageSize);
+    }
+
+    private async Task LoadCountries()
+    {
+        countries = (await Repository.GetAllCountriesAsync()).ToList();
+        if (countries.Any() && !countries.Contains(CountryFilter))
+        {
+            await CountryFilterChanged.InvokeAsync(countries[0]);
+        }
+    }
+
+    private async Task OnQueryTypeChange(string value)
+    {
+        if (SelectedQueryType != value)
+        {
+            await SelectedQueryTypeChanged.InvokeAsync(value);
+        }
+    }
+
+    private async Task OnPageChange(int delta)
+    {
+        var newPage = CurrentPage + delta;
+        if (newPage >= 1 && newPage <= TotalPages)
+        {
+            await CurrentPageChanged.InvokeAsync(newPage);
+            await OnExecuteQuery.InvokeAsync();
+        }
+    }
+
+    private async Task ExecuteQueryClick()
+    {
+        if (SelectedQueryType == "allRacers")
+        {
+            await CurrentPageChanged.InvokeAsync(1);
+        }
+        await OnExecuteQuery.InvokeAsync();
+    }
+}

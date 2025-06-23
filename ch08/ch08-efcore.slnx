@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="../Directory.Packages.props" />
+  </Folder>
+  <Project Path="Ch08.AppHost/Ch08.AppHost.csproj" />
+  <Project Path="Ch08.BlazorApp/Ch08.BlazorApp.csproj" />
+  <Project Path="Ch08.DataLib/Ch08.DataLib.csproj" />
+  <Project Path="Ch08.ServiceDefaults/Ch08.ServiceDefaults.csproj" />
+</Solution>

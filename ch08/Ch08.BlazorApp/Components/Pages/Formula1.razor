@@ -1,0 +1,178 @@
+@page "/formula1"
+@using Ch08.DataLib
+@using Microsoft.EntityFrameworkCore
+@using System.Text.Json
+@using Ch08.BlazorApp.Components.Formula1
+@inject IFormula1Repository Repository
+@inject IServiceProvider ServiceProvider
+@rendermode InteractiveServer
+
+<PageTitle>Formula 1 Data Queries</PageTitle>
+
+<h1>Formula 1 Data Queries</h1>
+
+<p>This page demonstrates Entity Framework Core queries with SQL generation display.</p>
+
+<div class="row">
+    <QueryOptions 
+        @key="selectedQueryType"
+        SelectedQueryType="@selectedQueryType"
+        SelectedQueryTypeChanged="@OnQueryTypeChangedAsync"
+        CountryFilter="@countryFilter"
+        CountryFilterChanged="@OnCountryFilterChanged"
+        MinWinsFilter="@minWinsFilter"
+        MinWinsFilterChanged="@OnMinWinsFilterChanged"
+        OnExecuteQuery="@ExecuteQuery"
+        CurrentPage="@currentPage"
+        CurrentPageChanged="@OnCurrentPageChanged"
+        PageSize="@pageSize"
+        PageSizeChanged="@OnPageSizeChanged"
+        TotalRecords="@totalRecords" />
+    
+    <SqlDisplay Sql="@generatedSql" />
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <h3>Query Results</h3>
+        @if (isLoading)
+        {
+            <LoadingSpinner />
+        }
+        else if (queryResults != null)
+        {
+            <div class="table-responsive">
+                @if (selectedQueryType == "allRacers" || selectedQueryType == "racersByCountry" || selectedQueryType == "racersWithMinWins")
+                {
+                    <RacersTable 
+                        Racers="((IEnumerable<Racer>)queryResults)"
+                        PageSize="@pageSize"
+                        PageSizeChanged="@OnPageSizeChanged"
+                        CurrentPage="@currentPage"
+                        CurrentPageChanged="@OnCurrentPageChanged" />
+                }
+                else if (selectedQueryType == "allTeams")
+                {
+                    <TeamsTable Teams="((IEnumerable<Team>)queryResults)" />
+                }
+                else
+                {
+                    <JsonResults Data="queryResults" />
+                }
+            </div>
+        }
+        else if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-danger">
+                @errorMessage
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private string selectedQueryType = "allRacers";
+    private string countryFilter = "United Kingdom";
+    private int minWinsFilter = 10;
+    private object? queryResults;
+    private string generatedSql = "";
+    private bool isLoading = false;
+    private string errorMessage = "";
+    private int currentPage = 1;
+    private int pageSize = 10;
+    private int totalRecords = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ExecuteQuery();
+    }
+
+    private Task OnQueryTypeChangedAsync(string value)
+    {
+        selectedQueryType = value;
+        currentPage = 1;
+        return ExecuteQuery();
+    }
+
+    private Task OnCountryFilterChanged(string value)
+    {
+        countryFilter = value;
+        return Task.CompletedTask;
+    }
+
+    private Task OnMinWinsFilterChanged(int value)
+    {
+        minWinsFilter = value;
+        return Task.CompletedTask;
+    }
+
+    private Task OnCurrentPageChanged(int value)
+    {
+        if (currentPage != value)
+        {
+            currentPage = value;
+            return ExecuteQuery();
+        }
+        return Task.CompletedTask;
+    }
+
+    private Task OnPageSizeChanged(int value)
+    {
+        if (pageSize != value)
+        {
+            pageSize = value;
+            currentPage = 1;
+            return ExecuteQuery();
+        }
+        return Task.CompletedTask;
+    }
+
+    private async Task ExecuteQuery()
+    {
+        try
+        {
+            isLoading = true;
+            errorMessage = "";
+            queryResults = null;
+            generatedSql = "";
+            StateHasChanged();
+
+            await Task.Yield();  // Allow UI to update
+
+            switch (selectedQueryType)
+            {
+                case "allRacers":
+                    var result = await Repository.GetRacersAsync((currentPage - 1) * pageSize, pageSize);
+                    queryResults = result.Racers;
+                    totalRecords = result.TotalCount;
+                    break;
+                case "allTeams":
+                    queryResults = await Repository.GetTeamsAsync();
+                    break;
+                case "racersByCountry":
+                    queryResults = await Repository.GetRacersByCountryAsync(countryFilter);
+                    break;
+                case "racersWithMinWins":
+                    queryResults = await Repository.GetRacersWithMostWinsAsync(minWinsFilter);
+                    break;
+                case "racersGroupedByCountry":
+                    queryResults = await Repository.GetRacersGroupedByCountryAsync();
+                    break;
+                case "teamsWithRacerCount":
+                    queryResults = await Repository.GetTeamsWithRacerCountAsync();
+                    break;
+            }
+
+            generatedSql = Repository.GetLastExecutedSql();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error executing query: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+}

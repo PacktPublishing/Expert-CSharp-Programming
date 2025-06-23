@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="diagrams.md" />
+  </Folder>
+  <Project Path="AdvancedQuery/AdvancedQuery.csproj" Id="fb3bc02c-3111-490b-a363-d10353a2a335" />
+  <Project Path="CustomImplementation/CustomImplementation.csproj" Id="2b01ed72-5456-4132-9576-c056844a2e89" />
+  <Project Path="DataLib/DataLib.csproj" Id="d1fecbef-62b6-48c6-89aa-e25065645ce8" />
+  <Project Path="DeferredLINQ/DeferredLINQ.csproj" Id="fbe04f1a-6772-4651-a1cc-ad414bb3952a" />
+  <Project Path="ExpressionTrees/ExpressionTrees.csproj" Id="3201aeb0-2a91-4ba8-81bd-279c3b7ea3b8" />
+  <Project Path="LINQQuery/LINQQuery.csproj" Id="db9a2757-c9a0-44b4-a4fa-5e495ca279ee" />
+</Solution>

@@ -1,0 +1,9 @@
+@namespace Ch08.BlazorApp.Components.Formula1
+@using System.Text.Json
+
+<pre class="bg-light p-3">@JsonSerializer.Serialize(Data, new JsonSerializerOptions { WriteIndented = true })</pre>
+
+@code {
+    [Parameter]
+    public required object Data { get; set; }
+}
