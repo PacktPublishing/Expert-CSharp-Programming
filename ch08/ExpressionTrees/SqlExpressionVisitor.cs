@@ -10,7 +10,6 @@ namespace ExpressionTrees.Sql;
 public class SqlWhereExpressionVisitor : ExpressionVisitor
 {
     private StringBuilder _sql = new();
-    private ParameterExpression? _parameter;
 
     public string Translate(Expression expression)
     {
@@ -18,6 +17,8 @@ public class SqlWhereExpressionVisitor : ExpressionVisitor
         Visit(expression);
         return _sql.ToString();
     }
+
+    private ParameterExpression? _parameter;
 
     protected override Expression VisitLambda<T>(Expression<T> node)
     {
