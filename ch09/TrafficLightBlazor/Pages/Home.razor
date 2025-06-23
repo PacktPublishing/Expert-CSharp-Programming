@@ -1,0 +1,137 @@
+﻿@page "/"
+@using TrafficLightBlazor.Models
+@using TrafficLightBlazor.Services
+@using static TrafficLightBlazor.Models.TrafficLightColor
+@implements IDisposable
+
+<PageTitle>Traffic Light - @selectedCountry</PageTitle>
+
+<h1>Traffic Light - @selectedCountry Sequence</h1>
+
+<div class="country-selection">
+    <label for="country-select"><strong>Select Country:</strong></label>
+    <select id="country-select" @bind="selectedCountry" disabled="@isRunning" class="form-select">
+        <option value="@Country.Slovenia">Slovenia</option>
+        <option value="@Country.Austria">Austria</option>
+    </select>
+</div>
+
+<div class="traffic-light-container">
+    <div class="traffic-light">
+        <div class="light red @(IsLightOn(Red) ? "on" : "off")"></div>
+        <div class="light amber @(IsLightOn(Amber) ? "on" : "off")"></div>
+        <div class="light green @(IsLightOn(Green) ? GetGreenCssClass() : "off")"></div>
+    </div>
+</div>
+
+<div class="controls">
+    <button class="btn btn-success" @onclick="Start" disabled="@isRunning">Start</button>
+    <button class="btn btn-danger" @onclick="Stop" disabled="@(!isRunning)">Stop</button>
+</div>
+
+<div class="info">
+    <p><strong>Current State:</strong> @GetCurrentStateDisplay()</p>
+    <p><strong>Previous State:</strong> @currentLight.Previous</p>
+    <p><strong>Duration:</strong> @currentLight.Duration.TotalSeconds seconds</p>
+    @if (currentLight.Current == GreenBlinking)
+    {
+        <p><strong>Blink Count:</strong> @currentLight.BlinkCount / 3</p>
+    }
+    <p><strong>Sequence:</strong> @GetSequenceDescription()</p>
+</div>
+
+
+
+@code {
+    private TrafficLight currentLight = new(Green, Red, TimeSpan.FromSeconds(4));
+    private Timer? timer;
+    private bool isRunning = false;
+    private Country _selectedCountry = Country.Slovenia;
+
+    private Country selectedCountry
+    {
+        get => _selectedCountry;
+        set
+        {
+            if (_selectedCountry != value)
+            {
+                _selectedCountry = value;
+                ResetLight();
+            }
+        }
+    }
+
+    private bool IsLightOn(TrafficLightColor color)
+    {
+        return currentLight.Current switch
+        {
+            RedAndAmber => color == Red || color == Amber,
+            GreenBlinking => color == Green,
+            var current => current == color
+        };
+    }
+
+    private string GetGreenCssClass()
+    {
+        if (currentLight.Current == GreenBlinking)
+        {
+            // Create blinking effect by alternating between on and off based on blink count
+            return currentLight.BlinkCount % 2 == 1 ? "on blinking" : "off";
+        }
+        return "on";
+    }
+
+    private string GetCurrentStateDisplay()
+    {
+        if (currentLight.Current == GreenBlinking)
+        {
+            return $"Green Blinking ({currentLight.BlinkCount}/3)";
+        }
+        return currentLight.Current.ToString();
+    }
+
+    private string GetSequenceDescription()
+    {
+        return selectedCountry switch
+        {
+            Country.Slovenia => "Green → Amber → Red → Red & Amber → Green",
+            Country.Austria => "Green → Green Blinking (3x) → Amber → Red → Amber → Green",
+            _ => ""
+        };
+    }
+
+    private void ResetLight()
+    {
+        currentLight = new(Green, Red, TimeSpan.FromSeconds(4));
+    }
+
+    private void Start()
+    {
+        if (isRunning) return;
+        
+        isRunning = true;
+        timer = new Timer(NextState, null, TimeSpan.Zero, currentLight.Duration);
+    }
+
+    private void Stop()
+    {
+        isRunning = false;
+        timer?.Dispose();
+        timer = null;
+    }
+
+    private void NextState(object? state)
+    {
+        currentLight = TrafficLightService.NextLight(currentLight, selectedCountry);
+        
+        // Update timer interval for next state
+        timer?.Change(currentLight.Duration, currentLight.Duration);
+        
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        timer?.Dispose();
+    }
+}

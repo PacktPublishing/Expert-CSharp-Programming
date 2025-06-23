@@ -1,0 +1,164 @@
+﻿@page "/"
+@using TrafficLightBlazor.Services
+@inject BalanceService BalanceService
+@rendermode InteractiveServer
+
+<PageTitle>Balance Calculator</PageTitle>
+
+<h1>Balance Calculator with Pattern Matching</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Upload CSV File</h3>
+            <p class="text-muted">
+                Upload a CSV file with transaction data in format:<br />
+                <code>MM/DD/YYYY, TYPE, DESCRIPTION, AMOUNT</code><br />
+                where TYPE is DEPOSIT, WITHDRAW, or FEE.
+            </p>
+            <div class="mb-3">
+                <label for="csvFile" class="form-label">Choose CSV file:</label>
+                <InputFile id="csvFile" OnChange="HandleFileSelection" class="form-control" accept=".csv" />
+            </div>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger">@errorMessage</div>
+            }
+
+            @if (fileContent != null)
+            {
+                <div class="mt-3">
+                    <h4>File Content Preview:</h4>
+                    <textarea class="form-control" rows="8" readonly>@fileContent</textarea>
+                </div>
+            }
+        </div>
+
+        <div class="col-md-6">
+            @if (totalBalance.HasValue)
+            {
+                <h3>Balance Results</h3>
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Total Balance</h4>
+                    </div>
+                    <div class="card-body">
+                        <h2 class="@(totalBalance.Value >= 0 ? "text-success" : "text-danger")">
+                            $@totalBalance.Value.ToString("F2")
+                        </h2>
+                    </div>
+                </div>
+
+                @if (monthlyBalances != null && monthlyBalances.Any())
+                {
+                    <div class="mt-4">
+                        <h4>Monthly Breakdown</h4>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Balance Change</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var month in monthlyBalances.OrderBy(x => x.Key))
+                                {
+                                    <tr>
+                                        <td>@month.Key.ToString("MMM yyyy")</td>
+                                        <td class="@(month.Value >= 0 ? "text-success" : "text-danger")">
+                                            $@month.Value.ToString("F2")
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(fileContent))
+    {
+        <div class="row mt-4">
+            <div class="col-12">
+                <button class="btn btn-primary" @onclick="CalculateBalance">Calculate Balance</button>
+            </div>
+        </div>
+    }
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <h4>Pattern Matching Implementation</h4>
+            <p>This application demonstrates C# pattern matching using switch expressions to parse transaction data:</p>
+            <ul>
+                <li><strong>List patterns</strong> to match CSV field positions: <code>[_, "DEPOSIT", _, var amount]</code></li>
+                <li><strong>Guard clauses</strong> for date validation: <code>when DateOnly.TryParse(dateStr, out var date)</code></li>
+                <li><strong>Expression patterns</strong> for different transaction types</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string? fileContent;
+    private string? errorMessage;
+    private double? totalBalance;
+    private IDictionary<DateOnly, double>? monthlyBalances;
+
+    private async Task HandleFileSelection(InputFileChangeEventArgs e)
+    {
+        errorMessage = null;
+        fileContent = null;
+        totalBalance = null;
+        monthlyBalances = null;
+
+        var file = e.File;
+
+        if (file != null)
+        {
+            if (file.Size > 1024 * 1024) // 1MB limit
+            {
+                errorMessage = "File size must be less than 1MB";
+                return;
+            }
+
+            try
+            {
+                using var stream = file.OpenReadStream();
+                using var reader = new StreamReader(stream);
+                fileContent = await reader.ReadToEndAsync();
+            }
+            catch (Exception ex)
+            {
+                errorMessage = $"Error reading file: {ex.Message}";
+            }
+        }
+    }
+
+    private void CalculateBalance()
+    {
+        if (string.IsNullOrEmpty(fileContent))
+            return;
+
+        try
+        {
+            var lines = fileContent
+                .Split('\n', StringSplitOptions.RemoveEmptyEntries)
+                .Select(line => line.Trim())
+                .Where(line => !string.IsNullOrEmpty(line))
+                .ToArray();
+
+            totalBalance = BalanceService.GetBalance(lines);
+            monthlyBalances = BalanceService.GetBalanceByMonth(lines);
+            errorMessage = null;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error calculating balance: {ex.Message}";
+            totalBalance = null;
+            monthlyBalances = null;
+        }
+    }
+}
