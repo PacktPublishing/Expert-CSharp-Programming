@@ -6,5 +6,5 @@ public enum TrafficLightColor
     Amber,
     Green,
     GreenBlinking, // this is in Austria
-    RedAndAmber, // this is in Slovenia
+    RedAndAmber, // this is in Slovenia and Austria
 }

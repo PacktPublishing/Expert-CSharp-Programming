@@ -1,0 +1,118 @@
+@using TrafficLightBlazor.Models
+@using static TrafficLightBlazor.Models.TrafficLightColor
+@using System.Timers
+@implements IDisposable
+
+<div class="traffic-light">
+    <div class="light red @(IsLightOn(Red) ? "on" : "off")"></div>
+    <div class="light amber @(IsLightOn(Amber) ? "on" : "off")"></div>
+    <div class="light green @(IsLightOn(Green) ? GetGreenCssClass() : "off")"></div>
+</div>
+
+<style>
+    .traffic-light {
+        background: #2c2c2c;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .light {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 3px solid #444;
+        transition: all 0.3s ease;
+    }
+
+    .light.red {
+        background: #333;
+    }
+
+    .light.red.on {
+        background: #ff4444;
+        box-shadow: 0 0 20px #ff4444;
+    }
+
+    .light.amber {
+        background: #333;
+    }
+
+    .light.amber.on {
+        background: #ffaa00;
+        box-shadow: 0 0 20px #ffaa00;
+    }
+
+    .light.green {
+        background: #333;
+    }
+
+    .light.green.on {
+        background: #44ff44;
+        box-shadow: 0 0 20px #44ff44;
+    }
+
+    .light.green.blinking {
+        opacity: 0.5;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public TrafficLight CurrentLight { get; set; }
+
+    private System.Timers.Timer? blinkTimer;
+    private bool isBlinking = false;
+
+    private bool IsLightOn(TrafficLightColor color)
+    {
+        return CurrentLight.Current switch
+        {
+            RedAndAmber => color == Red || color == Amber,
+            GreenBlinking => color == Green,
+            var current => current == color
+        };
+    }
+
+    private string GetGreenCssClass()
+    {
+        if (CurrentLight.Current == GreenBlinking)
+        {
+            return isBlinking ? "on blinking" : "on";
+        }
+        return "on";
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        // Start the blinking timer if we're in green blinking state
+        if (CurrentLight.Current == GreenBlinking && blinkTimer == null)
+        {
+            blinkTimer = new System.Timers.Timer(250);
+            blinkTimer.Elapsed += (sender, args) =>
+            {
+                isBlinking = !isBlinking;
+                InvokeAsync(StateHasChanged);
+            };
+            blinkTimer.Start();
+        }
+        // Stop the timer if we're not in green blinking state
+        else if (CurrentLight.Current != GreenBlinking && blinkTimer != null)
+        {
+            blinkTimer.Stop();
+            blinkTimer.Dispose();
+            blinkTimer = null;
+            isBlinking = false;
+        }
+    }
+
+    public void Dispose()
+    {
+        blinkTimer?.Dispose();
+    }
+}

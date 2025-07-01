@@ -1,0 +1,36 @@
+@using TrafficLightBlazor.Models
+
+<div class="controls">
+    <button class="btn btn-success" @onclick="Start" disabled="@IsRunning">Start</button>
+    <button class="btn btn-danger" @onclick="Stop" disabled="@(!IsRunning)">Stop</button>
+</div>
+
+<style>
+    .controls {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin: 20px 0;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public bool IsRunning { get; set; }
+
+    [Parameter]
+    public EventCallback OnStart { get; set; }
+
+    [Parameter]
+    public EventCallback OnStop { get; set; }
+
+    private async Task Start()
+    {
+        await OnStart.InvokeAsync();
+    }
+
+    private async Task Stop()
+    {
+        await OnStop.InvokeAsync();
+    }
+}
