@@ -86,33 +86,58 @@
         return "on";
     }
 
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        StartBlinkTimer();
+    }
+
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
 
-        // Start the blinking timer if we're in green blinking state
-        if (CurrentLight.Current == GreenBlinking && blinkTimer == null)
+        // Handle blinking based on current state
+        if (CurrentLight.Current == GreenBlinking)
         {
-            blinkTimer = new System.Timers.Timer(250);
-            blinkTimer.Elapsed += (sender, args) =>
+            if (blinkTimer == null)
             {
-                isBlinking = !isBlinking;
-                InvokeAsync(StateHasChanged);
-            };
-            blinkTimer.Start();
+                StartBlinkTimer();
+            }
         }
-        // Stop the timer if we're not in green blinking state
-        else if (CurrentLight.Current != GreenBlinking && blinkTimer != null)
+        else if (blinkTimer != null)
+        {
+            StopBlinkTimer();
+        }
+    }
+
+    private void StartBlinkTimer()
+    {
+        blinkTimer = new System.Timers.Timer(250);
+        blinkTimer.Elapsed += OnBlinkTimerElapsed;
+        blinkTimer.AutoReset = true;
+        blinkTimer.Start();
+    }
+
+    private void StopBlinkTimer()
+    {
+        if (blinkTimer != null)
         {
             blinkTimer.Stop();
+            blinkTimer.Elapsed -= OnBlinkTimerElapsed;
             blinkTimer.Dispose();
             blinkTimer = null;
             isBlinking = false;
         }
     }
 
+    private void OnBlinkTimerElapsed(object? sender, ElapsedEventArgs e)
+    {
+        isBlinking = !isBlinking;
+        InvokeAsync(StateHasChanged);
+    }
+
     public void Dispose()
     {
-        blinkTimer?.Dispose();
+        StopBlinkTimer();
     }
 }

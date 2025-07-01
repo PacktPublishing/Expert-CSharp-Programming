@@ -18,6 +18,7 @@ public class TrafficLightService
         };
     }
 
+    // USA sequence: Green -> Amber -> Red -> Green
     public static TrafficLight NextLightUSA(TrafficLight light)
     {
         return light switch
@@ -29,7 +30,8 @@ public class TrafficLightService
         };
     }
 
-    public static TrafficLight NextLight(TrafficLight light)
+    // Default sequence: Green -> Amber -> Red -> Amber -> Green
+    public static TrafficLight NextLightDefault(TrafficLight light)
     {
         return light switch
         {
@@ -62,8 +64,8 @@ public class TrafficLightService
         {
             Country.Slovenia => NextLightSlovenia(light),
             Country.Austria => NextLightAustria(light),
-            Country.USA => NextLight(light),
-            _ => NextLight(light)
+            Country.USA => NextLightUSA(light),
+            _ => NextLightDefault(light)
         };
     }
 }

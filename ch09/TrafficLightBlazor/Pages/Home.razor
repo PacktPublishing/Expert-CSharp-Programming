@@ -37,12 +37,9 @@
 
     private void HandleCountryChanged(Country newCountry)
     {
-        if (selectedCountry != newCountry)
-        {
-            selectedCountry = newCountry;
-            ResetLight();
-            StateHasChanged();
-        }
+        selectedCountry = newCountry;
+        ResetLight();
+        StateHasChanged();
     }
 
     private void ResetLight()
@@ -55,7 +52,9 @@
         if (isRunning) return;
         
         isRunning = true;
-        timer = new Timer(NextState, null, TimeSpan.Zero, currentLight.Duration);
+        // Store the selected country in a local variable to ensure it doesn't change
+        Country startCountry = selectedCountry;
+        timer = new Timer(_ => NextState(startCountry), null, TimeSpan.Zero, currentLight.Duration);
     }
 
     private void Stop()
@@ -67,7 +66,10 @@
 
     private void NextState(object? state)
     {
-        currentLight = TrafficLightService.NextLight(currentLight, selectedCountry);
+        // Ensure we use the correct country for the sequence
+        Country country = state is Country c ? c : selectedCountry;
+        
+        currentLight = TrafficLightService.NextLight(currentLight, country);
         
         // Update timer interval for next state
         timer?.Change(currentLight.Duration, currentLight.Duration);
