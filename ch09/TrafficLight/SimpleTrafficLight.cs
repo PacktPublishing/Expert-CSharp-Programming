@@ -7,7 +7,7 @@ public static class SimpleTrafficLight
     public static void Run()
     {
         Console.WriteLine("Simple light");
-        TrafficLightColor currentLight = TrafficLightColor.Red;
+        TrafficLightColor currentLight = Red;
         for (int i = 0; i < 10; i++)
         {
             Console.WriteLine($"current: {currentLight}");
@@ -20,8 +20,7 @@ public static class SimpleTrafficLight
         TrafficLightColor current) => 
         current switch
         {
-            Red => RedAndAmber,
-            RedAndAmber => Green,
+            Red => Green,
             Green => Amber,
             Amber => Red,
             _ => throw new ArgumentOutOfRangeException(nameof(current), current, null)

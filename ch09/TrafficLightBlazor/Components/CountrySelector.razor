@@ -9,30 +9,6 @@
     </select>
 </div>
 
-<style>
-    .country-selection {
-        max-width: 400px;
-        margin: 20px auto;
-        padding: 15px;
-        background: #f8f9fa;
-        border-radius: 8px;
-        border: 1px solid #dee2e6;
-        text-align: center;
-    }
-
-    .country-selection label {
-        display: block;
-        margin-bottom: 10px;
-    }
-
-    .country-selection select {
-        width: 200px;
-        padding: 8px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-    }
-</style>
-
 @code {
     [Parameter]
     public Country SelectedCountry { get; set; }
