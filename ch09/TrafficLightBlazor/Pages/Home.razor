@@ -1,0 +1,84 @@
+﻿@page "/"
+@using TrafficLightBlazor.Components
+@using TrafficLightBlazor.Models
+@using TrafficLightBlazor.Services
+@using static TrafficLightBlazor.Models.TrafficLightColor
+@implements IDisposable
+
+<PageTitle>Traffic Light - @selectedCountry</PageTitle>
+
+<h1>Traffic Light - @selectedCountry Sequence</h1>
+
+<CountrySelector SelectedCountry="@selectedCountry" 
+                 SelectedCountryChanged="@HandleCountryChanged"
+                 Disabled="@isRunning" />
+
+<div class="traffic-light-container">
+    <TrafficLightDisplay CurrentLight="@currentLight" />
+</div>
+
+<TrafficLightControls IsRunning="@isRunning" OnStart="@Start" OnStop="@Stop" />
+
+<TrafficLightInfo CurrentLight="@currentLight" SelectedCountry="@selectedCountry" />
+
+<style>
+    .traffic-light-container {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+    }
+</style>
+
+@code {
+    private TrafficLight currentLight = new(Green, Red, TimeSpan.FromSeconds(4));
+    private Timer? timer;
+    private bool isRunning = false;
+    private Country selectedCountry = Country.Slovenia;
+
+    private void HandleCountryChanged(Country newCountry)
+    {
+        selectedCountry = newCountry;
+        ResetLight();
+        StateHasChanged();
+    }
+
+    private void ResetLight()
+    {
+        currentLight = new(Green, Red, TimeSpan.FromSeconds(4));
+    }
+
+    private void Start()
+    {
+        if (isRunning) return;
+        
+        isRunning = true;
+        // Store the selected country in a local variable to ensure it doesn't change
+        Country startCountry = selectedCountry;
+        timer = new Timer(_ => NextState(startCountry), null, TimeSpan.Zero, currentLight.Duration);
+    }
+
+    private void Stop()
+    {
+        isRunning = false;
+        timer?.Dispose();
+        timer = null;
+    }
+
+    private void NextState(object? state)
+    {
+        // Ensure we use the correct country for the sequence
+        Country country = state is Country c ? c : selectedCountry;
+        
+        currentLight = TrafficLightService.NextLight(currentLight, country);
+        
+        // Update timer interval for next state
+        timer?.Change(currentLight.Duration, currentLight.Duration);
+        
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        timer?.Dispose();
+    }
+}

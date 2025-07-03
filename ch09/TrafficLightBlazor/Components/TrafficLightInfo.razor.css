@@ -1,0 +1,12 @@
+.info {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+    .info p {
+        margin: 5px 0;
+    }

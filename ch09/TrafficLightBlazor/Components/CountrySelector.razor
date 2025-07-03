@@ -1,0 +1,32 @@
+@using TrafficLightBlazor.Models
+
+<div class="country-selection">
+    <label for="country-select"><strong>Select Country:</strong></label>
+    <select id="country-select" @onchange="OnCountryChanged" disabled="@Disabled" class="form-select">
+        <option value="@Country.USA" selected="@(SelectedCountry == Country.USA)">USA</option>
+        <option value="@Country.Slovenia" selected="@(SelectedCountry == Country.Slovenia)">Slovenia</option>
+        <option value="@Country.Austria" selected="@(SelectedCountry == Country.Austria)">Austria</option>
+    </select>
+</div>
+
+@code {
+    [Parameter]
+    public Country SelectedCountry { get; set; }
+
+    [Parameter]
+    public EventCallback<Country> SelectedCountryChanged { get; set; }
+
+    [Parameter]
+    public bool Disabled { get; set; }
+
+    private async Task OnCountryChanged(ChangeEventArgs args)
+    {
+        if (args.Value is string value && Enum.TryParse<Country>(value, out var country))
+        {
+            if (country != SelectedCountry)
+            {
+                await SelectedCountryChanged.InvokeAsync(country);
+            }
+        }
+    }
+}

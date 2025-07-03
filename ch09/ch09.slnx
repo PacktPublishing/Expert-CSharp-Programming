@@ -1,0 +1,17 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Solution Items/">
+    <File Path="../Directory.Packages.props" />
+  </Folder>
+  <Project Path="AccumulateSample/AccumulateSample.csproj" />
+  <Project Path="AllPatterns/AllPatterns.csproj" />
+  <Project Path="Benchmark/Benchmark.csproj" />
+  <Project Path="CSV-Blazor/CSVBlazor/CSVBlazor.csproj" />
+  <Project Path="CSV-Sample/CSV-Sample.csproj" />
+  <Project Path="TrafficLight/TrafficLight.csproj" />
+  <Project Path="TrafficLightBlazor/TrafficLightBlazor.csproj" />
+</Solution>

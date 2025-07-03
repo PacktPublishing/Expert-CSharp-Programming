@@ -1,0 +1,92 @@
+@using TrafficLightBlazor.Models
+@using static TrafficLightBlazor.Models.TrafficLightColor
+@using System.Timers
+@implements IDisposable
+
+<div class="traffic-light">
+    <div class="light red @(IsLightOn(Red) ? "on" : "off")"></div>
+    <div class="light amber @(IsLightOn(Amber) ? "on" : "off")"></div>
+    <div class="light green @(IsLightOn(Green) ? GetGreenCssClass() : "off")"></div>
+</div>
+
+@code {
+    [Parameter]
+    public TrafficLight CurrentLight { get; set; }
+
+    private System.Timers.Timer? blinkTimer;
+    private bool isBlinking = false;
+
+    private bool IsLightOn(TrafficLightColor color)
+    {
+        return CurrentLight.Current switch
+        {
+            RedAndAmber => color == Red || color == Amber,
+            GreenBlinking => color == Green,
+            var current => current == color
+        };
+    }
+
+    private string GetGreenCssClass()
+    {
+        if (CurrentLight.Current == GreenBlinking)
+        {
+            return isBlinking ? "on blinking" : "on";
+        }
+        return "on";
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        StartBlinkTimer();
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        // Handle blinking based on current state
+        if (CurrentLight.Current == GreenBlinking)
+        {
+            if (blinkTimer == null)
+            {
+                StartBlinkTimer();
+            }
+        }
+        else if (blinkTimer != null)
+        {
+            StopBlinkTimer();
+        }
+    }
+
+    private void StartBlinkTimer()
+    {
+        blinkTimer = new System.Timers.Timer(250);
+        blinkTimer.Elapsed += OnBlinkTimerElapsed;
+        blinkTimer.AutoReset = true;
+        blinkTimer.Start();
+    }
+
+    private void StopBlinkTimer()
+    {
+        if (blinkTimer != null)
+        {
+            blinkTimer.Stop();
+            blinkTimer.Elapsed -= OnBlinkTimerElapsed;
+            blinkTimer.Dispose();
+            blinkTimer = null;
+            isBlinking = false;
+        }
+    }
+
+    private void OnBlinkTimerElapsed(object? sender, ElapsedEventArgs e)
+    {
+        isBlinking = !isBlinking;
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        StopBlinkTimer();
+    }
+}

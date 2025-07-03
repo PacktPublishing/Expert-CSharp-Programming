@@ -1,0 +1,45 @@
+﻿@using TrafficLightBlazor.Models
+@using static TrafficLightBlazor.Models.TrafficLightColor
+
+<div class="info">
+    <p><strong>Current State:</strong> @GetCurrentStateDisplay()</p>
+    <p><strong>Previous State:</strong> @CurrentLight.Previous</p>
+    <p><strong>Duration:</strong> @CurrentLight.Duration.TotalSeconds seconds</p>
+    @if (CurrentLight.Current == GreenBlinking)
+    {
+        <p><strong>Blink Count:</strong> @CurrentLight.BlinkCount / 3</p>
+    }
+    <p><strong>Sequence:</strong> @GetSequenceDescription()</p>
+</div>
+
+<style>
+
+</style>
+
+@code {
+    [Parameter]
+    public TrafficLight CurrentLight { get; set; }
+
+    [Parameter]
+    public Country SelectedCountry { get; set; }
+
+    private string GetCurrentStateDisplay()
+    {
+        if (CurrentLight.Current == GreenBlinking)
+        {
+            return $"Green Blinking ({CurrentLight.BlinkCount}/3)";
+        }
+        return CurrentLight.Current.ToString();
+    }
+
+    private string GetSequenceDescription()
+    {
+        return SelectedCountry switch
+        {
+            Country.Slovenia => "Green → Amber → Red → Red & Amber → Green",
+            Country.Austria => "Green → Green Blinking (3x) → Amber → Red → Red & Amber → Green",
+            Country.USA => "Green → Amber → Red → Green",
+            _ => "Green → Amber → Red → Amber → Green" // Default sequence
+        };
+    }
+}
