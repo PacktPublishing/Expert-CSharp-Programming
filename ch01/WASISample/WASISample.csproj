@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <!-- Optional: set RID here instead of only at publish time -->
+    <RuntimeIdentifier>wasi-wasm</RuntimeIdentifier>
+    <!--<PublishAot>true</PublishAot>-->
+    <!-- Optional: smaller globalization data for WASI -->
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>partial</TrimMode>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Runtime.WebAssembly.Wasi.Sdk" />
+  </ItemGroup>
+
+</Project>

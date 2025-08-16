@@ -24,4 +24,5 @@
   <Project Path="Codebreaker.Bot.Console/Codebreaker.Bot.Console.csproj" />
   <Project Path="SimpleApp/SimpleApp.csproj" />
   <Project Path="UpgradeLegacyApp/LiveShaping/LiveShaping.csproj" />
+  <Project Path="WASISample/WASISample.csproj" />
 </Solution>
