@@ -1,6 +1,6 @@
 # Chapter 2 - Generics under the hood
 
-In this chapter, you need to have the .NET 9 SDK installed, and the *Metadata Tools* to check the IL code.
+In this chapter, you need to have the .NET 10 SDK installed, and the *Metadata Tools* to check the IL code.
 
 Currently, this tool is in preview and needs to be installed with a preview feed.
 

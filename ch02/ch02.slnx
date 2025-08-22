@@ -6,4 +6,5 @@
   <Project Path="AllowsRefStruct/AllowsRefStruct.csproj" />
   <Project Path="BehindTheScenes/BehindTheScenes.csproj" />
   <Project Path="GamesSample/GamesSample.csproj" />
+  <Project Path="NumericSample/NumericSample.csproj" />
 </Solution>
