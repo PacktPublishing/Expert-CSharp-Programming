@@ -1,4 +1,6 @@
 ﻿
+using System.Runtime.CompilerServices;
+
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 
@@ -21,7 +23,7 @@ public class BenchmarkList
 
     private static int BoxingList()
     {
-        List<object> list = new(1000);
+        List<object> list = new(capacity: 1000);
         for (int i = 0; i < 1000; i++)
         {
             list.Add(i);
@@ -37,7 +39,7 @@ public class BenchmarkList
 
     private static int ValuesList()
     {
-        List<int> list = new(1000);
+        List<int> list = new(capacity: 1000);
         for (int i = 0; i < 1000; i++)
         {
             list.Add(i);
@@ -51,6 +53,3 @@ public class BenchmarkList
         return sum;
     }
 }
-
-
-
