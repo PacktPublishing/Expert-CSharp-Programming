@@ -8,30 +8,31 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
+    x:Name="This"
     Title="WinUI Editor">
 
     <Window.SystemBackdrop>
         <MicaBackdrop />
     </Window.SystemBackdrop>
 
-    <Grid x:Name="Root" RowDefinitions="Auto,*,Auto" Padding="12">
+    <Grid x:Name="Root" RowDefinitions="Auto,*,Auto" Padding="12" x:DataType="local:MainWindow">
         <controls:CommandBar DefaultLabelPosition="Bottom">
-            <AppBarButton Label="New" Command="{Binding NewCommand}">
+            <AppBarButton Label="New" Command="{x:Bind ViewModel.NewCommand}">
                 <AppBarButton.Icon>
                     <SymbolIcon Symbol="Page2" />
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton Label="Open" Command="{Binding OpenCommand}">
+            <AppBarButton Label="Open" Command="{x:Bind ViewModel.OpenCommand}">
                 <AppBarButton.Icon>
                     <SymbolIcon Symbol="OpenFile" />
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton Label="Save" Command="{Binding SaveCommand}">
+            <AppBarButton Label="Save" Command="{x:Bind ViewModel.SaveCommand}">
                 <AppBarButton.Icon>
                     <SymbolIcon Symbol="Save" />
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton Label="Save As" Command="{Binding SaveAsCommand}">
+            <AppBarButton Label="Save As" Command="{x:Bind ViewModel.SaveAsCommand}">
                 <AppBarButton.Icon>
                     <SymbolIcon Symbol="Save" />
                 </AppBarButton.Icon>
@@ -39,7 +40,7 @@
         </controls:CommandBar>
 
         <TextBox Grid.Row="1"
-                 Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Text="{x:Bind ViewModel.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  TextWrapping="Wrap"
                  AcceptsReturn="True"
                  VerticalAlignment="Stretch"
@@ -50,9 +51,9 @@
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="12">
             <TextBlock Text="File:"/>
-            <TextBlock Text="{Binding FileName}" FontWeight="SemiBold"/>
+            <TextBlock Text="{x:Bind ViewModel.FileName}" FontWeight="SemiBold"/>
             <TextBlock Text="  "/>
-            <TextBlock Text="{Binding Status}" Foreground="Gray"/>
+            <TextBlock Text="{x:Bind ViewModel.Status}" Foreground="Gray"/>
         </StackPanel>
     </Grid>
 </Window>

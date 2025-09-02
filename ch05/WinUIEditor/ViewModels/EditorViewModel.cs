@@ -1,8 +1,8 @@
-using System.IO;
 using System.Text;
-using System.Threading.Tasks;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
 using WinUIEditor.Services;
 
 namespace WinUIEditor.ViewModels;
@@ -15,17 +15,14 @@ public partial class EditorViewModel(IFilePickerService filePicker) : Observable
     public partial string? FilePath { get; set; }
 
     [ObservableProperty]
-    public partial string Text { get; set; }
+    public partial string Text { get; set; } = string.Empty;
 
     [ObservableProperty]
     public partial string Status { get; set; } = "Ready";
 
     public string FileName => string.IsNullOrEmpty(FilePath) ? "(new)" : Path.GetFileName(FilePath);
 
-    partial void OnFilePathChanged(string? value)
-    {
-        OnPropertyChanged(nameof(FileName));
-    }
+    partial void OnFilePathChanged(string? value) => OnPropertyChanged(nameof(FileName));
 
     [RelayCommand]
     private void New()
@@ -38,41 +35,90 @@ public partial class EditorViewModel(IFilePickerService filePicker) : Observable
     [RelayCommand]
     private async Task OpenAsync()
     {
-        var path = await _filePicker.PickOpenFileAsync();
-        if (string.IsNullOrEmpty(path))
+        try
         {
-            return;
-        }
+            var path = await _filePicker.PickOpenFileAsync();
+            if (string.IsNullOrEmpty(path))
+            {
+                Status = "Open canceled";
+                return;
+            }
 
-        Text = await File.ReadAllTextAsync(path, Encoding.UTF8);
-        FilePath = path;
-        Status = "Opened";
+            var content = await File.ReadAllTextAsync(path, Encoding.UTF8);
+            Text = content;
+            FilePath = path;
+            Status = $"Opened {FileName}";
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            Status = $"Open denied: {ex.Message}";
+        }
+        catch (IOException ex)
+        {
+            Status = $"Open failed: {ex.Message}";
+        }
+        catch (Exception ex)
+        {
+            Status = $"Unexpected error opening file: {ex.Message}";
+        }
     }
 
     [RelayCommand]
     private async Task SaveAsync()
-    {
-        if (string.IsNullOrEmpty(FilePath))
+    {   
+        try
         {
-            await SaveAsAsync();
-            return;
-        }
+            if (string.IsNullOrEmpty(FilePath))
+            {
+                await SaveAsAsync();
+                return;
+            }
 
-        await File.WriteAllTextAsync(FilePath, Text, Encoding.UTF8);
-        Status = "Saved";
+            await File.WriteAllTextAsync(FilePath, Text, Encoding.UTF8);
+            Status = $"Saved {FileName}";
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            Status = $"Save denied: {ex.Message}";
+        }
+        catch (IOException ex)
+        {
+            Status = $"Save failed: {ex.Message}";
+        }
+        catch (Exception ex)
+        {
+            Status = $"Unexpected error saving file: {ex.Message}";
+        }
     }
 
     [RelayCommand]
     private async Task SaveAsAsync()
     {
-        var suggested = string.IsNullOrEmpty(FileName) ? "document" : Path.GetFileNameWithoutExtension(FileName);
-        var path = await _filePicker.PickSaveFileAsync(suggested);
-        if (string.IsNullOrEmpty(path))
+        try
         {
-            return;
+            var suggested = string.IsNullOrEmpty(FileName) ? "document" : Path.GetFileNameWithoutExtension(FileName);
+            var path = await _filePicker.PickSaveFileAsync(suggested);
+            if (string.IsNullOrEmpty(path))
+            {
+                Status = "Save canceled";
+                return;
+            }
+
+            FilePath = path;
+            await File.WriteAllTextAsync(FilePath, Text, Encoding.UTF8);
+            Status = $"Saved {FileName}";
         }
-        FilePath = path;
-        await File.WriteAllTextAsync(FilePath, Text, Encoding.UTF8);
-        Status = "Saved";
+        catch (UnauthorizedAccessException ex)
+        {
+            Status = $"Save denied: {ex.Message}";
+        }
+        catch (IOException ex)
+        {
+            Status = $"Save failed: {ex.Message}";
+        }
+        catch (Exception ex)
+        {
+            Status = $"Unexpected error saving file: {ex.Message}";
+        }
     }
 }

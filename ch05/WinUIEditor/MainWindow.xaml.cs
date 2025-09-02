@@ -1,19 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
 
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using WinUIEditor.Services;
 using WinUIEditor.ViewModels;
 
@@ -26,11 +12,14 @@ namespace WinUIEditor;
 /// </summary>
 public sealed partial class MainWindow : Window
 {
+    public EditorViewModel ViewModel { get; }
+
     public MainWindow()
     {
         InitializeComponent();
-        // Setup MVVM DataContext
         var filePicker = new FilePickerService(this);
-        Root.DataContext = new EditorViewModel(filePicker);
+        ViewModel = new EditorViewModel(filePicker);
+        // Optional: still set DataContext if any classic {Binding} remains
+        Root.DataContext = ViewModel;
     }
 }
