@@ -1,4 +1,6 @@
-﻿using BenchmarkDotNet.Attributes;
+﻿using System.Runtime.CompilerServices;
+
+using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Running;
 
@@ -8,6 +10,7 @@ BenchmarkRunner.Run<BenchmarkExceptions>();
 [SimpleJob(RuntimeMoniker.Net70)]
 [SimpleJob(RuntimeMoniker.Net80)]
 [SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 [MemoryDiagnoser]
 public class BenchmarkExceptions
 {
@@ -23,6 +26,7 @@ public class BenchmarkExceptions
         ParseWithStatusCode();
     }
 
+    [MethodImpl(MethodImplOptions.NoInlining)]
     internal static void ParseWithException()
     {
         string test = "test";
@@ -45,6 +49,7 @@ public class BenchmarkExceptions
         }
     }
 
+    [MethodImpl(MethodImplOptions.NoInlining)]
     internal static void ParseWithStatusCode()
     {
         int i = 0;
