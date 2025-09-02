@@ -32,6 +32,8 @@
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery.Yarp" Version="9.4.1" />
     <PackageVersion Include="Microsoft.NET.Runtime.WebAssembly.Wasi.Sdk" Version="9.0.8" />
     <PackageVersion Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4948" />
+    <PackageVersion Include="Microsoft.WindowsAppSDK" Version="1.7.250606001" />
   </ItemGroup>
   <!-- Microsoft common packages -->
   <ItemGroup>
