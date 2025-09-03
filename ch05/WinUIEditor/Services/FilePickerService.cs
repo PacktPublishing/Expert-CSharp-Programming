@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 
+using Windows.Storage;
 using Windows.Storage.Pickers;
 
 using WinRT.Interop;
@@ -8,41 +9,28 @@ namespace WinUIEditor.Services;
 
 public sealed class FilePickerService(Window window) : IFilePickerService
 {
-    public async Task<string?> PickOpenFileAsync()
+    public async Task<StorageFile?> PickOpenFileAsync()
     {
-        try
-        {
-            var hwnd = WindowNative.GetWindowHandle(window);
-            var picker = new FileOpenPicker();
-            InitializeWithWindow.Initialize(picker, hwnd);
-            picker.FileTypeFilter.Add("*");
-            var file = await picker.PickSingleFileAsync();
-            return file?.Path;
-        }
-        catch
-        {
-            // Swallow and let ViewModel set a friendly status message.
-            return null;
-        }
+        var hwnd = WindowNative.GetWindowHandle(window);
+        FileOpenPicker picker = new();
+        InitializeWithWindow.Initialize(picker, hwnd);
+        picker.FileTypeFilter.Add("*");
+        var file = await picker.PickSingleFileAsync();
+        return file;
     }
 
-    public async Task<string?> PickSaveFileAsync(string suggestedFileName)
+    public async Task<StorageFile?> PickSaveFileAsync(string suggestedFileName)
     {
-        try
+        var hwnd = WindowNative.GetWindowHandle(window);
+        FileSavePicker picker = new()
         {
-            var hwnd = WindowNative.GetWindowHandle(window);
-            var picker = new FileSavePicker();
-            InitializeWithWindow.Initialize(picker, hwnd);
-            picker.SuggestedFileName = suggestedFileName;
-            picker.FileTypeChoices.Add("Text", [".txt", ".md", ".log", ".cs"]);
-            picker.DefaultFileExtension = ".txt";
-            var file = await picker.PickSaveFileAsync();
-            return file?.Path;
-        }
-        catch
-        {
-            // Swallow and let ViewModel set a friendly status message.
-            return null;
-        }
+            SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
+            SuggestedFileName = suggestedFileName
+        };
+        InitializeWithWindow.Initialize(picker, hwnd);
+        picker.FileTypeChoices.Add("Text", [".txt", ".md", ".log", ".cs"]);
+        picker.DefaultFileExtension = ".txt";
+        var file = await picker.PickSaveFileAsync();
+        return file;
     }
 }

@@ -47,7 +47,21 @@ public class BooksContext(DbContextOptions<BooksContext> options, ILogger<BooksC
 
     private bool LogErrorFilter(Exception ex)
     {
-        logger.LogError(ex, "Error: {error}", ex.Message);
+        try
+        {
+            if (ex is OperationCanceledException)
+            {
+                return false;
+            }
+            if (logger.IsEnabled(LogLevel.Error))
+            {
+                logger.LogError(ex, "Error: {error}", ex.Message);
+            }
+        }
+        catch
+        {
+            // never allow the filter to throw
+        }
         return false;
     }   
 

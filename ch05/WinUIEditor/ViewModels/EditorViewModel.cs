@@ -3,6 +3,14 @@ using System.Text;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
+using Microsoft.UI.Xaml;
+
+using Windows.Storage;
+using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
+
+using WinRT.Interop;
+
 using WinUIEditor.Services;
 
 namespace WinUIEditor.ViewModels;
@@ -37,16 +45,19 @@ public partial class EditorViewModel(IFilePickerService filePicker) : Observable
     {
         try
         {
-            var path = await _filePicker.PickOpenFileAsync();
-            if (string.IsNullOrEmpty(path))
+            StorageFile? file = await _filePicker.PickOpenFileAsync();
+            if (file is null)
             {
                 Status = "Open canceled";
                 return;
             }
 
-            var content = await File.ReadAllTextAsync(path, Encoding.UTF8);
-            Text = content;
-            FilePath = path;
+            FilePath = file.Path;
+            IRandomAccessStreamWithContentType stream = await file.OpenReadAsync();
+            using DataReader reader = new(stream);
+            await reader.LoadAsync((uint)stream.Size);
+            Text = reader.ReadString((uint)stream.Size);
+
             Status = $"Opened {FileName}";
         }
         catch (UnauthorizedAccessException ex)
@@ -65,30 +76,17 @@ public partial class EditorViewModel(IFilePickerService filePicker) : Observable
 
     [RelayCommand]
     private async Task SaveAsync()
-    {   
-        try
+    {
+        if (FilePath is null)
         {
-            if (string.IsNullOrEmpty(FilePath))
-            {
-                await SaveAsAsync();
-                return;
-            }
+            Status = "No file to save";
+            return;
+        }
+        
+        StorageFile file = await StorageFile.GetFileFromPathAsync(FilePath);
+        await FileIO.WriteTextAsync(file, Text, Windows.Storage.Streams.UnicodeEncoding.Utf8);
 
-            await File.WriteAllTextAsync(FilePath, Text, Encoding.UTF8);
-            Status = $"Saved {FileName}";
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            Status = $"Save denied: {ex.Message}";
-        }
-        catch (IOException ex)
-        {
-            Status = $"Save failed: {ex.Message}";
-        }
-        catch (Exception ex)
-        {
-            Status = $"Unexpected error saving file: {ex.Message}";
-        }
+        Status = $"Saved {FileName}";
     }
 
     [RelayCommand]
@@ -96,16 +94,23 @@ public partial class EditorViewModel(IFilePickerService filePicker) : Observable
     {
         try
         {
-            var suggested = string.IsNullOrEmpty(FileName) ? "document" : Path.GetFileNameWithoutExtension(FileName);
-            var path = await _filePicker.PickSaveFileAsync(suggested);
-            if (string.IsNullOrEmpty(path))
+            var suggested = string.IsNullOrEmpty(FileName) ? "New Document" : Path.GetFileNameWithoutExtension(FileName);
+            var file = await _filePicker.PickSaveFileAsync(suggested);
+            if (file is null)
             {
                 Status = "Save canceled";
                 return;
             }
 
-            FilePath = path;
-            await File.WriteAllTextAsync(FilePath, Text, Encoding.UTF8);
+            FilePath = file.Path;
+
+            using StorageStreamTransaction tx = await file.OpenTransactedWriteAsync();
+            IRandomAccessStream stream = tx.Stream;
+            stream.Seek(0);
+            using DataWriter writer = new(stream);
+            writer.WriteString(Text);
+            tx.Stream.Size = await writer.StoreAsync();
+            await tx.CommitAsync();
             Status = $"Saved {FileName}";
         }
         catch (UnauthorizedAccessException ex)

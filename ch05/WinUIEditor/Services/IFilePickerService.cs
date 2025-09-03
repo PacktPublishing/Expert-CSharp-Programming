@@ -1,7 +1,9 @@
+using Windows.Storage;
+
 namespace WinUIEditor.Services;
 
 public interface IFilePickerService
 {
-    Task<string?> PickOpenFileAsync();
-    Task<string?> PickSaveFileAsync(string suggestedFileName);
+    Task<StorageFile?> PickOpenFileAsync();
+    Task<StorageFile?> PickSaveFileAsync(string suggestedFileName);
 }

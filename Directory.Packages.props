@@ -46,7 +46,7 @@
   </ItemGroup>
   <!-- Third party packages -->
   <ItemGroup>
-    <PackageVersion Include="Swashbuckle.AspNetCore" Version="9.0.4" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="9.0.3" />
     <PackageVersion Include="Swashbuckle.AspNetCore.Annotations" Version="7.2.0" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
   </ItemGroup>

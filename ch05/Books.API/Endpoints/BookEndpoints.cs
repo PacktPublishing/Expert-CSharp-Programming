@@ -18,7 +18,12 @@ public static class BookEndpoints
             return TypedResults.Ok(books);
         })
         .WithName("GetAllBooks")
-        .WithOpenApi();
+        .AddOpenApiOperationTransformer((operation, _, _) =>
+        {
+            operation.Summary = "Gets all books";
+            operation.Description = "Gets all books from the database.";
+            return Task.CompletedTask;
+        });
 
         group.MapGet("/{id}", async Task<Results<Ok<Book>, NotFound, InternalServerError>> (int id, IBooksService booksService, CancellationToken cancellationToken) =>
         {
@@ -28,11 +33,16 @@ public static class BookEndpoints
                     : TypedResults.NotFound();
         })
         .WithName("GetBookById")
-        .WithOpenApi();
+        .AddOpenApiOperationTransformer((operation, _, _) =>
+        {
+            operation.Summary = "Gets a book by ID";
+            operation.Description = "Gets a single book from the database by its ID.";
+            return Task.CompletedTask;
+        });
 
         group.MapPut("/{id}", async Task<Results<Ok, NotFound, BadRequest, InternalServerError>> (int id, Book book, IBooksService booksService, CancellationToken cancellationToken) =>
         {
-            //if (id != book.Id)
+            //if (id != book.Id) // replaced by ValidateMatchIdEndpointFilter
             //{
             //    return TypedResults.BadRequest();
             //}
@@ -43,7 +53,12 @@ public static class BookEndpoints
         })
         .AddEndpointFilter<ValidateMatchIdEndpointFilter>()
         .WithName("UpdateBook")
-        .WithOpenApi();
+        .AddOpenApiOperationTransformer((operation, _, _) =>
+        {
+            operation.Summary = "Updates a book";
+            operation.Description = "Updates a book in the database.";
+            return Task.CompletedTask;
+        });
 
         group.MapPost("/", async Task<Results<Created<Book>, InternalServerError>> (Book book, IBooksService booksService, CancellationToken cancellationToken) =>
         {
@@ -51,7 +66,12 @@ public static class BookEndpoints
             return TypedResults.Created($"/api/Book/{book.Id}", book);
         })
         .WithName("CreateBook")
-        .WithOpenApi();
+        .AddOpenApiOperationTransformer((operation, _, _) =>
+        {
+            operation.Summary = "Creates a new book";
+            operation.Description = "Creates a new book in the database.";
+            return Task.CompletedTask;
+        });
 
         group.MapDelete("/{id}", async Task<Results<Ok, NotFound, InternalServerError>> (int id, IBooksService booksService, CancellationToken cancellationToken) =>
         {
@@ -59,6 +79,11 @@ public static class BookEndpoints
             return affected == 1 ? TypedResults.Ok() : TypedResults.NotFound();
         })
         .WithName("DeleteBook")
-        .WithOpenApi();
+        .AddOpenApiOperationTransformer((operation, _, _) =>
+        {
+            operation.Summary = "Deletes a book";
+            operation.Description = "Deletes a book from the database.";
+            return Task.CompletedTask;
+        });
     }
 }
