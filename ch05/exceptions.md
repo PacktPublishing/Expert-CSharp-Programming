@@ -1,4 +1,4 @@
-# Exceptions bubbling
+# Exceptions bubbling up the stack
 
 ```mermaid
 sequenceDiagram
@@ -13,16 +13,17 @@ sequenceDiagram
     SVC->>EF: Books.ToListAsync(ct)
     EF->>DB: Execute SQL
     DB-->>EF: Error (e.g., constraint, IO)
-    EF-->>SVC: throws SqliteException
+    EF-->>SVC: throws Exception
 
     alt SqliteException
         SVC->>SVC: catch (SqliteException)\nwrap -> BookServiceException(HResult=3000)
         SVC-->>API: throws BookServiceException
-    else Other Exception
-        SVC->>SVC: exception filter LogErrorFilter(ex) runs (logs)
-        SVC-->>API: rethrow original exception
+    else Other exception
+        Note over SVC: Exception filter LogErrorFilter(ex) runs\nlogs and returns false
+        SVC--x API: Catch not taken (filter=false)
+        SVC-->>API: exception bubbles up unchanged
     end
 
-    API->>API: catch domain exception\n(map to ProblemDetails / 5xx)
+    API->>API: catch at boundary\n(map to ProblemDetails / 5xx)
     API-->>UI: Error response (ProblemDetails)
 ```
