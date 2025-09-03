@@ -1,4 +1,4 @@
-# Exceptions bubbling
+# Exceptions bubbling up the stack
 
 ```mermaid
 sequenceDiagram
