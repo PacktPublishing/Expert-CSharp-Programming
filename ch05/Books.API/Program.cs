@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 using Books.Data;
 using Books.Services;
 
@@ -7,6 +9,12 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+
+const string activitySourceName = "BooksAPI";
+const string activitySourceVersion = "1.0.0";
+
+builder.Services.AddKeyedSingleton(activitySourceName, (services, _) =>
+    new ActivitySource(activitySourceName, activitySourceVersion));
 
 builder.Services.AddDbContext<IBooksService, BooksContext>(options =>
 {

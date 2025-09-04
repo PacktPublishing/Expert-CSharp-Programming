@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 using BlazorClient.Client.Services;
 using BlazorClient.Components;
 
@@ -13,8 +15,11 @@ builder.Services.AddHttpForwarderWithServiceDiscovery();
 builder.Services.AddHttpClient<IBooksService, BooksClient>(
     client => client.BaseAddress = new Uri("https://booksapi"));
 
-// builder.Services.AddReverseProxy().AddServiceDiscoveryDestinationResolver();
+const string activitySourceName = "BooksClient";
+const string activitySourceVersion = "1.0.0";
 
+builder.Services.AddKeyedSingleton(activitySourceName, (services, _) =>
+    new ActivitySource(activitySourceName, activitySourceVersion));
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -32,10 +37,8 @@ var app = builder.Build();
 app.UseRouting();
 app.UseHttpLogging();
 
-app.MapForwarder("/api/books/{**catch-all}", "https://booksapi", "/api/books/{**catch-all}");
-app.MapForwarder("/abc", "https://booksapi", "/api/books");  
+app.MapForwarder("/api/books/{**catch-all}", "https://booksapi", "/api/books/{**catch-all}"); 
 app.MapDefaultEndpoints();
-// app.MapReverseProxy();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

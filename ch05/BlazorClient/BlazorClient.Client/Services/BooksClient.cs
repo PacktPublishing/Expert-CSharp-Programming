@@ -1,15 +1,16 @@
-﻿using Books.Services;
+﻿using System.Diagnostics;
+using System.Net.Http.Json;
 
 using Books.Data;
-
-using System.Net.Http.Json;
+using Books.Services;
 
 namespace BlazorClient.Client.Services;
 
-public class BooksClient(HttpClient httpClient, ILogger<BooksClient> logger) : IBooksService
+public class BooksClient(HttpClient httpClient, ILogger<BooksClient> logger, [FromKeyedServices("BooksClient")] ActivitySource activitySource) : IBooksService
 {
     public async Task<Book> CreateBookAsync(Book book, CancellationToken cancellationToken = default)
     {
+        using var activity = activitySource.StartActivity("CreateBookAsync", ActivityKind.Client);
         try
         {
             var response = await httpClient.PostAsJsonAsync("/api/books", book, cancellationToken);
@@ -26,8 +27,10 @@ public class BooksClient(HttpClient httpClient, ILogger<BooksClient> logger) : I
 
     public async Task<int> DeleteBookAsync(int id, CancellationToken cancellationToken = default)
     {
+        using var activity = activitySource.CreateActivity("DeleteBookAsync", ActivityKind.Client);
         try
         {
+
             var response = await httpClient.DeleteAsync($"/api/books/{id}", cancellationToken);
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
@@ -45,6 +48,7 @@ public class BooksClient(HttpClient httpClient, ILogger<BooksClient> logger) : I
 
     public async Task<Book?> GetBookByIdAsync(int id, CancellationToken cancellationToken = default)
     {
+        using var activity = activitySource.StartActivity("GetBookByIdAsync", ActivityKind.Client);
         try
         {
             var response = await httpClient.GetAsync($"/api/books/{id}", cancellationToken);
@@ -64,15 +68,26 @@ public class BooksClient(HttpClient httpClient, ILogger<BooksClient> logger) : I
 
     public async Task<IEnumerable<Book>> GetBooksAsync(CancellationToken cancellationToken = default)
     {
+        using var activity = activitySource.StartActivity("GetBooksAsync", ActivityKind.Client);
         try
         {
             var response = await httpClient.GetAsync("/api/books", cancellationToken);
             response.EnsureSuccessStatusCode();
             var books = await response.Content.ReadFromJsonAsync<IEnumerable<Book>>(cancellationToken: cancellationToken);
+            activity?.SetStatus(ActivityStatusCode.Ok);
             return books ?? [];
         }
         catch (HttpRequestException ex) // thrown by EnsureSuccessStatusCode
         {
+            if (activity is not null)
+            { 
+                TagList tags = new()
+                {
+                    { "books.client", "getbooks" },
+                    { "error", "true" }
+                };
+                activity.AddException(ex, tags);
+            }
             logger.LogError(ex, "Error getting books");
             throw;
         }
@@ -80,6 +95,7 @@ public class BooksClient(HttpClient httpClient, ILogger<BooksClient> logger) : I
 
     public async Task<int> UpdateBookAsync(Book book, CancellationToken cancellationToken = default)
     {
+        using var activity = activitySource.StartActivity("GetBooksAsync", ActivityKind.Client);
         try
         {
             var response = await httpClient.PutAsJsonAsync($"/api/books/{book.Id}", book, cancellationToken);
