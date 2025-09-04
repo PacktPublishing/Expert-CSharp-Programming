@@ -1,4 +1,3 @@
-using Books.API.Endpoints;
 using Books.Data;
 using Books.Services;
 
@@ -34,8 +33,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapBookEndpoints();
-
-app.MapControllers().AddEndpointFilter<BookServiceExceptionFilter>();
 
 app.Run();
 

@@ -1,10 +1,15 @@
 ﻿@page "/books"
 
-
 @rendermode InteractiveWebAssembly
 @inject IBooksService Client
+@inject NavigationManager Nav
 
 <h3>Books</h3>
+
+@if (_error is not null)
+{
+    <div class="alert alert-danger">@_error</div>
+}
 
 @if (_books is null)
 {
@@ -12,12 +17,16 @@
 }
 else
 {
+    <div class="mb-3">
+        <button class="btn btn-primary" @onclick="Create">Add Book</button>
+    </div>
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Title</th>
                 <th>Publisher</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -27,6 +36,10 @@ else
                     <td>@book.Id</td>
                     <td>@book.Title</td>
                     <td>@book.Publisher</td>
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-secondary me-2" @onclick="() => Edit(book.Id)">Edit</button>
+                        <button class="btn btn-sm btn-danger" @onclick="() => Delete(book.Id)">Delete</button>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -35,15 +48,46 @@ else
 
 @code {
     private Book[]? _books;
+    private string? _error;
 
     protected override async Task OnInitializedAsync()
     {
-        // Simulate asynchronous loading to demonstrate streaming rendering
-        await Task.Delay(500);
-
-        var books = await Client.GetBooksAsync();
-        _books = books?.ToArray() ?? Array.Empty<Book>();
-
+        await LoadAsync();
     }
 
+    private async Task LoadAsync()
+    {
+        _error = null;
+        try
+        {
+            // Simulate asynchronous loading to demonstrate streaming rendering
+            await Task.Delay(200);
+            var books = await Client.GetBooksAsync();
+            _books = books?.ToArray() ?? Array.Empty<Book>();
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+    }
+
+    private void Create() => Nav.NavigateTo("/books/create");
+    private void Edit(int id) => Nav.NavigateTo($"/books/edit/{id}");
+
+    private async Task Delete(int id)
+    {
+        _error = null;
+        try
+        {
+            var affected = await Client.DeleteBookAsync(id);
+            if (affected == 1)
+            {
+                await LoadAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+    }
 }
