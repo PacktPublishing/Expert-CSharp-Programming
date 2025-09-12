@@ -1,4 +1,6 @@
-﻿using BenchmarkDotNet.Attributes;
+﻿using System.Runtime.CompilerServices;
+
+using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Running;
 
@@ -7,11 +9,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-
 BenchmarkRunner.Run<BenchmarkLogging>();
 
 [SimpleJob(RuntimeMoniker.Net80)]
 [SimpleJob(RuntimeMoniker.Net90)]
+[SimpleJob(RuntimeMoniker.Net10_0)]
 [MemoryDiagnoser]
 public class BenchmarkLogging
 {
@@ -69,17 +71,20 @@ public class BenchmarkLogging
 
 internal class Runner(ILogger<Runner> logger)
 {
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public void DoNotUseStringInterpolationLogging(Guid id, string text)
     {
         // don't use string interpolation with logging
         logger.LogInformation($"Log message with {id} and {text}");
     }
 
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public void StructuredLogging(Guid id, string text)
     {
         logger.LogInformation("Log message with {Id} and {Text}", id, text);
     }
 
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public void HighPerformanceLogging(Guid id, string text)
     {
         logger.LogHighPerformanceLogging(id, text);
