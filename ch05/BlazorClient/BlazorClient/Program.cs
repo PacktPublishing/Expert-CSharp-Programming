@@ -15,11 +15,8 @@ builder.Services.AddHttpForwarderWithServiceDiscovery();
 builder.Services.AddHttpClient<IBooksService, BooksClient>(
     client => client.BaseAddress = new Uri("https://booksapi"));
 
-const string activitySourceName = "BooksClient";
-const string activitySourceVersion = "1.0.0";
-
-builder.Services.AddKeyedSingleton(activitySourceName, (services, _) =>
-    new ActivitySource(activitySourceName, activitySourceVersion));
+builder.Services.AddKeyedSingleton("BooksClientActivity", (services, _) =>
+    new ActivitySource(builder.Environment.ApplicationName));
 
 // Add services to the container.
 builder.Services.AddRazorComponents()

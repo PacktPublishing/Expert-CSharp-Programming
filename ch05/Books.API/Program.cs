@@ -1,5 +1,6 @@
 using System.Diagnostics;
 
+using Books.API.Infrastructure;
 using Books.Data;
 using Books.Services;
 
@@ -10,11 +11,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-const string activitySourceName = "BooksAPI";
-const string activitySourceVersion = "1.0.0";
+string activitySourceName = builder.Environment.ApplicationName;
+string activitySourceVersion = "1.0.0";
 
-builder.Services.AddKeyedSingleton(activitySourceName, (services, _) =>
+builder.Services.AddKeyedSingleton("BooksAPIActivity", (_, _) =>
     new ActivitySource(activitySourceName, activitySourceVersion));
+
+builder.Services.AddMetrics();
+builder.Services.AddSingleton<BooksAPIMetrics>();
+builder.Services.AddOpenTelemetry().WithMetrics(m => m.AddMeter("BooksAPI"));
 
 builder.Services.AddDbContext<IBooksService, BooksContext>(options =>
 {

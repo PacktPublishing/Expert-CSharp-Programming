@@ -6,7 +6,7 @@ using Books.Services;
 
 namespace BlazorClient.Client.Services;
 
-public class BooksClient(HttpClient httpClient, ILogger<BooksClient> logger, [FromKeyedServices("BooksClient")] ActivitySource activitySource) : IBooksService
+public class BooksClient(HttpClient httpClient, ILogger<BooksClient> logger, [FromKeyedServices("BooksClientActivity")] ActivitySource activitySource) : IBooksService
 {
     public async Task<Book> CreateBookAsync(Book book, CancellationToken cancellationToken = default)
     {
