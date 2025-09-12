@@ -13,8 +13,7 @@ internal static partial class LoggerExtensions
     [LoggerMessage(EventId = 1002, Level = LogLevel.Error, Message = "An error occurred while accessing the database.")]
     public static partial void LogDatabaseError(this ILogger logger, Exception exception);
 
-    [LoggerMessage(EventId = 1003, Level = LogLevel.Error, Message = "Error: {exception}")]
-    public static partial void LogError(this ILogger logger, Exception exception);
-
+    [LoggerMessage(EventId = 1003, Level = LogLevel.Error, Message = "{Message}")]
+    public static partial void LogError(this ILogger logger, Exception exception, string message);
 
 }

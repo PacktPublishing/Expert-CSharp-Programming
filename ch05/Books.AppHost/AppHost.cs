@@ -12,6 +12,7 @@ var api = builder.AddProject<Projects.Books_API>("booksapi")
     .WaitFor(db);
 
 builder.AddProject<Projects.BlazorClient>("blazorclient")
+    .WithExternalHttpEndpoints()
     //.AddWebAssemblyClient<Projects.BlazorClient.Client>("blazorwasm")
     .WithReference(db)
     .WithReference(api)
