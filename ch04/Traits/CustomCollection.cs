@@ -1,19 +1,11 @@
 ﻿using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 
 namespace Traits;
 
+[CollectionBuilder(typeof(CustomCollectionBuilder), "Create")]
 public class CustomCollection<T> : Collection<T>, IEnumerableEx<T>
 {
-    public IEnumerable<T> Where(Func<T, bool> predicate)
-    {
-        foreach (var item in this)
-        {
-            if (predicate(item))
-            {
-                yield return item;
-            }
-        }
-    }
 }
 
 public class CustomCollectionBuilder
@@ -24,11 +16,11 @@ public class CustomCollectionBuilder
         // https://github.com/dotnet/roslyn/issues/70099
 #pragma warning disable IDE0028 // Simplify collection initialization
         CustomCollection<T> collection = new();
-#pragma warning restore IDE0028 // Simplify collection initialization
         foreach (T item in items)
         {
             collection.Add(item);
         }
+#pragma warning restore IDE0028 // Simplify collection initialization
         return collection;
     }
 }

@@ -11,12 +11,13 @@ CustomDictionary<int, string> dict = new()
     [5] = "five"
 };
 
-CachedList<int> cachedList = [1, 3, 4, 5, 6, 8, 11, 33];
+SnapshotList<int> snapshotList = [1, 3, 4, 5, 6, 8, 11, 33];
 
 ShowEvenValues("IEnumerableEx<int>", intValues);
-ShowEvenValues("CachedList<int>", cachedList);
-cachedList.Add(44);
-ShowEvenValues("CachedList<int> 2", cachedList);
+ShowEvenValues("SnapshotList<int>", snapshotList);
+snapshotList.Add(44);
+Console.WriteLine("As the snapshot was remembered, 44 is not shown: ");
+ShowEvenValues("SnapshotList<int> 2", snapshotList);
 ShowEvenDictionaryValues("CustomDictionary<int, string>", dict);
 
 void ShowEvenValues(string title, IEnumerableEx<int> values)
