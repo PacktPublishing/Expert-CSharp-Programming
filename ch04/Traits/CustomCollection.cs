@@ -4,6 +4,16 @@ namespace Traits;
 
 public class CustomCollection<T> : Collection<T>, IEnumerableEx<T>
 {
+    public IEnumerable<T> Where(Func<T, bool> predicate)
+    {
+        foreach (var item in this)
+        {
+            if (predicate(item))
+            {
+                yield return item;
+            }
+        }
+    }
 }
 
 public class CustomCollectionBuilder
