@@ -19,5 +19,6 @@
   </Folder>
   <Project Path="ClassesSample/ClassesSample.csproj" Id="992bef29-1bb1-478f-9a77-b9d00c06eea1" />
   <Project Path="RecordsSample/RecordsSample.csproj" />
+  <Project Path="RefStructSample/RefStructSample.csproj" />
   <Project Path="Traits/Traits.csproj" />
 </Solution>
