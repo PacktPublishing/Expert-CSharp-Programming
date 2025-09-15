@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <StackPanel ButtonBase.Click="OuterButton_Click">
-        <Button x:Name="buttonOne" Click="ButtonOne_Click">One</Button>
-        <Button Click="ButtonTwo_Click">Two</Button>
+        <Button x:Name="buttonOne" Click="ButtonOne_Click" Tag="One">One</Button>
+        <Button Click="ButtonTwo_Click" Tag="Two">Two</Button>
     </StackPanel>
 </Window>

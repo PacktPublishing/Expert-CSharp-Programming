@@ -2,14 +2,13 @@
 
 Observer observer = new();
 
-var subjects = Enumerable.Range(1, 100)
+Subject[] subjects = [.. Enumerable.Range(1, 100)
     .Select(x =>
     {
         Subject s = new(x);
         s.MyEvent += observer.Handler;
         return s;
-    })
-    .ToArray();
+    })];
 
 foreach (var subject in subjects)
 {
