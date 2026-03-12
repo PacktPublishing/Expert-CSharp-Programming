@@ -67,6 +67,7 @@ unsafe void ShowAddressX(string name, X x)
 #endif
 }
 
+#pragma warning disable CS8500 // Cannot take the address of, get the size of, or declare a pointer to a managed type ('type')
 unsafe void ShowAddressY(string name, Y y)
 {
 #if SHOWADDRESSES
@@ -78,6 +79,7 @@ unsafe void ShowAddressY(string name, Y y)
     }
 #endif
 }
+#pragma warning restore CS8500
 
 public struct X
 {
