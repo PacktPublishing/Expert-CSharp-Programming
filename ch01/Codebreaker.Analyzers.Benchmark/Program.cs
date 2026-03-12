@@ -114,22 +114,22 @@ public class BenchmarkAnalyzer
         return analyzer.GetResult();
     }
 
-    private readonly string[] codes5x5x4 = ["Square;Green", "Square;Purple", "Circle;Yellow", "Triangle;Blue"];
-    private readonly string[] guesses5x5x4 = ["Triangle;Green", "Circle;Yellow", "Star;Yellow", "Circle;Red"];
+    private readonly string[] _codes5x5x4 = ["Square;Green", "Square;Purple", "Circle;Yellow", "Triangle;Blue"];
+    private readonly string[] _guesses5x5x4 = ["Triangle;Green", "Circle;Yellow", "Star;Yellow", "Circle;Red"];
 
-    private readonly string[] codes8x5 = ["Green", "Purple", "Yellow", "Blue", "Red"];
-    private readonly string[] guesses8x5 = ["Green", "Yellow", "Yellow", "Red", "Blue"];
+    private readonly string[] _codes8x5 = ["Green", "Purple", "Yellow", "Blue", "Red"];
+    private readonly string[] _guesses8x5 = ["Green", "Yellow", "Yellow", "Red", "Blue"];
 
-    private readonly string[] codes6x4 = ["Green", "Purple", "Yellow", "Blue"];
-    private readonly string[] guesses6x4 = ["Green", "Yellow", "Yellow", "Red"];
+    private readonly string[] _codes6x4 = ["Green", "Purple", "Yellow", "Blue"];
+    private readonly string[] _guesses6x4 = ["Green", "Yellow", "Yellow", "Red"];
 
-
-    [Benchmark]
-    public void Analyze5x5x4Game() => Analyze5x5x4Game(codes5x5x4, guesses5x5x4);
 
     [Benchmark]
-    public void Analyze8x5Game() => Analyze8x5Game(codes8x5, guesses8x5);
+    public void Analyze5x5x4Game() => Analyze5x5x4Game(_codes5x5x4, _guesses5x5x4);
 
     [Benchmark]
-    public void Analyze6x4Game() => Analyze6x4Game(codes6x4, guesses6x4);
+    public void Analyze8x5Game() => Analyze8x5Game(_codes8x5, _guesses8x5);
+
+    [Benchmark]
+    public void Analyze6x4Game() => Analyze6x4Game(_codes6x4, _guesses6x4);
 }
