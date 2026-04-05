@@ -1,0 +1,87 @@
+@page "/"
+@rendermode InteractiveServer
+@inject BooksClient Client
+@inject NavigationManager Navigation
+
+<PageTitle>BookStore - Catalog</PageTitle>
+
+<h1>Book Catalog</h1>
+
+<form @onsubmit="SearchAsync" @onsubmit:preventDefault>
+    <input type="search" @bind="searchTerm" @bind:event="oninput"
+           placeholder="Search by title, author, or ISBN…" />
+    <button type="submit">Search</button>
+</form>
+
+@if (isLoading)
+{
+    <p>Loading…</p>
+}
+else if (books is { Count: 0 })
+{
+    <p id="no-results">No books found.</p>
+}
+else if (books is not null)
+{
+    <table id="books-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>In Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in books)
+            {
+                <tr data-book-id="@book.Id">
+                    <td>@book.Title</td>
+                    <td>@book.Author</td>
+                    <td>@book.Category</td>
+                    <td>@book.Price.ToString("C")</td>
+                    <td>@(book.StockQuantity > 0 ? "Yes" : "No")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    /// <summary>Bound to the <c>?q=</c> query-string parameter.</summary>
+    [SupplyParameterFromQuery(Name = "q")]
+    public string? Q { get; set; }
+
+    private string? searchTerm;
+    private IReadOnlyList<Book>? books;
+    private bool isLoading = true;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        searchTerm = Q;
+        await LoadBooksAsync();
+    }
+
+    private Task SearchAsync()
+    {
+        var url = string.IsNullOrWhiteSpace(searchTerm)
+            ? "/"
+            : $"/?q={Uri.EscapeDataString(searchTerm)}";
+
+        Navigation.NavigateTo(url);
+        return Task.CompletedTask;
+    }
+
+    private async Task LoadBooksAsync()
+    {
+        isLoading = true;
+
+        var url = string.IsNullOrWhiteSpace(searchTerm)
+            ? "/api/books"
+            : $"/api/books/search?q={Uri.EscapeDataString(searchTerm)}";
+
+        books = await Client.GetBooksAsync(url) ?? [];
+        isLoading = false;
+    }
+}
