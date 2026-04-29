@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TUnit" Version="1.24.0" />
-    <PackageReference Include="TUnit.Mocks" Version="*-*" />
+    <PackageReference Include="TUnit" />
+    <PackageReference Include="TUnit.Mocks" />
   </ItemGroup>
 
   <ItemGroup>
