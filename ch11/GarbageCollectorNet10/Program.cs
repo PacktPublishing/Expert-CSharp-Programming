@@ -17,6 +17,7 @@ Console.WriteLine($"   Latency Mode:   {GCSettings.LatencyMode}");
 Console.WriteLine($"   Max Generation: {GC.MaxGeneration}");
 Console.WriteLine($"   Total Memory:   {GC.GetTotalMemory(forceFullCollection: false),12:N0} bytes");
 Console.WriteLine($"   Total Alloc:    {GC.GetTotalAllocatedBytes(precise: false),12:N0} bytes");
+
 Console.WriteLine();
 
 // ============================================================
@@ -153,7 +154,7 @@ static void AllocateWithArrayPool()
     const int totalBuffers = 1_000;
     const int batchSize = 100;
 
-    List<byte[]> buffers = new(batchSize);
+    List<byte[]> buffers = [with(capacity:batchSize)];
     int rented = 0;
 
     while (rented < totalBuffers)
