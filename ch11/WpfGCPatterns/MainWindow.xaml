@@ -39,7 +39,7 @@
         <!-- Controls -->
         <WrapPanel Grid.Row="2" Margin="0,0,0,12">
             <Button x:Name="StartAnimationLowLatencyButton"
-                    Content="▶ Start Animation (SustainedLowLatency, not No-GC)"
+                    Content="▶ Start Animation (SustainedLowLatency)"
                     Padding="10,6" Margin="0,0,8,0"
                     Click="OnStartAnimationLowLatency"/>
             <Button x:Name="StartAnimationDefaultButton"
