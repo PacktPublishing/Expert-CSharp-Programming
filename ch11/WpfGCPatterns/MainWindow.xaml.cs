@@ -1,5 +1,6 @@
 using System.Runtime;
 using System.Windows;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
 namespace WpfGCPatterns;
@@ -32,8 +33,10 @@ namespace WpfGCPatterns;
 // ============================================================
 public partial class MainWindow : Window
 {
-    // ── Animation timer ───────────────────────────────────────
+    // ── Animation timer + real WPF storyboard ─────────────────
     private readonly DispatcherTimer _animationTimer = new() { Interval = TimeSpan.FromMilliseconds(16) };
+    private readonly Storyboard _dotStoryboard = new();
+    private readonly List<byte[]> _pressureBuffers = new(capacity: 128);
     private GCLatencyMode _previousLatencyMode;
     private int _frame;
 
@@ -49,6 +52,8 @@ public partial class MainWindow : Window
         _animationTimer.Tick += OnAnimationTick;
         _metricsTimer.Tick   += OnMetricsTick;
 
+        ConfigureDotAnimation();
+
         // ✅ Unsubscribe when the window closes to prevent a memory leak
         Closed += OnWindowClosed;
     }
@@ -62,33 +67,52 @@ public partial class MainWindow : Window
         AddMetric("Window loaded — metrics collection started.");
     }
 
-    // ── 1. Animation with SustainedLowLatency ─────────────────
+    // ── 1. Animation start options ─────────────────────────────
 
-    private void OnStartAnimation(object sender, RoutedEventArgs e)
+    private void OnStartAnimationLowLatency(object sender, RoutedEventArgs e)
     {
         // ✅ Switch to SustainedLowLatency BEFORE starting the animation
         //    so there is no Gen-2 collection during the render loop.
-        _previousLatencyMode  = GCSettings.LatencyMode;
+        _previousLatencyMode = GCSettings.LatencyMode;
         GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
         LatencyText.Text = GCSettings.LatencyMode.ToString();
 
+        StartAnimationCore();
+        AddMetric("▶ Animation started — latency set to SustainedLowLatency. Gen0/Gen1 continue; Gen2 may still occur under pressure.");
+    }
+
+    private void OnStartAnimationDefault(object sender, RoutedEventArgs e)
+    {
+        // Keep the current latency mode unchanged to compare behavior.
+        _previousLatencyMode = GCSettings.LatencyMode;
+        LatencyText.Text = GCSettings.LatencyMode.ToString();
+
+        StartAnimationCore();
+        AddMetric($"▶ Animation started — GC kept at {GCSettings.LatencyMode}.");
+    }
+
+    private void StartAnimationCore()
+    {
         _frame = 0;
-        StartAnimationButton.IsEnabled = false;
-        StopAnimationButton.IsEnabled  = true;
+        StartAnimationLowLatencyButton.IsEnabled = false;
+        StartAnimationDefaultButton.IsEnabled = false;
+        StopAnimationButton.IsEnabled = true;
         _animationTimer.Start();
-        AddMetric("▶ Animation started — GC switched to SustainedLowLatency.");
+        _dotStoryboard.Begin(this, isControllable: true);
     }
 
     private void OnStopAnimation(object sender, RoutedEventArgs e)
     {
         _animationTimer.Stop();
+        _dotStoryboard.Stop(this);
 
         // ✅ Restore the previous latency mode so idle GC can reclaim memory
         GCSettings.LatencyMode = _previousLatencyMode;
         LatencyText.Text = GCSettings.LatencyMode.ToString();
 
-        StartAnimationButton.IsEnabled = true;
-        StopAnimationButton.IsEnabled  = false;
+        StartAnimationLowLatencyButton.IsEnabled = true;
+        StartAnimationDefaultButton.IsEnabled = true;
+        StopAnimationButton.IsEnabled = false;
         AddMetric($"⏹ Animation stopped at frame {_frame} — GC restored to {_previousLatencyMode}.");
     }
 
@@ -177,6 +201,45 @@ public partial class MainWindow : Window
         MetricsListBox.ScrollIntoView(MetricsListBox.Items[^1]);
     }
 
+    private void OnIncreaseMemoryPressure(object sender, RoutedEventArgs e)
+    {
+        const int buffersToAdd = 16;
+        const int bytesPerBuffer = 1_048_576; // 1 MiB
+
+        for (int i = 0; i < buffersToAdd; i++)
+        {
+            _pressureBuffers.Add(new byte[bytesPerBuffer]);
+        }
+
+        long retainedBytes = (long)_pressureBuffers.Count * bytesPerBuffer;
+        AddMetric($"📈 Increased pressure — retained {_pressureBuffers.Count} MiB ({retainedBytes / 1024.0 / 1024.0:F0} MiB). SustainedLowLatency can still trigger Gen2 under pressure.");
+    }
+
+    private void OnForceGc(object sender, RoutedEventArgs e)
+    {
+        AddMetric("🧪 Forcing full blocking Gen2 GC...");
+        GC.Collect(2, GCCollectionMode.Forced, blocking: true, compacting: true);
+        GC.WaitForPendingFinalizers();
+        AddMetric("🧪 Full GC completed.");
+    }
+
+    private void ConfigureDotAnimation()
+    {
+        DoubleAnimation animation = new()
+        {
+            From = 0,
+            To = 600,
+            Duration = TimeSpan.FromMilliseconds(1100),
+            AutoReverse = true,
+            RepeatBehavior = RepeatBehavior.Forever,
+            EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut }
+        };
+
+        Storyboard.SetTargetName(animation, nameof(DotTransform));
+        Storyboard.SetTargetProperty(animation, new PropertyPath("X"));
+        _dotStoryboard.Children.Add(animation);
+    }
+
     private void AddMetric(string message) =>
         MetricsListBox.Items.Add($">>> {message}");
 
@@ -186,10 +249,12 @@ public partial class MainWindow : Window
         if (_animationTimer.IsEnabled)
         {
             _animationTimer.Stop();
+            _dotStoryboard.Stop(this);
             GCSettings.LatencyMode = _previousLatencyMode;
         }
 
         _metricsTimer.Stop();
+        _pressureBuffers.Clear();
 
         // ✅ Remove any remaining event subscriptions
         if (_leakHandler is not null)

@@ -19,6 +19,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -37,10 +38,14 @@
 
         <!-- Controls -->
         <WrapPanel Grid.Row="2" Margin="0,0,0,12">
-            <Button x:Name="StartAnimationButton"
-                    Content="▶ Start Animation (SustainedLowLatency)"
+            <Button x:Name="StartAnimationLowLatencyButton"
+                    Content="▶ Start Animation (SustainedLowLatency, not No-GC)"
                     Padding="10,6" Margin="0,0,8,0"
-                    Click="OnStartAnimation"/>
+                    Click="OnStartAnimationLowLatency"/>
+            <Button x:Name="StartAnimationDefaultButton"
+                    Content="▶ Start Animation (Default Latency)"
+                    Padding="10,6" Margin="0,0,8,0"
+                    Click="OnStartAnimationDefault"/>
             <Button x:Name="StopAnimationButton"
                     Content="⏹ Stop Animation"
                     Padding="10,6" Margin="0,0,8,0"
@@ -52,18 +57,40 @@
                     Click="OnHeavyWork"/>
             <Button x:Name="LeakDemoButton"
                     Content="⚠ Simulate Event Leak"
-                    Padding="10,6"
+                    Padding="10,6" Margin="0,0,8,0"
                     Click="OnSimulateLeak"/>
+            <Button x:Name="IncreasePressureButton"
+                    Content="📈 Increase Memory Pressure"
+                    Padding="10,6" Margin="0,0,8,0"
+                    Click="OnIncreaseMemoryPressure"/>
+            <Button x:Name="ForceGcButton"
+                    Content="🧪 Force Gen2 GC"
+                    Padding="10,6"
+                    Click="OnForceGc"/>
         </WrapPanel>
 
+        <!-- Real WPF animation preview -->
+        <Border Grid.Row="3" BorderBrush="#FFD0D0D0" BorderThickness="1" CornerRadius="6" Padding="8" Margin="0,0,0,12">
+            <StackPanel>
+                <TextBlock Text="Real WPF animation (SustainedLowLatency reduces blocking pauses; GC can still run)" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                <Canvas Height="56" Background="#FFF8F8F8" ClipToBounds="True">
+                    <Ellipse Width="20" Height="20" Fill="#FF2D7DFF" Canvas.Left="8" Canvas.Top="18">
+                        <Ellipse.RenderTransform>
+                            <TranslateTransform x:Name="DotTransform"/>
+                        </Ellipse.RenderTransform>
+                    </Ellipse>
+                </Canvas>
+            </StackPanel>
+        </Border>
+
         <!-- Live heap metrics -->
-        <ListBox Grid.Row="3" x:Name="MetricsListBox"
+        <ListBox Grid.Row="4" x:Name="MetricsListBox"
                  FontFamily="Consolas" FontSize="12"
                  VirtualizingPanel.IsVirtualizing="True"
                  VirtualizingPanel.VirtualizationMode="Recycling"/>
 
         <!-- Status bar -->
-        <StatusBar Grid.Row="4">
+        <StatusBar Grid.Row="5">
             <StatusBarItem>
                 <TextBlock x:Name="StatusText" Text="Ready."/>
             </StatusBarItem>
