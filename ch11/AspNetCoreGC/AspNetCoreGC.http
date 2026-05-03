@@ -1,0 +1,21 @@
+@AspNetCoreGC_HostAddress = https://localhost:7058
+
+GET {{AspNetCoreGC_HostAddress}}/gc/stats
+Accept: application/json
+
+###
+
+GET {{AspNetCoreGC_HostAddress}}/gc/pressure
+Accept: application/json
+
+###
+
+GET {{AspNetCoreGC_HostAddress}}/gc/pool
+Accept: application/json
+
+###
+
+GET {{AspNetCoreGC_HostAddress}}/gc/arraybuffer
+Accept: application/json
+
+###
