@@ -6,7 +6,7 @@
   </PropertyGroup>
   <!-- ASP.NET Core packages -->
   <ItemGroup>
-    <PackageVersion Include="Aspire.Hosting.MySql" Version="13.2.4" />
+    <PackageVersion Include="Aspire.Hosting.MySql" Version="13.3.3" />
     <PackageVersion Include="Aspire.Hosting.SqlServer" Version="13.3.3" />
     <PackageVersion Include="Aspire.Hosting.Azure" Version="13.3.3" />
     <PackageVersion Include="Aspire.Hosting.Azure.CosmosDB" Version="13.3.3" />
@@ -15,20 +15,20 @@
     <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.Cosmos" Version="13.3.3" />
     <PackageVersion Include="Aspire.Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
     <PackageVersion Include="Aspire4Wasm" Version="3.0.0" />
-    <PackageVersion Include="CommunityToolkit.Aspire.Hosting.Sqlite" Version="13.1.1" />
+    <PackageVersion Include="CommunityToolkit.Aspire.Hosting.Sqlite" Version="13.3.0" />
     <PackageVersion Include="CommunityToolkit.Aspire.Microsoft.EntityFrameworkCore.Sqlite" Version="9.7.2" />
     <PackageVersion Include="FSharp.Core" Version="9.0.300" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.8" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.8" />
-    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.7" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.8" />
     <PackageVersion Include="Microsoft.AspNetCore.OpenAPI" Version="10.0.8" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.7" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.7" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.8" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.8" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.8" />
-    <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.7" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.8" />
     <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="10.6.0" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="10.6.0" />
-    <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery.Yarp" Version="10.5.0" />
+    <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery.Yarp" Version="10.6.0" />
     <PackageVersion Include="Microsoft.NET.Runtime.WebAssembly.Wasi.Sdk" Version="10.0.8" />
     <PackageVersion Include="Microsoft.OpenApi" Version="2.3.1" />
     <PackageVersion Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
