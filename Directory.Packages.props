@@ -7,12 +7,12 @@
   <!-- ASP.NET Core packages -->
   <ItemGroup>
     <PackageVersion Include="Aspire.Hosting.MySql" Version="13.3.3" />
-    <PackageVersion Include="Aspire.Hosting.SqlServer" Version="13.3.3" />
-    <PackageVersion Include="Aspire.Hosting.Azure" Version="13.3.3" />
-    <PackageVersion Include="Aspire.Hosting.Azure.CosmosDB" Version="13.3.3" />
+    <PackageVersion Include="Aspire.Hosting.SqlServer" Version="13.3.5" />
+    <PackageVersion Include="Aspire.Hosting.Azure" Version="13.3.5" />
+    <PackageVersion Include="Aspire.Hosting.Azure.CosmosDB" Version="13.3.5" />
     <PackageVersion Include="Aspire.Hosting.Azure.Storage" Version="9.0.0" />
-    <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="13.3.3" />
-    <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.Cosmos" Version="13.3.3" />
+    <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="13.3.5" />
+    <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.Cosmos" Version="13.3.5" />
     <PackageVersion Include="Aspire.Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
     <PackageVersion Include="Aspire4Wasm" Version="3.0.0" />
     <PackageVersion Include="CommunityToolkit.Aspire.Hosting.Sqlite" Version="13.3.0" />
