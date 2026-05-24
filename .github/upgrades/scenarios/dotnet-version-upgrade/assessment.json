@@ -1,0 +1,642 @@
+{
+  "settings": {
+    "components": {
+      "code": true,
+      "binaries": false
+    },
+    "targetId": "net10.0",
+    "targetDisplayName": ".NETCoreApp,Version=v10.0"
+  },
+  "analysisStartTime": "2026-05-24T18:35:57.8558796Z",
+  "analysisEndTime": "2026-05-24T18:35:58.290697Z",
+  "privacyModeHelpUrl": "https://go.microsoft.com/fwlink/?linkid=2270980",
+  "stats": {
+    "summary": {
+      "projects": 1,
+      "issues": 7,
+      "incidents": 21,
+      "effort": 21
+    },
+    "charts": {
+      "severity": {
+        "Mandatory": 14,
+        "Optional": 0,
+        "Potential": 7,
+        "Information": 0
+      },
+      "category": {
+        "Project": 2,
+        "Api": 19
+      }
+    }
+  },
+  "projects": [
+    {
+      "path": "LiveShaping.csproj",
+      "startingProject": true,
+      "issues": 5,
+      "storyPoints": 21,
+      "properties": {
+        "appName": "LiveShaping",
+        "projectKind": "ClassicWpf",
+        "frameworks": [
+          "net48"
+        ],
+        "languages": [
+          "C#"
+        ],
+        "tools": [
+          "MSBuild"
+        ],
+        "isSdkStyle": false,
+        "numberOfFiles": 11,
+        "numberOfCodeFiles": 10,
+        "linesTotal": 525,
+        "linesOfCode": 408,
+        "totalApiScanned": 3254,
+        "minLinesOfCodeToChange": 19,
+        "maxLinesOfCodeToChange": 19
+      },
+      "ruleInstances": [
+        {
+          "incidentId": "25e584d1-3044-47af-a30d-cb3f7b9286fe",
+          "ruleId": "Project.0001",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "kind": "File",
+            "path": "LiveShaping.csproj"
+          }
+        },
+        {
+          "incidentId": "ed3a16b3-2e73-47f9-b827-fc327385cc55",
+          "ruleId": "Project.0002",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Current target framework: .NETFramework,Version=v4.8\nRecommended target framework: net10.0-windows",
+              "protected": "Current target framework: .NETFramework,Version=v4.8\nRecommended target framework: net10.0-windows"
+            },
+            "kind": "File",
+            "path": "LiveShaping.csproj",
+            "snippet": "Current target framework: .NETFramework,Version=v4.8\nRecommended target framework: net10.0-windows",
+            "protectedSnippet": "Current target framework: .NETFramework,Version=v4.8\nRecommended target framework: net10.0-windows",
+            "properties": {
+              "CurrentTargetFramework": ".NETFramework,Version=v4.8",
+              "RecommendedTargetFramework": "net10.0-windows"
+            }
+          }
+        },
+        {
+          "incidentId": "509d000d-9981-47ba-95bb-b26cb586d83f",
+          "ruleId": "Api.0002",
+          "description": "API is available in package System.Configuration.ConfigurationManager, 9.0.0-preview.6.24302.3. Add package reference to System.Configuration.ConfigurationManager, 9.0.0-preview.6.24302.3",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "ApplicationSettingsBase",
+              "protected": "M:System.Configuration.ApplicationSettingsBase.#ctor"
+            },
+            "kind": "File",
+            "path": "Properties\\Settings.Designer.cs",
+            "snippet": "ApplicationSettingsBase",
+            "protectedSnippet": "M:System.Configuration.ApplicationSettingsBase.#ctor",
+            "label": "M:System.Configuration.ApplicationSettingsBase.#ctor",
+            "properties": {
+              "PackageId": "System.Configuration.ConfigurationManager",
+              "PackageNewVersion": "9.0.0-preview.6.24302.3"
+            },
+            "line": 15,
+            "column": 74
+          }
+        },
+        {
+          "incidentId": "813d360b-f427-47ab-9da1-04b1b0b84b97",
+          "ruleId": "Api.0002",
+          "description": "API is available in package System.Configuration.ConfigurationManager, 9.0.0-preview.6.24302.3. Add package reference to System.Configuration.ConfigurationManager, 9.0.0-preview.6.24302.3",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "ApplicationSettingsBase",
+              "protected": "T:System.Configuration.ApplicationSettingsBase"
+            },
+            "kind": "File",
+            "path": "Properties\\Settings.Designer.cs",
+            "snippet": "ApplicationSettingsBase",
+            "protectedSnippet": "T:System.Configuration.ApplicationSettingsBase",
+            "label": "T:System.Configuration.ApplicationSettingsBase",
+            "properties": {
+              "PackageId": "System.Configuration.ConfigurationManager",
+              "PackageNewVersion": "9.0.0-preview.6.24302.3"
+            },
+            "line": 15,
+            "column": 74
+          }
+        },
+        {
+          "incidentId": "c9ed157e-03cc-419e-8c6e-26457aa3437d",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "this.DataContext = _lapChart.GetLapInfo();",
+              "protected": "P:System.Windows.FrameworkElement.DataContext"
+            },
+            "kind": "File",
+            "path": "MainWindow.xaml.cs",
+            "snippet": "this.DataContext = _lapChart.GetLapInfo();",
+            "protectedSnippet": "P:System.Windows.FrameworkElement.DataContext",
+            "label": "P:System.Windows.FrameworkElement.DataContext",
+            "line": 14,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "7ff48fd9-644b-48a1-8322-0dc1547188fb",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "public MainWindow()\r\n        {\r\n            InitializeComponent();\r\n            this.DataContext = _lapChart.GetLapInfo();\r\n\r\n            Task.Run(async () =\u003E\r\n            {\r\n                bool raceContinues = true;\r\n                while (raceContinues)\r\n                {\r\n                    await Task.Delay(3000);\r\n                    raceContinues = _lapChart.NextLap();\r\n                }\r\n            });\r\n        }",
+              "protected": "M:System.Windows.Window.#ctor"
+            },
+            "kind": "File",
+            "path": "MainWindow.xaml.cs",
+            "snippet": "public MainWindow()\r\n        {\r\n            InitializeComponent();\r\n            this.DataContext = _lapChart.GetLapInfo();\r\n\r\n            Task.Run(async () =\u003E\r\n            {\r\n                bool raceContinues = true;\r\n                while (raceContinues)\r\n                {\r\n                    await Task.Delay(3000);\r\n                    raceContinues = _lapChart.NextLap();\r\n                }\r\n            });\r\n        }",
+            "protectedSnippet": "M:System.Windows.Window.#ctor",
+            "label": "M:System.Windows.Window.#ctor",
+            "line": 11,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "54a3c5b3-77a6-4ce4-a2d5-95fd97f06e60",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Windows.Application.LoadComponent(this, resourceLocater);",
+              "protected": "T:System.Windows.Application"
+            },
+            "kind": "File",
+            "path": "obj\\Debug\\MainWindow.g.i.cs",
+            "snippet": "System.Windows.Application.LoadComponent(this, resourceLocater);",
+            "protectedSnippet": "T:System.Windows.Application",
+            "label": "T:System.Windows.Application",
+            "line": 58,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "55d1a701-d278-4abb-a961-70a37563214c",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Windows.Application.LoadComponent(this, resourceLocater);",
+              "protected": "M:System.Windows.Application.LoadComponent(System.Object,System.Uri)"
+            },
+            "kind": "File",
+            "path": "obj\\Debug\\MainWindow.g.i.cs",
+            "snippet": "System.Windows.Application.LoadComponent(this, resourceLocater);",
+            "protectedSnippet": "M:System.Windows.Application.LoadComponent(System.Object,System.Uri)",
+            "label": "M:System.Windows.Application.LoadComponent(System.Object,System.Uri)",
+            "line": 58,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "f6f66d9d-8f8d-41c1-a071-bd5f99480df1",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Uri resourceLocater = new System.Uri(\u0022/LiveShaping;component/mainwindow.xaml\u0022, System.UriKind.Relative);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "obj\\Debug\\MainWindow.g.i.cs",
+            "snippet": "System.Uri resourceLocater = new System.Uri(\u0022/LiveShaping;component/mainwindow.xaml\u0022, System.UriKind.Relative);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 55,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "dbef88ed-d234-4085-b9e9-99ccb1e00793",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "System.Uri resourceLocater = new System.Uri(\u0022/LiveShaping;component/mainwindow.xaml\u0022, System.UriKind.Relative);",
+              "protected": "M:System.Uri.#ctor(System.String,System.UriKind)"
+            },
+            "kind": "File",
+            "path": "obj\\Debug\\MainWindow.g.i.cs",
+            "snippet": "System.Uri resourceLocater = new System.Uri(\u0022/LiveShaping;component/mainwindow.xaml\u0022, System.UriKind.Relative);",
+            "protectedSnippet": "M:System.Uri.#ctor(System.String,System.UriKind)",
+            "label": "M:System.Uri.#ctor(System.String,System.UriKind)",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 55,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "a959c6e4-b979-4982-be5e-ddd122bf0738",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "this.DataContext = _lapChart.GetLapInfo();",
+              "protected": "P:System.Windows.FrameworkElement.DataContext"
+            },
+            "kind": "File",
+            "path": "MainWindow.xaml.cs",
+            "snippet": "this.DataContext = _lapChart.GetLapInfo();",
+            "protectedSnippet": "P:System.Windows.FrameworkElement.DataContext",
+            "label": "P:System.Windows.FrameworkElement.DataContext",
+            "line": 14,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "057ae015-62d7-48c5-8e49-e26ecbb6e284",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "public MainWindow()\r\n        {\r\n            InitializeComponent();\r\n            this.DataContext = _lapChart.GetLapInfo();\r\n\r\n            Task.Run(async () =\u003E\r\n            {\r\n                bool raceContinues = true;\r\n                while (raceContinues)\r\n                {\r\n                    await Task.Delay(3000);\r\n                    raceContinues = _lapChart.NextLap();\r\n                }\r\n            });\r\n        }",
+              "protected": "M:System.Windows.Window.#ctor"
+            },
+            "kind": "File",
+            "path": "MainWindow.xaml.cs",
+            "snippet": "public MainWindow()\r\n        {\r\n            InitializeComponent();\r\n            this.DataContext = _lapChart.GetLapInfo();\r\n\r\n            Task.Run(async () =\u003E\r\n            {\r\n                bool raceContinues = true;\r\n                while (raceContinues)\r\n                {\r\n                    await Task.Delay(3000);\r\n                    raceContinues = _lapChart.NextLap();\r\n                }\r\n            });\r\n        }",
+            "protectedSnippet": "M:System.Windows.Window.#ctor",
+            "label": "M:System.Windows.Window.#ctor",
+            "line": 11,
+            "column": 8
+          }
+        },
+        {
+          "incidentId": "3641e634-1170-4055-baaf-07acf49d1d82",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "IComponentConnector",
+              "protected": "T:System.Windows.Markup.IComponentConnector"
+            },
+            "kind": "File",
+            "path": "obj\\Debug\\MainWindow.g.i.cs",
+            "snippet": "IComponentConnector",
+            "protectedSnippet": "T:System.Windows.Markup.IComponentConnector",
+            "label": "T:System.Windows.Markup.IComponentConnector",
+            "line": 41,
+            "column": 83
+          }
+        },
+        {
+          "incidentId": "37b35e9b-92df-4a79-a41b-8dfbe99e2245",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Window",
+              "protected": "T:System.Windows.Window"
+            },
+            "kind": "File",
+            "path": "obj\\Debug\\MainWindow.g.i.cs",
+            "snippet": "Window",
+            "protectedSnippet": "T:System.Windows.Window",
+            "label": "T:System.Windows.Window",
+            "line": 41,
+            "column": 53
+          }
+        },
+        {
+          "incidentId": "985f03f4-0bfc-4e93-9eb1-d2b8100a3ca5",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "app.Run();",
+              "protected": "M:System.Windows.Application.Run"
+            },
+            "kind": "File",
+            "path": "obj\\Debug\\App.g.i.cs",
+            "snippet": "app.Run();",
+            "protectedSnippet": "M:System.Windows.Application.Run",
+            "label": "M:System.Windows.Application.Run",
+            "line": 65,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "ea84c777-b7cc-4d97-a249-455ae6b9c1a5",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "this.StartupUri = new System.Uri(\u0022MainWindow.xaml\u0022, System.UriKind.Relative);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "obj\\Debug\\App.g.i.cs",
+            "snippet": "this.StartupUri = new System.Uri(\u0022MainWindow.xaml\u0022, System.UriKind.Relative);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 50,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "132055d5-3cba-49c5-9ab1-28350e0dedc9",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "this.StartupUri = new System.Uri(\u0022MainWindow.xaml\u0022, System.UriKind.Relative);",
+              "protected": "M:System.Uri.#ctor(System.String,System.UriKind)"
+            },
+            "kind": "File",
+            "path": "obj\\Debug\\App.g.i.cs",
+            "snippet": "this.StartupUri = new System.Uri(\u0022MainWindow.xaml\u0022, System.UriKind.Relative);",
+            "protectedSnippet": "M:System.Uri.#ctor(System.String,System.UriKind)",
+            "label": "M:System.Uri.#ctor(System.String,System.UriKind)",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 50,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "cc59ea6d-21dd-4276-8d3b-97187300e0f4",
+          "ruleId": "Api.0003",
+          "description": "Breaking change: URI length limits removed ",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "this.StartupUri = new System.Uri(\u0022MainWindow.xaml\u0022, System.UriKind.Relative);",
+              "protected": "T:System.Uri"
+            },
+            "kind": "File",
+            "path": "obj\\Debug\\App.g.i.cs",
+            "snippet": "this.StartupUri = new System.Uri(\u0022MainWindow.xaml\u0022, System.UriKind.Relative);",
+            "protectedSnippet": "T:System.Uri",
+            "label": "T:System.Uri",
+            "links": [
+              {
+                "title": "API documentation",
+                "url": "https://github.com/dotnet/docs/blob/main/docs/core/compatibility/networking/10.0/uri-length-limits-removed.md",
+                "isCustom": false
+              }
+            ],
+            "line": 50,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "e47d6b42-5ae3-420c-9747-e18d6066be3c",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "this.StartupUri = new System.Uri(\u0022MainWindow.xaml\u0022, System.UriKind.Relative);",
+              "protected": "P:System.Windows.Application.StartupUri"
+            },
+            "kind": "File",
+            "path": "obj\\Debug\\App.g.i.cs",
+            "snippet": "this.StartupUri = new System.Uri(\u0022MainWindow.xaml\u0022, System.UriKind.Relative);",
+            "protectedSnippet": "P:System.Windows.Application.StartupUri",
+            "label": "P:System.Windows.Application.StartupUri",
+            "line": 50,
+            "column": 12
+          }
+        },
+        {
+          "incidentId": "9b6df4e7-ea70-4b2a-8bbd-f6155ec3dda5",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Application",
+              "protected": "M:System.Windows.Application.#ctor"
+            },
+            "kind": "File",
+            "path": "obj\\Debug\\App.g.i.cs",
+            "snippet": "Application",
+            "protectedSnippet": "M:System.Windows.Application.#ctor",
+            "label": "M:System.Windows.Application.#ctor",
+            "line": 40,
+            "column": 46
+          }
+        },
+        {
+          "incidentId": "3a757260-b226-480b-b52d-23487582b02a",
+          "ruleId": "Api.0001",
+          "description": "API is unavailable in net8.0 ",
+          "projectPath": "LiveShaping.csproj",
+          "state": "Active",
+          "location": {
+            "snippetModel": {
+              "unrestricted": "Application",
+              "protected": "T:System.Windows.Application"
+            },
+            "kind": "File",
+            "path": "obj\\Debug\\App.g.i.cs",
+            "snippet": "Application",
+            "protectedSnippet": "T:System.Windows.Application",
+            "label": "T:System.Windows.Application",
+            "line": 40,
+            "column": 46
+          }
+        }
+      ],
+      "features": [
+        {
+          "featureId": "LegacyConfiguration",
+          "incidents": [
+            "813d360b-f427-47ab-9da1-04b1b0b84b97",
+            "509d000d-9981-47ba-95bb-b26cb586d83f"
+          ]
+        },
+        {
+          "featureId": "Wpf",
+          "incidents": [
+            "3641e634-1170-4055-baaf-07acf49d1d82"
+          ]
+        }
+      ]
+    }
+  ],
+  "rules": {
+    "Project.0001": {
+      "id": "Project.0001",
+      "isFeature": false,
+      "description": "Project file needs to be converted to SDK-style. Modern .NET framework projects require a change in the project file format and use SDK corresponding to project flavor and functionality.",
+      "label": "Project file needs to be converted to SDK-style",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Overview of porting from .NET Framework to .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265227",
+          "isCustom": false
+        },
+        {
+          "title": ".NET project SDKs",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265226",
+          "isCustom": false
+        }
+      ]
+    },
+    "Project.0002": {
+      "id": "Project.0002",
+      "isFeature": false,
+      "description": "Project\u0027s target framework(s) needs to be changed to the new target framework that you selected for this upgrade.\n\nDuring upgrade target framework will be adjusted to corresponding platform when applicable. In some cases project would result in multiple target frameworks after the upgrade if it was using features that now have their own platforms in modern .NET frameworks (windows, iOS, Android etc).",
+      "label": "Project\u0027s target framework(s) needs to be changed",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Overview of porting from .NET Framework to .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265227",
+          "isCustom": false
+        },
+        {
+          "title": ".NET project SDKs",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2265226",
+          "isCustom": false
+        }
+      ]
+    },
+    "Api.0002": {
+      "id": "Api.0002",
+      "isFeature": false,
+      "description": "API is source incompatible for selected .NET version: requires code changes to compile successfully when targeting a new version, such as removing obsolete APIs or changing method signatures.",
+      "label": "Source incompatible for selected .NET version",
+      "severity": "Potential",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Breaking changes in .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262679",
+          "isCustom": false
+        }
+      ]
+    },
+    "Api.0001": {
+      "id": "Api.0001",
+      "isFeature": false,
+      "description": "API is binary incompatible for selected .NET version: affects existing binaries, often requiring recompilation, because the API has changed in a way that prevents older binaries from loading or executing.",
+      "label": "Binary incompatible for selected .NET version",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "title": "Breaking changes in .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2262679",
+          "isCustom": false
+        }
+      ]
+    },
+    "Api.0003": {
+      "id": "Api.0003",
+      "isFeature": false,
+      "description": "API has a behavioral change in selected .NET version: code and binaries may behave differently at runtime without needing recompilation, but the new behavior might be undesirable and require updates.",
+      "label": "Behavioral change in selected .NET version",
+      "severity": "Potential",
+      "effort": 1
+    },
+    "LegacyConfiguration": {
+      "id": "LegacyConfiguration",
+      "isFeature": false,
+      "description": "Legacy XML-based configuration system (app.config/web.config) that has been replaced by a more flexible configuration model in .NET Core. The old system was rigid and XML-based. Migrate to Microsoft.Extensions.Configuration with JSON/environment variables; use System.Configuration.ConfigurationManager NuGet package as interim bridge if needed.",
+      "label": "Legacy Configuration System",
+      "severity": "Mandatory",
+      "effort": 2,
+      "links": [
+        {
+          "title": "Configuration in .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2341702",
+          "isCustom": false
+        }
+      ]
+    },
+    "Wpf": {
+      "id": "Wpf",
+      "isFeature": false,
+      "description": "WPF APIs for building Windows desktop applications with XAML-based UI that are available in .NET on Windows. WPF provides rich desktop UI capabilities with data binding and styling. Enable Windows Desktop support: Option 1 (Recommended): Target net9.0-windows; Option 2: Add \u003CUseWindowsDesktop\u003Etrue\u003C/UseWindowsDesktop\u003E.",
+      "label": "WPF (Windows Presentation Foundation)",
+      "severity": "Mandatory",
+      "effort": 1,
+      "links": [
+        {
+          "title": "WPF on .NET",
+          "url": "https://go.microsoft.com/fwlink/?linkid=2342008",
+          "isCustom": false
+        }
+      ]
+    }
+  }
+}
