@@ -10,7 +10,7 @@ public enum PositionChange
 
 public class LapRacerInfo : BindableObject
 {
-    public Racer Racer { get; set; }
+    public required Racer Racer { get; set; }
     private int _lap;
     public int Lap
     {

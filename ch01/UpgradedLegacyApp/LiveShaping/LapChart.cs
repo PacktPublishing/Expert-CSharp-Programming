@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace LiveShaping;
@@ -6,7 +7,7 @@ namespace LiveShaping;
 public class LapChart
 {
     private readonly Formula1 _f1 = new Formula1();
-    private List<LapRacerInfo> _lapInfo;
+    private List<LapRacerInfo> _lapInfo = null!;
     private int _currentLap = 0;
     private const int PostionOut = 99;
     private int _maxLaps;
@@ -47,6 +48,7 @@ public class LapChart
         _maxLaps = _positions.Select(p => p.Value.Count).Max() - 1;
     }
 
+    [MemberNotNull(nameof(_lapInfo))]
     private void SetLapInfoForStart()
     {
         _lapInfo = _positions.Select(x => new LapRacerInfo

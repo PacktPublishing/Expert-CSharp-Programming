@@ -4,8 +4,8 @@ namespace LiveShaping;
 
 public class Formula1
 {
-    private List<Racer> _racers;
-    public IEnumerable<Racer> Racers => _racers ?? (_racers = GetRacers());
+    private List<Racer>? _racers;
+    public IEnumerable<Racer> Racers => _racers ??= GetRacers();
 
     private List<Racer> GetRacers()
     {
