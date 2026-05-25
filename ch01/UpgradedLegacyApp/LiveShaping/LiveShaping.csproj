@@ -2,7 +2,6 @@
   <PropertyGroup>
     <TargetFramework>net10.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>nullable</WarningsAsErrors>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -10,10 +9,6 @@
     <UseWindowsDesktop>true</UseWindowsDesktop>
   </PropertyGroup>
   <ItemGroup>
-    <None Include=".github\upgrades\scenarios\dotnet-version-upgrade\csharp-language-modernization-assessment.md" />
-    <None Include=".github\upgrades\scenarios\dotnet-version-upgrade\plan.md" />
-    <None Include=".github\upgrades\scenarios\dotnet-version-upgrade\scenario-instructions.md" />
-    <None Include=".github\upgrades\scenarios\dotnet-version-upgrade\tasks.md" />
-    <AppDesigner Include="Properties\" />
+    <PackageReference Include="CommunityToolkit.Mvvm" />
   </ItemGroup>
 </Project>

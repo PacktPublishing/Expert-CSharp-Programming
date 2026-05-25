@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace LiveShaping;
 
-namespace LiveShaping;
-
-public class Racer
+public record Racer
 {
-    public required string Name { get; set; }
-    public required string Team { get; set; }
-    public int Number { get; set; }
+    public required string Name { get; init; }
+    public required string Team { get; init; }
+    public int Number { get; init; }
 
     public override string ToString() => Name;
 

@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace LiveShaping;
 
@@ -8,11 +7,11 @@ namespace LiveShaping;
 /// </summary>
 public partial class MainWindow : Window
 {
-    private readonly LapChart _lapChart = new LapChart();
+    private readonly LapChart _lapChart = new();
     public MainWindow()
     {
         InitializeComponent();
-        this.DataContext = _lapChart.GetLapInfo();
+        DataContext = _lapChart.GetLapInfo();
 
         Task.Run(async () =>
         {

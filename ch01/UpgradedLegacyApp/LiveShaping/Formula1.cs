@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace LiveShaping;
+﻿namespace LiveShaping;
 
 public class Formula1
 {
