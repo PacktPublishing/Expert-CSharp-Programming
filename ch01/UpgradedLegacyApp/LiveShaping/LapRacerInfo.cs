@@ -12,14 +12,14 @@ public enum PositionChange
 
 public partial class LapRacerInfo : ObservableObject
 {
-    public required Racer Racer { get; init; }
+    public required Racer Racer { get; set; }
 
     [ObservableProperty]
-    private int _lap;
+    public partial int Lap {  get; set; }
 
     [ObservableProperty]
-    private int _position;
+    public partial int Position { get; set; }
 
     [ObservableProperty]
-    private PositionChange _positionChange;
+    public partial PositionChange PositionChange { get; set; }
 }
