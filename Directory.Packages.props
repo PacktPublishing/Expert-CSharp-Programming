@@ -7,12 +7,12 @@
   <!-- ASP.NET Core packages -->
   <ItemGroup>
     <PackageVersion Include="Aspire.Hosting.MySql" Version="13.3.3" />
-    <PackageVersion Include="Aspire.Hosting.SqlServer" Version="13.3.5" />
-    <PackageVersion Include="Aspire.Hosting.Azure" Version="13.3.5" />
-    <PackageVersion Include="Aspire.Hosting.Azure.CosmosDB" Version="13.3.5" />
+    <PackageVersion Include="Aspire.Hosting.SqlServer" Version="13.4.2" />
+    <PackageVersion Include="Aspire.Hosting.Azure" Version="13.4.2" />
+    <PackageVersion Include="Aspire.Hosting.Azure.CosmosDB" Version="13.4.2" />
     <PackageVersion Include="Aspire.Hosting.Azure.Storage" Version="9.0.0" />
-    <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="13.3.5" />
-    <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.Cosmos" Version="13.3.5" />
+    <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="13.4.2" />
+    <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.Cosmos" Version="13.4.2" />
     <PackageVersion Include="Aspire.Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
     <PackageVersion Include="Aspire4Wasm" Version="3.0.0" />
     <PackageVersion Include="CommunityToolkit.Aspire.Hosting.Sqlite" Version="13.3.0" />
@@ -56,8 +56,8 @@
   </ItemGroup>
   <!-- Third party packages -->
   <ItemGroup>
-    <PackageVersion Include="Swashbuckle.AspNetCore" Version="10.1.7" />
-    <PackageVersion Include="Swashbuckle.AspNetCore.Annotations" Version="10.1.7" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="10.2.1" />
+    <PackageVersion Include="Swashbuckle.AspNetCore.Annotations" Version="10.2.1" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
   </ItemGroup>
   <!-- OpenTelemetry -->
@@ -76,7 +76,7 @@
     <PackageVersion Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.15.8" />
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
     <PackageVersion Include="Microsoft.Testing.Extensions.CodeCoverage" Version="18.5.2" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.5.1" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.6.0" />
     <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
     <PackageVersion Include="Moq" Version="4.20.70" />
     <PackageVersion Include="NBomber" Version="6.3.0" />
