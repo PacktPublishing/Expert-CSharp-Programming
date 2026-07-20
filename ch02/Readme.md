@@ -10,7 +10,7 @@ Currently, this tool is in preview and needs to be installed with a preview feed
 dotnet tool install mdv -g --prerelease --add-source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json 
 ```
 
-In this chapter, Visual Studio 2022 can be used to build and run the applications.
+In this chapter, Visual Studio 2026 can be used to build and run the applications.
 
 - BehindTheScenes - a simple console application which helps understanding generics
 - GamesSample - creating a generic interface, generic classes, and generic methods, and using record structs and tuples as generic parameters
