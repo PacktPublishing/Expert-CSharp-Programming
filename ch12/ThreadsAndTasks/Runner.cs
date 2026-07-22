@@ -2,6 +2,9 @@
 
 public class Runner
 {
+    /// <summary>
+    /// Demonstrates the use of a dedicated thread for long-running CPU-bound work.
+    /// </summary>
     public static async void ThreadSample()
     {
         Console.WriteLine("Threads");
@@ -28,6 +31,10 @@ public class Runner
         threadDone.Wait();
     }
 
+    /// <summary>
+    /// Demonstrates the use of task continuations to process the result of an asynchronous operation.
+    /// </summary>
+    /// <returns></returns>
     public static async Task TaskContinuations()
     {
         // Task continuations
@@ -48,6 +55,10 @@ public class Runner
         Console.WriteLine($"Payload length (via continuation): {await processTask}");
     }
 
+    /// <summary>
+    /// Demonstrates running multiple asynchronous operations concurrently using Task.WhenAll.
+    /// </summary>
+    /// <returns></returns>
     public static async Task MultipleTasksAsync()
     {
         // Task.WhenAll — run multiple async operations concurrently
@@ -64,6 +75,10 @@ public class Runner
             Console.WriteLine($"{r}");
     }
 
+    /// <summary>
+    /// Demonstrates the use of Task.WhenAny to implement a "first response wins" strategy, where the first completed task is used and the others are ignored (hedged requests).
+    /// </summary>
+    /// <returns></returns>
     public static async Task FirstResponseWinsAsync()
     {
         // Task.WhenAny — first response wins (hedged requests)
@@ -76,6 +91,10 @@ public class Runner
         Console.WriteLine($"Winner: {winner.Result}");
     }
 
+    /// <summary>
+    /// Demonstrates the use of CancellationToken to cooperatively cancel a long-running operation after a specified timeout.
+    /// </summary>
+    /// <returns></returns>
     public static async Task CancellationAsync()
     {
         // CancellationToken — cooperative cancellation
@@ -89,7 +108,7 @@ public class Runner
         }
         catch (OperationCanceledException)
         {
-            Console.WriteLine("Operation was cancelled after timeout ✔");
+            Console.WriteLine("Operation was cancelled after a timeout");
         }
 
         Console.WriteLine();
@@ -101,13 +120,13 @@ public class Runner
         return $"200 OK from {url}";
     }
 
-    private static async Task LongRunningOperationAsync(CancellationToken ct)
+    private static async Task LongRunningOperationAsync(CancellationToken ct = default)
     {
         for (int i = 0; i < 20; i++)
         {
             ct.ThrowIfCancellationRequested();
             await Task.Delay(20, ct);
-            Console.WriteLine($"      Step {i + 1}/20…");
+            Console.WriteLine($"Step {i + 1}/20...");
         }
     }
 }
