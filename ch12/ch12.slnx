@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="AsyncAwait/AsyncAwait.csproj" Id="ce31480e-bb7f-4259-bfde-9597e2867bcf" />
+  <Project Path="BestPractices/BestPractices.csproj" Id="eb24ea8b-26dd-40d3-84fa-a21f9af1b2ba" />
+  <Project Path="ChannelSample/ChannelSample.csproj" Id="0beb257c-41e5-43e4-8a38-ed24925402bb" />
+  <Project Path="Synchronization/Synchronization.csproj" Id="8cc17d8e-f6d8-4d9a-9eb8-724ebe687ba9" />
+  <Project Path="ThreadPoolSamples/ThreadPoolSamples.csproj" />
+  <Project Path="ThreadsAndTasks/ThreadsAndTasks.csproj" />
+</Solution>
