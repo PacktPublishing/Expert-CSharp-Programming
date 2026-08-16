@@ -1,4 +1,8 @@
-﻿using System.Net.NetworkInformation;
+﻿// Source code for: Expert CSharp Programming.
+// Author: Christian Nagel.
+// Licensed under the MIT License.
+
+using Grpc.Core;
 
 namespace GRPCService.Services;
 
@@ -6,19 +10,20 @@ namespace GRPCService.Services;
 /// Server-side implementation of the <see cref="BookCatalog.BookCatalogBase"/> gRPC service.
 /// Demonstrates all four RPC streaming variants.
 /// </summary>
-public sealed class BookCatalogService : BookCatalogBase
+public sealed class BookCatalogService : GRPCService.BookCatalog.BookCatalogBase
 {
     // In-memory catalog seeded at startup.
     // All mutations are guarded by _lock to handle concurrent gRPC calls.
     private static readonly Lock _lock = new();
-    private static readonly List<BookMessage> s_catalog =
+
+    private static readonly List<BookMessage> _catalog =
     [
-        new() { Id = 1, Title = "C# in Depth",        Author = "Jon Skeet",          Price = "39.99 USD", PublishedOn = "2019-03-01", Tags = { "csharp", "programming" } },
-        new() { Id = 2, Title = "Pro .NET Memory",     Author = "Konrad Kokosa",      Price = "44.99 USD", PublishedOn = "2020-05-15", Tags = { "dotnet", "memory", "performance" } },
-        new() { Id = 3, Title = "Expert C#",           Author = "Christian Nagel",    Price = "49.99 USD", PublishedOn = "2024-01-01", Tags = { "csharp", "expert" } },
-        new() { Id = 4, Title = "Clean Code",          Author = "Robert C. Martin",   Price = "34.99 USD", PublishedOn = "2008-08-01", Tags = { "best-practices" } },
-        new() { Id = 5, Title = "Designing Data-Intensive Applications", Author = "Martin Kleppmann",
-                Price = "54.99 USD", PublishedOn = "2017-03-16", Tags = { "databases", "distributed" } },
+        new() { Id = 1, Title = "Pragmatic Microservices", Author = "Christian Nagel", Price = "51.99 USD", PublishedOn = "2024-05-31", Tags = { "dotnet", "aspire", "microservices" } },
+        new() { Id = 2, Title = "C# in Depth", Author = "Jon Skeet", Price = "46.99 USD", PublishedOn = "2019-03-23", Tags = { "csharp", "programming" } },
+        new() { Id = 3, Title = "Effective .NET Memory Management", Author = "Trevoir Williams", Price = "43.99 USD", PublishedOn = "2024-07-30", Tags = { "dotnet", "memory" } },
+        new() { Id = 4, Title = "Clean Code", Author = "Robert C. Martin", Price = "59.99 USD", PublishedOn = "2025-10-18", Tags = { "best-practices" } },
+        new() { Id = 5, Title = "Data Science with .NET", Author = "Martin Kleppmann",
+            Price = "49.99 USD", PublishedOn = "2024-10-30", Tags = { "databases", "distributed" } },
     ];
 
     // ----------------------------------------------------------------
@@ -30,7 +35,7 @@ public sealed class BookCatalogService : BookCatalogBase
     {
         BookMessage? book;
         lock (_lock)
-            book = s_catalog.Find(b => b.Id == request.Id);
+            book = _catalog.Find(b => b.Id == request.Id);
 
         if (book is null)
             throw new RpcException(new Status(StatusCode.NotFound, $"Book {request.Id} not found."));
@@ -56,8 +61,8 @@ public sealed class BookCatalogService : BookCatalogBase
         lock (_lock)
         {
             snapshot = string.IsNullOrWhiteSpace(request.TagFilter)
-                ? [.. s_catalog]
-                : [.. s_catalog.Where(b => b.Tags.Contains(request.TagFilter))];
+                ? [.. _catalog]
+                : [.. _catalog.Where(b => b.Tags.Contains(request.TagFilter))];
         }
 
         foreach (BookMessage book in snapshot)
@@ -84,8 +89,8 @@ public sealed class BookCatalogService : BookCatalogBase
             BookMessage book = req.Book;
             lock (_lock)
             {
-                book.Id = s_catalog.Count + 1;
-                s_catalog.Add(book);
+                book.Id = _catalog.Count + 1;
+                _catalog.Add(book);
             }
             added++;
         }
@@ -110,12 +115,12 @@ public sealed class BookCatalogService : BookCatalogBase
             bool duplicate;
             lock (_lock)
             {
-                duplicate = s_catalog.Exists(b => b.Title == req.Book.Title && b.Author == req.Book.Author);
+                duplicate = _catalog.Exists(b => b.Title == req.Book.Title && b.Author == req.Book.Author);
                 if (!duplicate)
                 {
                     BookMessage copy = req.Book.Clone();
-                    copy.Id = s_catalog.Count + 1;
-                    s_catalog.Add(copy);
+                    copy.Id = _catalog.Count + 1;
+                    _catalog.Add(copy);
                 }
             }
 

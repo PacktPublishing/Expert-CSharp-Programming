@@ -14,4 +14,8 @@
     <PackageReference Include="Grpc.AspNetCore" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GRPC.ServiceDefaults\GRPC.ServiceDefaults.csproj" />
+  </ItemGroup>
+
 </Project>

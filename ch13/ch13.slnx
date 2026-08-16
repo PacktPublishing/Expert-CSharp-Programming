@@ -1,5 +1,10 @@
 <Solution>
-  <Project Path="GRPCService/GRPCService.csproj" Id="6dc1726c-ceb3-4a53-9154-9c97eae70387" />
+  <Folder Name="/GRPC/">
+    <Project Path="GRPC/GRPC.AppHost/GRPC.AppHost.csproj" Id="4006abf5-4219-4b80-9c07-1a55090380bf" />
+    <Project Path="GRPC/GRPC.ServiceDefaults/GRPC.ServiceDefaults.csproj" />
+    <Project Path="GRPC/GRPCClient/GRPCClient.csproj" />
+    <Project Path="GRPC/GRPCService/GRPCService.csproj" />
+  </Folder>
   <Project Path="JsonSerialization/JsonSerialization.csproj" Id="c878f462-1ad2-46ed-9ae1-b6a2095c1ae3" />
   <Project Path="MemoryStream/MemoryStream.csproj" />
   <Project Path="Pipelines/Pipelines.csproj" Id="8a75177b-943b-484d-9301-dda6a6e9f8d7" />
