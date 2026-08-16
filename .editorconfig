@@ -33,11 +33,6 @@ dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
 # use int.MaxValue over Int32.MaxValue
 dotnet_style_predefined_type_for_member_access = true:suggestion
 
-# Require var all the time.
-csharp_style_var_for_built_in_types = false:suggestion
-csharp_style_var_when_type_is_apparent = true:suggestion
-csharp_style_var_elsewhere = false:suggestion
-
 # Disallow throw expressions.
 csharp_style_throw_expression = false:suggestion
 
@@ -230,9 +225,6 @@ dotnet_diagnostic.CA1857.severity = warning
 # CA1858: Use 'StartsWith' instead of 'IndexOf'
 dotnet_diagnostic.CA1858.severity = warning
 
-# CA2007: Consider calling ConfigureAwait on the awaited task
-dotnet_diagnostic.CA2007.severity = warning
-
 # CA2008: Do not create tasks without passing a TaskScheduler
 dotnet_diagnostic.CA2008.severity = warning
 
@@ -279,7 +271,7 @@ dotnet_diagnostic.CA2249.severity = warning
 dotnet_diagnostic.IDE0005.severity = warning
 
 # IDE0011: Curly braces to surround blocks of code
-dotnet_diagnostic.IDE0011.severity = warning
+dotnet_diagnostic.IDE0011.severity = none
 
 # IDE0020: Use pattern matching to avoid is check followed by a cast (with variable)
 dotnet_diagnostic.IDE0020.severity = warning
@@ -327,7 +319,7 @@ dotnet_diagnostic.IDE0062.severity = warning
 
 # IDE0073: File header
 dotnet_diagnostic.IDE0073.severity = warning
-file_header_template = Licensed to the .NET Foundation under one or more agreements.\nThe .NET Foundation licenses this file to you under the MIT license.
+file_header_template = Source code for: Expert CSharp Programming.\nAuthor: Christian Nagel.\nLicensed under the MIT License.
 
 # IDE0161: Convert to file-scoped namespace
 dotnet_diagnostic.IDE0161.severity = warning
