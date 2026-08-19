@@ -1,4 +1,4 @@
-﻿// Source code for: Expert CSharp Programming.
+// Source code for: Expert CSharp Programming.
 // Author: Christian Nagel.
 // Licensed under the MIT License.
 
@@ -70,7 +70,7 @@ internal class Runner(BookCatalog.BookCatalogClient client)
         await readResponsesTask;
     }
 
-    public async Task ReadSyncResponsesAsync(IAsyncStreamReader<SyncBookResponse> responseStream)
+    private static async Task ReadSyncResponsesAsync(IAsyncStreamReader<SyncBookResponse> responseStream)
     {
         await foreach (SyncBookResponse response in responseStream.ReadAllAsync())
         {
@@ -78,7 +78,7 @@ internal class Runner(BookCatalog.BookCatalogClient client)
         }
     }
 
-    private IEnumerable<BookMessage> GetBooksToAdd() =>
+    private static IEnumerable<BookMessage> GetBooksToAdd() =>
     [
         new()
         {
@@ -98,7 +98,7 @@ internal class Runner(BookCatalog.BookCatalogClient client)
         }
     ];
 
-    private IEnumerable<BookMessage> GetBooksToSync() =>
+    private static IEnumerable<BookMessage> GetBooksToSync() =>
     [
         new()
         {
@@ -120,10 +120,9 @@ internal class Runner(BookCatalog.BookCatalogClient client)
         }
     ];
 
-    static void PrintBook(BookMessage book)
+    private static void PrintBook(BookMessage book)
     {
         string tags = book.Tags.Count > 0 ? string.Join(", ", book.Tags) : "-";
         Console.WriteLine($"[{book.Id}] {book.Title} by {book.Author} | {book.Price} | {book.PublishedOn} | {tags}");
     }
-
 }

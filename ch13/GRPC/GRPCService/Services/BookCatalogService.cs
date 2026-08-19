@@ -1,4 +1,4 @@
-﻿// Source code for: Expert CSharp Programming.
+// Source code for: Expert CSharp Programming.
 // Author: Christian Nagel.
 // Licensed under the MIT License.
 
@@ -72,6 +72,7 @@ public sealed class BookCatalogService : GRPCService.BookCatalog.BookCatalogBase
             // Simulate realistic inter-message latency
             await Task.Delay(20, context.CancellationToken);
         }
+       
     }
 
     // ----------------------------------------------------------------

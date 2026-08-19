@@ -1,4 +1,4 @@
-﻿// Source code for: Expert CSharp Programming.
+// Source code for: Expert CSharp Programming.
 // Author: Christian Nagel.
 // Licensed under the MIT License.
 
@@ -27,6 +27,8 @@ string serviceAddress = "https://grpcservice";
 try
 {
     Console.WriteLine($"Connecting to {serviceAddress}");
+
+    await Task.Delay(TimeSpan.FromSeconds(5));
 
     Runner runner = container.Services.GetRequiredService<Runner>();
 
