@@ -36,6 +36,7 @@ try
     await runner.CallServerStreamingAsync();
     await runner.CallClientStreamingAsync();
     await runner.CallBidirectionalStreamingAsync();
+    Runner.CompareJson2Binary();
 }
 catch (RpcException ex)
 {

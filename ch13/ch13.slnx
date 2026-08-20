@@ -1,9 +1,16 @@
 <Solution>
+  <Folder Name="/Common/">
+    <Project Path="Common/ServiceDefaults/ServiceDefaults.csproj" />
+  </Folder>
   <Folder Name="/GRPC/">
     <Project Path="GRPC/GRPC.AppHost/GRPC.AppHost.csproj" Id="4006abf5-4219-4b80-9c07-1a55090380bf" />
-    <Project Path="GRPC/GRPC.ServiceDefaults/GRPC.ServiceDefaults.csproj" />
     <Project Path="GRPC/GRPCClient/GRPCClient.csproj" />
     <Project Path="GRPC/GRPCService/GRPCService.csproj" />
+  </Folder>
+  <Folder Name="/SignalR/" />
+  <Folder Name="/SSE/">
+    <Project Path="SSE.AppHost/SSE.AppHost.csproj" Id="bd37c3c1-d142-4cbf-8d47-21de009ef130" />
+    <Project Path="SSE/SSE.Service/SSE.Service.csproj" />
   </Folder>
   <Project Path="JsonSerialization/JsonSerialization.csproj" Id="c878f462-1ad2-46ed-9ae1-b6a2095c1ae3" />
   <Project Path="MemoryStream/MemoryStream.csproj" />

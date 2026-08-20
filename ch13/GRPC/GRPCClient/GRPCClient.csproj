@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GRPC.ServiceDefaults\GRPC.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\..\Common\ServiceDefaults\ServiceDefaults.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,6 +2,11 @@
 // Author: Christian Nagel.
 // Licensed under the MIT License.
 
+using System.Text;
+using System.Text.Json;
+
+using Google.Protobuf;
+
 using Grpc.Core;
 
 using GRPCService;
@@ -68,6 +73,25 @@ internal class Runner(BookCatalog.BookCatalogClient client)
 
         await call.RequestStream.CompleteAsync();
         await readResponsesTask;
+    }
+
+    public static void CompareJson2Binary()
+    {
+        Console.WriteLine();
+        Console.WriteLine("Comparing JSON vs Protobuf binary sizes");
+
+        BookMessage sampleMsg = new() { Id = 42, Title = "Expert C#", Author = "Christian Nagel", Price = "49.99 USD", PublishedOn = "2024-01-01", Tags = { "csharp", "expert", "dotnet" }, };
+        byte[] protobufBytes = sampleMsg.ToByteArray();
+
+        int grpcWireSize = protobufBytes.Length + 5; // 5-byte gRPC framing header
+
+        string jsonStr = JsonSerializer.Serialize(new { id = sampleMsg.Id, title = sampleMsg.Title, author = sampleMsg.Author, price = sampleMsg.Price, publishedOn = sampleMsg.PublishedOn, tags = sampleMsg.Tags.ToArray(), });
+        byte[] jsonBytes = Encoding.UTF8.GetBytes(jsonStr);
+
+        Console.WriteLine($"Protobuf bytes : {protobufBytes.Length}");
+        Console.WriteLine($"gRPC wire size : {grpcWireSize}");
+        Console.WriteLine($"JSON bytes     : {jsonBytes.Length}");
+        Console.WriteLine($"Ratio          : {(double)jsonBytes.Length / grpcWireSize:F1}x larger");
     }
 
     private static async Task ReadSyncResponsesAsync(IAsyncStreamReader<SyncBookResponse> responseStream)

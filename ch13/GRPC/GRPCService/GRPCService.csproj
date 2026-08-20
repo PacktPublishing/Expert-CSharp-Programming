@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GRPC.ServiceDefaults\GRPC.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\..\Common\ServiceDefaults\ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>
