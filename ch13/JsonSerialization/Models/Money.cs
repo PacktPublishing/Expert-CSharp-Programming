@@ -1,4 +1,10 @@
-﻿namespace JsonSerialization.Models;
+// Source code for: Expert CSharp Programming.
+// Author: Christian Nagel.
+// Licensed under the MIT License.
+
+using System.Globalization;
+
+namespace JsonSerialization.Models;
 
 /// <summary>
 /// A simple value-object for monetary amounts with ISO-4217 currency code.
@@ -7,5 +13,5 @@
 public readonly record struct Money(decimal Amount, string Currency)
 {
     public override string ToString()
-        => $"{Amount.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture)} {Currency}";
+        => $"{Amount.ToString("0.00", CultureInfo.InvariantCulture)} {Currency}";
 }

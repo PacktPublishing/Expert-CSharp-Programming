@@ -1,4 +1,8 @@
-﻿using System.Text.Json.Serialization;
+﻿// Source code for: Expert CSharp Programming.
+// Author: Christian Nagel.
+// Licensed under the MIT License.
+
+using System.Text.Json.Serialization;
 
 namespace JsonSerialization.Models;
 

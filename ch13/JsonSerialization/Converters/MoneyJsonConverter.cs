@@ -1,4 +1,8 @@
-﻿using System.Globalization;
+// Source code for: Expert CSharp Programming.
+// Author: Christian Nagel.
+// Licensed under the MIT License.
+
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -12,6 +16,9 @@ namespace JsonSerialization.Converters;
 /// </summary>
 public sealed class MoneyJsonConverter : JsonConverter<Money>
 {
+    public override void Write(Utf8JsonWriter writer, Money value, JsonSerializerOptions options)
+    => writer.WriteStringValue(value.ToString());
+
     public override Money Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.String)
@@ -32,7 +39,4 @@ public sealed class MoneyJsonConverter : JsonConverter<Money>
         string currency = span[(spaceIndex + 1)..].ToString();
         return new Money(amount, currency);
     }
-
-    public override void Write(Utf8JsonWriter writer, Money value, JsonSerializerOptions options)
-        => writer.WriteStringValue(value.ToString());
 }

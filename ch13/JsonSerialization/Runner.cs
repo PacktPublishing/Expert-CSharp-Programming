@@ -1,3 +1,7 @@
+// Source code for: Expert CSharp Programming.
+// Author: Christian Nagel.
+// Licensed under the MIT License.
+
 using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -66,11 +70,11 @@ internal static class Runner
         Console.WriteLine("-------------------------------------------------------");
 
         // Serialize using the compile-time generated context — no runtime reflection required
-        string sgJson = JsonSerializer.Serialize(_sampleLibrary, LibraryJsonContext.Default.Library);
+        string json = JsonSerializer.Serialize(_sampleLibrary, LibraryJsonContext.Default.Library);
         Console.WriteLine($"Serialized {_sampleLibrary.TotalBooks} books via source generator.");
 
-        Library? sgLibrary = JsonSerializer.Deserialize(sgJson, LibraryJsonContext.Default.Library);
-        Console.WriteLine($"Deserialized: {sgLibrary?.Name} — {sgLibrary?.TotalBooks} books");
+        Library? library = JsonSerializer.Deserialize(json, LibraryJsonContext.Default.Library);
+        Console.WriteLine($"Deserialized: {library?.Name} — {library?.TotalBooks} books");
         Console.WriteLine();
     }
 

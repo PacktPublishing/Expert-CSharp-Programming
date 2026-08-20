@@ -1,4 +1,8 @@
-﻿namespace JsonSerialization.Models;
+// Source code for: Expert CSharp Programming.
+// Author: Christian Nagel.
+// Licensed under the MIT License.
+
+namespace JsonSerialization.Models;
 
 /// <summary>Represents a book search result with paging metadata.</summary>
 public record class PagedResult<T>(
