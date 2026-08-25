@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/Common/">
+    <Project Path="Common/Blazor.ServiceDefaults/Blazor.ServiceDefaults.csproj" />
     <Project Path="Common/ServiceDefaults/ServiceDefaults.csproj" />
   </Folder>
   <Folder Name="/GRPC/">
@@ -9,7 +10,9 @@
   </Folder>
   <Folder Name="/SignalR/" />
   <Folder Name="/SSE/">
-    <Project Path="SSE.AppHost/SSE.AppHost.csproj" Id="bd37c3c1-d142-4cbf-8d47-21de009ef130" />
+    <Project Path="SSE/SSE.AppHost/SSE.AppHost.csproj" />
+    <Project Path="SSE/SSE.Blazor/SSE.Blazor.Client/SSE.Blazor.Client.csproj" />
+    <Project Path="SSE/SSE.Blazor/SSE.Blazor/SSE.Blazor.csproj" />
     <Project Path="SSE/SSE.Service/SSE.Service.csproj" />
   </Folder>
   <Project Path="JsonSerialization/JsonSerialization.csproj" Id="c878f462-1ad2-46ed-9ae1-b6a2095c1ae3" />
