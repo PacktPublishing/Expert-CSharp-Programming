@@ -1,0 +1,5 @@
+{
+  "appHost": {
+    "path": "GRPC.AppHost/GRPC.AppHost.csproj"
+  }
+}

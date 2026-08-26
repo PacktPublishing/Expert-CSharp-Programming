@@ -1,0 +1,151 @@
+﻿@page "/stocks"
+@rendermode InteractiveWebAssembly
+@implements IAsyncDisposable
+
+@using Microsoft.AspNetCore.SignalR.Client
+@using SignalR.Blazor.Client.Models
+
+@inject NavigationManager Navigation
+
+<PageTitle>Stocks</PageTitle>
+
+<h1>Live Stock Prices</h1>
+
+<div class="mb-3 d-flex gap-2">
+    <input class="form-control w-auto"
+           @bind="symbol"
+           @bind:event="oninput"
+           placeholder="Symbol (e.g. MSFT)"
+           disabled="@isStreaming" />
+    <button class="btn btn-primary" @onclick="StartStreamAsync" disabled="@isStreaming">
+        Start
+    </button>
+    <button class="btn btn-secondary" @onclick="StopStream" disabled="@(!isStreaming)">
+        Stop
+    </button>
+</div>
+
+@if (latestTick is not null)
+{
+    <div class="card mb-3" style="max-width: 20rem;">
+        <div class="card-body">
+            <h5 class="card-title">@latestTick.Symbol</h5>
+            <p class="card-text fs-3">@latestTick.Price.ToString("F2")</p>
+            <small class="text-muted">@latestTick.Timestamp.ToLocalTime().ToString("HH:mm:ss")</small>
+        </div>
+    </div>
+}
+
+@if (errorMessage is not null)
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
+
+<table class="table table-sm table-striped" style="max-width: 36rem;">
+    <thead>
+        <tr>
+            <th>Time</th>
+            <th>Symbol</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var tick in history)
+        {
+            <tr>
+                <td>@tick.Timestamp.ToLocalTime().ToString("HH:mm:ss")</td>
+                <td>@tick.Symbol</td>
+                <td>@tick.Price.ToString("F2")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private string symbol = "MSFT";
+    private bool isStreaming;
+    private string? errorMessage;
+    private StockTick? latestTick;
+    private readonly List<StockTick> history = [];
+    private CancellationTokenSource? cts;
+    private HubConnection? hubConnection;
+
+    protected override void OnInitialized()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/marketHub"))
+            .WithAutomaticReconnect()
+            .Build();
+    }
+
+    private async Task StartStreamAsync()
+    {
+        if (isStreaming || hubConnection is null)
+        {
+            return;
+        }
+
+        errorMessage = null;
+        history.Clear();
+        latestTick = null;
+        isStreaming = true;
+        cts = new CancellationTokenSource();
+
+        try
+        {
+            await EnsureConnectedAsync();
+
+            await foreach (var item in hubConnection.StreamAsync<StockTick>("StreamPrices", symbol, cts.Token))
+            {
+                latestTick = item;
+                history.Insert(0, item);
+                if (history.Count > 50)
+                {
+                    history.RemoveAt(history.Count - 1);
+                }
+
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // Normal stop.
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            isStreaming = false;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async Task EnsureConnectedAsync()
+    {
+        if (hubConnection is null || hubConnection.State != HubConnectionState.Disconnected)
+        {
+            return;
+        }
+
+        await hubConnection.StartAsync();
+    }
+
+    private void StopStream()
+    {
+        cts?.Cancel();
+        cts?.Dispose();
+        cts = null;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        StopStream();
+
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
+}
