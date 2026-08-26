@@ -1,4 +1,8 @@
-﻿using System.Text;
+// Source code for: Expert CSharp Programming.
+// Author: Christian Nagel.
+// Licensed under the MIT License.
+
+using System.Text;
 
 Console.WriteLine("MemoryStream – In-Memory Read/Write");
 Console.WriteLine("-----------------------------------");

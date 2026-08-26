@@ -1,4 +1,8 @@
-﻿using System.Buffers;
+// Source code for: Expert CSharp Programming.
+// Author: Christian Nagel.
+// Licensed under the MIT License.
+
+using System.Buffers;
 using System.IO.Pipelines;
 using System.Text;
 

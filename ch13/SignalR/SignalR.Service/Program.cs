@@ -13,7 +13,7 @@ var app = builder.Build();
 
 app.MapDefaultEndpoints();
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/", () => "Use a SignalR client to access this service");
 
 app.MapHub<MarketHub>("/marketHub");
 

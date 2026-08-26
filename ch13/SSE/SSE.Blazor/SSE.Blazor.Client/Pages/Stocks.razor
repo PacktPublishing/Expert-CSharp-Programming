@@ -2,6 +2,7 @@
 @rendermode InteractiveWebAssembly
 
 @using System.Net.ServerSentEvents
+@using System.Runtime.CompilerServices
 @using System.Text.Json
 @using SSE.Blazor.Client.Models
 
@@ -86,6 +87,7 @@
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, $"/api/stocks/{Uri.EscapeDataString(symbol)}");
             // Request streaming response — don't buffer
+
             using var response = await Http.SendAsync(
                 request,
                 HttpCompletionOption.ResponseHeadersRead,
@@ -127,13 +129,21 @@
         cts = null;
     }
 
+    /// <summary>
+    /// Parses a Server-Sent Events (SSE) stream and yields <see cref="StockTick"/> instances.
+    /// </summary>
+    /// <param name="stream">The input stream containing SSE data.</param>
+    /// <param name="ct">A cancellation token to cancel the operation.</param>
+    /// <returns>An asynchronous stream of <see cref="StockTick"/> instances.</returns>
     private static async IAsyncEnumerable<StockTick> ParseSseStreamAsync(
         Stream stream,
-        [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken ct)
+        [EnumeratorCancellation] CancellationToken ct)
     {
+        // Use the SseParser to read the SSE stream and deserialize each data event into a StockTick object
         var parser = SseParser.Create(stream, (_, data) =>
             JsonSerializer.Deserialize<StockTick>(data, JsonOptions));
 
+        // Enumerate the parsed SSE events and yield StockTick instances
         await foreach (var item in parser.EnumerateAsync(ct))
         {
             if (item.Data is StockTick tick)

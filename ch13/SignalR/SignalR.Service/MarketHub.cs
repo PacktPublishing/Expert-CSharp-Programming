@@ -14,12 +14,11 @@ public sealed class MarketHub : Hub
         string symbol,
         [EnumeratorCancellation] CancellationToken ct)
     {
-        Random rng = new(42);
         decimal price = 100m;
 
         while (!ct.IsCancellationRequested)
         {
-            price += (decimal)(rng.NextDouble() * 2 - 1);
+            price += (decimal)(Random.Shared.NextDouble() * 2 - 1);
             yield return new StockTick(symbol, Math.Max(price, 1m), DateTimeOffset.UtcNow);
             await Task.Delay(500, ct);
         }

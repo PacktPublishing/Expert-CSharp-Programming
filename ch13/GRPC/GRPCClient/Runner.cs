@@ -13,7 +13,7 @@ using GRPCService;
 
 namespace GRPCClient;
 
-internal class Runner(BookCatalog.BookCatalogClient client)
+internal sealed class Runner(BookCatalog.BookCatalogClient client)
 {
     public async Task CallUnaryAsync()
     {
