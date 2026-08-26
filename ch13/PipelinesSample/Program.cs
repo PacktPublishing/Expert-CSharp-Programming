@@ -9,7 +9,7 @@ using System.Text;
 Console.WriteLine("System.IO.Pipelines – High-Throughput Line Reading");
 Console.WriteLine("--------------------------------------------------");
 
-byte[] pipeData = Encoding.UTF8.GetBytes(
+byte[] data = Encoding.UTF8.GetBytes(
     "alpha\nbeta\ngamma\ndelta\nepsilon\n");
 
 Pipe pipe = new();
@@ -18,9 +18,9 @@ Pipe pipe = new();
 Task writeTask = Task.Run(async () =>
 {
     PipeWriter pipeWriter = pipe.Writer;
-    Memory<byte> buffer = pipeWriter.GetMemory(pipeData.Length);
-    pipeData.CopyTo(buffer);
-    pipeWriter.Advance(pipeData.Length);
+    Memory<byte> buffer = pipeWriter.GetMemory(data.Length);
+    data.CopyTo(buffer);
+    pipeWriter.Advance(data.Length);
     await pipeWriter.FlushAsync();
     await pipeWriter.CompleteAsync();
 });
@@ -37,7 +37,7 @@ Task readTask = Task.Run(async () =>
 
         while (TryReadLine(ref buffer, out ReadOnlySequence<byte> lineSeq))
         {
-            // Avoid ToArray() for the common single-segment case
+            // Avoids ToArray() for the common single-segment case
             string text = lineSeq.IsSingleSegment
                 ? Encoding.UTF8.GetString(lineSeq.FirstSpan)
                 : Encoding.UTF8.GetString(lineSeq.ToArray());

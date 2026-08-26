@@ -139,16 +139,16 @@ await Task.WhenAll(producer, consumer);
 sw.Stop();
 
 double throughputPerSec = MessageCount / (sw.Elapsed.TotalSeconds);
-Console.WriteLine($"   {MessageCount:N0} messages in {sw.ElapsedMilliseconds} ms");
-Console.WriteLine($"   Throughput: {throughputPerSec:N0} messages/sec");
+Console.WriteLine($"{MessageCount:N0} messages in {sw.ElapsedMilliseconds} ms");
+Console.WriteLine($"Throughput: {throughputPerSec:N0} messages/sec");
 Console.WriteLine();
 
 // ============================================================
 // Domain types
 // ============================================================
 
-record StockTick(string Symbol, decimal Price, DateTimeOffset Timestamp);
+sealed record StockTick(string Symbol, decimal Price, DateTimeOffset Timestamp);
 
-record NewsSubscription(string Category, ChannelWriter<NewsArticle> Writer);
+sealed record NewsSubscription(string Category, ChannelWriter<NewsArticle> Writer);
 
-record NewsArticle(string Id, string Headline, string Category, DateTimeOffset PublishedAt);
+sealed record NewsArticle(string Id, string Headline, string Category, DateTimeOffset PublishedAt);

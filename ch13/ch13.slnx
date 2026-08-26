@@ -22,6 +22,6 @@
   </Folder>
   <Project Path="AsyncStreamingChannels/AsyncStreamingChannels.csproj" Id="10070bcb-4677-4ca9-b3cb-8c87b75038fa" />
   <Project Path="JsonSerialization/JsonSerialization.csproj" Id="c878f462-1ad2-46ed-9ae1-b6a2095c1ae3" />
-  <Project Path="MemoryStream/MemoryStream.csproj" />
-  <Project Path="Pipelines/Pipelines.csproj" Id="8a75177b-943b-484d-9301-dda6a6e9f8d7" />
+  <Project Path="MemoryStreamSample/MemoryStreamSample.csproj" />
+  <Project Path="PipelinesSample/PipelinesSample.csproj" />
 </Solution>
