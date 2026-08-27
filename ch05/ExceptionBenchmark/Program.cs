@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+using System.Globalization;
+using System.Runtime.CompilerServices;
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
@@ -33,7 +34,7 @@ public class BenchmarkExceptions
         int i = 0;
         try
         {
-            int result = int.Parse(test);
+            int result = int.Parse(test, CultureInfo.CurrentCulture);
         }
         catch (FormatException)
         {

@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+using System.Runtime.CompilerServices;
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
@@ -69,7 +69,7 @@ public class BenchmarkLogging
     }   
 }
 
-internal class Runner(ILogger<Runner> logger)
+internal sealed class Runner(ILogger<Runner> logger)
 {
     [MethodImpl(MethodImplOptions.NoInlining)]
     public void DoNotUseStringInterpolationLogging(Guid id, string text)

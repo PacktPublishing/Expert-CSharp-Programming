@@ -1,7 +1,7 @@
-﻿namespace Sorting;
-internal class Formula1
+namespace Sorting;
+internal sealed class Formula1
 {
-    private readonly static IEnumerable<Racer> _racers = [
+    private static readonly IEnumerable<Racer> _racers = [
             new Racer("Oscar", "Piastri"),
             new Racer("Lando", "Norris"),
             new Racer("Max", "Verstappen"),

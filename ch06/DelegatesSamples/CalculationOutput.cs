@@ -1,6 +1,6 @@
-﻿namespace Delegates;
+namespace Delegates;
 
-internal class CalculationOutput(TextWriter writer)
+internal sealed class CalculationOutput(TextWriter writer)
 {
     public void Add(int x, int y)
     {

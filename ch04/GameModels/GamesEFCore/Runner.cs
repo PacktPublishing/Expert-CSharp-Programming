@@ -1,8 +1,8 @@
-﻿using GameModels;
+using GameModels;
 
 namespace GamesEFCore;
 
-internal class Runner(GamesContext context)
+internal sealed class Runner(GamesContext context)
 {
     public async Task CreateDatabaseAsync()
     {

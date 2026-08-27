@@ -1,5 +1,5 @@
-﻿namespace Data;
-internal class RacerComparer(RacerCompareType racerCompareType) : IComparer<Racer>
+namespace Data;
+internal sealed class RacerComparer(RacerCompareType racerCompareType) : IComparer<Racer>
 {
     public int Compare(Racer? x, Racer? y)
     {

@@ -1,5 +1,5 @@
-﻿namespace Sorting;
-internal class RacerComparer(RacerCompareType racerCompareType) : IComparer<Racer>
+namespace Sorting;
+internal sealed class RacerComparer(RacerCompareType racerCompareType) : IComparer<Racer>
 {
     public int Compare(Racer? x, Racer? y)
     {
@@ -12,7 +12,7 @@ internal class RacerComparer(RacerCompareType racerCompareType) : IComparer<Race
                 .ThenBy(() => x.LastName.CompareTo(y.LastName)),
             RacerCompareType.ByLastName => x.LastName.CompareTo(y.LastName)
                 .ThenBy(() => x.FirstName.CompareTo(y.FirstName)),
-            _ => throw new ArgumentOutOfRangeException(nameof(racerCompareType), racerCompareType, null)
+            _ => throw new InvalidOperationException("invalid RacerCompareType")
         };
     }
 }

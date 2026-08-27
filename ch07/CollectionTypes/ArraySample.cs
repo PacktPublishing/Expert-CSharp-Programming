@@ -1,7 +1,7 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 
 namespace CollectionTypes;
-internal class ArraySample : IShowTitle
+internal sealed class ArraySample : IShowTitle
 {
     public static void Run()
     {
