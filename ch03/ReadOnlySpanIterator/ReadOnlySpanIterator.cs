@@ -2,7 +2,7 @@
 
 public ref struct ReadOnlySpanIterator<T>(ReadOnlySpan<T> span)
 {
-    private ReadOnlySpan<T> _span = span;
+    private readonly ReadOnlySpan<T> _span = span;
     private int _index = -1;
 
     public bool MoveNext([MaybeNullWhen(false)] out T value)

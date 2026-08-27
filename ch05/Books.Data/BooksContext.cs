@@ -1,10 +1,11 @@
-﻿using Books.Services;
+﻿using System.Data.Common;
+
+using Books.Data.Extensions;
+using Books.Services;
 
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-
-using System.Data.Common;
 
 namespace Books.Data;
 
@@ -27,17 +28,18 @@ public class BooksContext(DbContextOptions<BooksContext> options, ILogger<BooksC
     /// <exception cref="BookServiceException">Thrown if an error occurs while accessing the database.</exception>
     public async Task<IEnumerable<Book>> GetBooksAsync(CancellationToken cancellationToken = default)
     {
+        logger.GetBooksStart();
         try
         {
             var books = await Books.ToListAsync(cancellationToken);
-            return books ?? [];
+            var list = books ?? [];
+            logger.GetBooksSuccess(list.Count);
+            return list;
         }
         catch (SqliteException ex)
         {
-            throw new BookServiceException(ex.Message, ex)
-            {
-                HResult = 3000
-            };
+            logger.GetBooksError(ex, ex.Message);
+            throw new BookServiceException(ex.Message, ex) { HResult = 3000 };
         }
         catch (Exception ex) when (LogErrorFilter(ex))
         {
@@ -47,9 +49,20 @@ public class BooksContext(DbContextOptions<BooksContext> options, ILogger<BooksC
 
     private bool LogErrorFilter(Exception ex)
     {
-        logger.LogError(ex, "Error: {error}", ex.Message);
+        try
+        {
+            if (ex is OperationCanceledException)
+            {
+                return false;
+            }
+            if (logger.IsEnabled(LogLevel.Error))
+            {
+                logger.GetBooksError(ex, ex.Message);
+            }
+        }
+        catch { }
         return false;
-    }   
+    }
 
     /// <summary>
     /// Retrieves a book by its ID asynchronously.
@@ -61,14 +74,15 @@ public class BooksContext(DbContextOptions<BooksContext> options, ILogger<BooksC
     /// <exception cref="BookServiceException">Thrown if an error occurs while accessing the database.</exception>
     public async Task<Book?> GetBookByIdAsync(int id, CancellationToken cancellationToken = default)
     {
+        logger.GetBookByIdStart(id);
         try
         {
-            var books = await Books.AsNoTracking()
-                .FirstOrDefaultAsync(model => model.Id == id, cancellationToken);
-            return books;
+            var book = await Books.AsNoTracking().FirstOrDefaultAsync(model => model.Id == id, cancellationToken);
+            return book;
         }
         catch (Exception ex) when (ex is InvalidOperationException or DbUpdateException)
         {
+            logger.GetBookByIdError(ex, id, ex.Message);
             throw new BookServiceException(ex.Message, ex);
         }
         catch (Exception)
@@ -87,6 +101,7 @@ public class BooksContext(DbContextOptions<BooksContext> options, ILogger<BooksC
     /// <exception cref="BookServiceException">Thrown if an error occurs while accessing the database.</exception>
     public async Task<int> UpdateBookAsync(Book book, CancellationToken cancellationToken = default)
     {
+        logger.UpdateBookStart(book.Id);
         try
         {
             int affected = await Books.Where(model => model.Id == book.Id)
@@ -94,12 +109,12 @@ public class BooksContext(DbContextOptions<BooksContext> options, ILogger<BooksC
                     .SetProperty(m => m.Title, book.Title)
                     .SetProperty(m => m.Publisher, book.Publisher),
                     cancellationToken);
-
+            logger.UpdateBookSuccess(book.Id, affected);
             return affected;
         }
         catch (Exception ex) when (ex is DbUpdateException or DbException)
         {
-            logger.LogError(ex, "Error: {error}", ex.Message);
+            logger.UpdateBookError(ex, book.Id, ex.Message);
             throw new BookServiceException(ex.Message, ex);
         }
     }
@@ -114,20 +129,22 @@ public class BooksContext(DbContextOptions<BooksContext> options, ILogger<BooksC
     /// <exception cref="BookServiceException">An error is encountered while accessing the database.</exception>
     public async Task<Book> CreateBookAsync(Book book, CancellationToken cancellationToken = default)
     {
+        logger.CreateBookStart(book.Title);
         try
         {
             Books.Add(book);
             await SaveChangesAsync(cancellationToken);
+            logger.CreateBookSuccess(book.Title, book.Id);
             return book;
         }
         catch (DbUpdateException ex)
         {
-            logger.LogError(ex, "Error: {error}", ex.Message);
+            logger.CreateBookError(ex, ex.Message);
             throw new BookServiceException(ex.Message, ex);
         }
         catch (DbException ex)
         {
-            logger.LogError(ex, "Error: {error}", ex.Message);
+            logger.CreateBookError(ex, ex.Message);
             throw new BookServiceException(ex.Message, ex);
         }
     }
@@ -142,15 +159,16 @@ public class BooksContext(DbContextOptions<BooksContext> options, ILogger<BooksC
     /// <exception cref="BookServiceException">Thrown if an error occurs while accessing the database.</exception>
     public async Task<int> DeleteBookAsync(int id, CancellationToken cancellationToken = default)
     {
+        logger.DeleteBookStart(id);
         try
         {
-            int affected = await Books.Where(model => model.Id == id)
-                .ExecuteDeleteAsync(cancellationToken);
+            int affected = await Books.Where(model => model.Id == id).ExecuteDeleteAsync(cancellationToken);
+            logger.DeleteBookSuccess(id, affected);
             return affected;
         }
         catch (Exception ex) when (ex is DbException or DbUpdateException)
         {
-            logger.LogError(ex, "Error: {error}", ex.Message);
+            logger.DeleteBookError(ex, id, ex.Message);
             throw new BookServiceException(ex.Message, ex);
         }
     }

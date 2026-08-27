@@ -1,3 +1,6 @@
+using System.Diagnostics;
+
+using BlazorClient.Client.Services;
 using BlazorClient.Components;
 
 using Books.Data;
@@ -8,9 +11,12 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpLogging();
 builder.AddServiceDefaults();
-// builder.Services.AddReverseProxy().AddServiceDiscoveryDestinationResolver();
-
 builder.Services.AddHttpForwarderWithServiceDiscovery();
+builder.Services.AddHttpClient<IBooksService, BooksClient>(
+    client => client.BaseAddress = new Uri("https://booksapi"));
+
+builder.Services.AddKeyedSingleton("BooksClientActivity", (services, _) =>
+    new ActivitySource(builder.Environment.ApplicationName));
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -28,11 +34,8 @@ var app = builder.Build();
 app.UseRouting();
 app.UseHttpLogging();
 
-
-app.MapForwarder("/apibooks/{**catch-all}", "https://booksapi", "/api/books/{**catch-all}");
-app.MapForwarder("/abc", "https://booksapi", "/api/books");  
+app.MapForwarder("/api/books/{**catch-all}", "https://booksapi", "/api/books/{**catch-all}"); 
 app.MapDefaultEndpoints();
-// app.MapReverseProxy();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -46,15 +49,11 @@ else
     app.UseHsts();
 }
 
-
-
 // app.UseHttpsRedirection();
 
 app.UseAntiforgery();
 
 app.MapStaticAssets();
-
-
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()

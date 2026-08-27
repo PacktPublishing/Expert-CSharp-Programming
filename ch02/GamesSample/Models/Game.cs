@@ -22,6 +22,6 @@ public abstract class Game<TField, TResult>(string gameType, string playerName, 
 
     protected abstract TResult GetMoveResult(TField[] guesses);
 
-    private List<Move<TField, TResult>> _moves = [];
+    private readonly List<Move<TField, TResult>> _moves = [];
     public IEnumerable<Move<TField, TResult>> Moves => _moves;
 }

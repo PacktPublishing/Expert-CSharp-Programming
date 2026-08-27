@@ -1,5 +1,5 @@
-﻿namespace Sorting;
-internal class ListSortingRacers
+namespace Sorting;
+internal sealed class ListSortingRacers
 {
     public static void Run()
     {

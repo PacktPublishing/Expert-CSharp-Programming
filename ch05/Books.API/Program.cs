@@ -1,3 +1,6 @@
+using System.Diagnostics;
+
+using Books.API.Infrastructure;
 using Books.Data;
 using Books.Services;
 
@@ -7,6 +10,16 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+
+string activitySourceName = builder.Environment.ApplicationName;
+string activitySourceVersion = "1.0.0";
+
+builder.Services.AddKeyedSingleton("BooksAPIActivity", (_, _) =>
+    new ActivitySource(activitySourceName, activitySourceVersion));
+
+builder.Services.AddMetrics();
+builder.Services.AddSingleton<BooksAPIMetrics>();
+builder.Services.AddOpenTelemetry().WithMetrics(m => m.AddMeter("BooksAPI"));
 
 builder.Services.AddDbContext<IBooksService, BooksContext>(options =>
 {
@@ -20,33 +33,11 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
 
-using (var scope = app.Services.CreateScope())
-{
-    var booksService = scope.ServiceProvider.GetRequiredService<IBooksService>();
-    if (booksService is BooksContext booksContext)
-    {
-        var created = await booksContext.Database.EnsureCreatedAsync();
-        if (app.Logger.IsEnabled(LogLevel.Information))
-        {
-            string logMessage = created ? "Database created" : "Database already exists";
-            app.Logger.LogInformation(message: logMessage);
-        }
-
-        if (created)
-        {
-            var books = Enumerable.Range(1, 20)
-                .Select(index => new Book($"Title {index}", index, "Sample Pub"));
-            booksContext.Books.AddRange(books);
-            await booksContext.SaveChangesAsync();
-        }
-    }
-}
+await app.CreateDatabaseAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -54,14 +45,31 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-};
-
-// app.UseHttpsRedirection();
-
 app.MapBookEndpoints();
 
 app.Run();
+
+static class WebApplicationExtensions
+{
+    public static async Task CreateDatabaseAsync(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var booksService = scope.ServiceProvider.GetRequiredService<IBooksService>();
+        if (booksService is BooksContext booksContext)
+        {
+            // Ensure the database is created
+            var created = await booksContext.Database.EnsureCreatedAsync();
+            app.Logger.LogInformation("Database {Status}", created ? "created" : "already exists");
+
+            // Seed the database with sample books
+            if (created)
+            {
+                var books = Enumerable.Range(1, 20)
+                    .Select(index => new Book($"Title {index}", index, "Sample Pub"));
+                booksContext.Books.AddRange(books);
+                await booksContext.SaveChangesAsync();
+            }
+        }
+    }
+}
+

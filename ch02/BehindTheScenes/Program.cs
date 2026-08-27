@@ -23,25 +23,29 @@ public class Sample1
 [MemoryDiagnoser]
 public class BenchmarkSample2
 {
+    private readonly MyStruct _myStruct = new(1, 2);
+
     [Benchmark]
     public void PassStructWithAnObject()
     {
-        Sample2.PassAnObject(new MyStruct(1, 2));
+        Sample2.PassAnObject(_myStruct);
     }
     [Benchmark]
     public void PassStructGeneric()
     {
-        Sample2.PassAGeneric(new MyStruct(1, 2));
+        Sample2.PassAGeneric(_myStruct);
     }
+
+    private readonly MyClass _myClass = new(1, 2);
 
     [Benchmark]
     public void PassClassWithAnObject()
     {
-        Sample2.PassAnObject(new MyClass(1, 2));
+        Sample2.PassAnObject(_myClass);
     }
     [Benchmark]
     public void PassClassGeneric()
     {
-        Sample2.PassAGeneric(new MyClass(1, 2));
+        Sample2.PassAGeneric(_myClass);
     }
 }

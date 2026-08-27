@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="Boxing/Boxing.csproj" />
+  <Project Path="Quiz/Quiz.csproj" />
   <Project Path="ReadOnlySpanIterator/ReadOnlySpanIterator.csproj" />
   <Project Path="RefStructSample/RefStructSample.csproj" />
   <Project Path="SpanIterator/SpanIterator.csproj" />

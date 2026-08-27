@@ -1,0 +1,155 @@
+﻿@page "/stocks"
+@rendermode InteractiveWebAssembly
+
+@using System.Net.ServerSentEvents
+@using System.Runtime.CompilerServices
+@using System.Text.Json
+@using SSE.Blazor.Client.Models
+
+@inject HttpClient Http
+
+<PageTitle>Stocks</PageTitle>
+
+<h1>Live Stock Prices</h1>
+
+<div class="mb-3 d-flex gap-2">
+    <input class="form-control w-auto"
+           @bind="symbol"
+           @bind:event="oninput"
+           placeholder="Symbol (e.g. MSFT)"
+           disabled="@isStreaming" />
+    <button class="btn btn-primary" @onclick="StartStreamAsync" disabled="@isStreaming">
+        Start
+    </button>
+    <button class="btn btn-secondary" @onclick="StopStream" disabled="@(!isStreaming)">
+        Stop
+    </button>
+</div>
+
+@if (latestTick is not null)
+{
+    <div class="card mb-3" style="max-width: 20rem;">
+        <div class="card-body">
+            <h5 class="card-title">@latestTick.Symbol</h5>
+            <p class="card-text fs-3">@latestTick.Price.ToString("F2")</p>
+            <small class="text-muted">@latestTick.Timestamp.ToLocalTime().ToString("HH:mm:ss")</small>
+        </div>
+    </div>
+}
+
+@if (errorMessage is not null)
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
+
+<table class="table table-sm table-striped" style="max-width: 36rem;">
+    <thead>
+        <tr>
+            <th>Time</th>
+            <th>Symbol</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var tick in history)
+        {
+            <tr>
+                <td>@tick.Timestamp.ToLocalTime().ToString("HH:mm:ss")</td>
+                <td>@tick.Symbol</td>
+                <td>@tick.Price.ToString("F2")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private string symbol = "MSFT";
+    private bool isStreaming;
+    private string? errorMessage;
+    private StockTick? latestTick;
+    private readonly List<StockTick> history = [];
+    private CancellationTokenSource? cts;
+
+    private static readonly JsonSerializerOptions JsonOptions =
+        new(JsonSerializerDefaults.Web);
+
+    private async Task StartStreamAsync()
+    {
+        if (isStreaming) return;
+
+        errorMessage = null;
+        history.Clear();
+        latestTick = null;
+        isStreaming = true;
+        cts = new CancellationTokenSource();
+
+        try
+        {
+            using var request = new HttpRequestMessage(HttpMethod.Get, $"/api/stocks/{Uri.EscapeDataString(symbol)}");
+            // Request streaming response — don't buffer
+
+            using var response = await Http.SendAsync(
+                request,
+                HttpCompletionOption.ResponseHeadersRead,
+                cts.Token);
+
+            response.EnsureSuccessStatusCode();
+
+            await using var stream = await response.Content.ReadAsStreamAsync(cts.Token);
+
+            await foreach (var item in ParseSseStreamAsync(stream, cts.Token))
+            {
+                latestTick = item;
+                history.Insert(0, item);
+                if (history.Count > 50)
+                    history.RemoveAt(history.Count - 1);
+
+                StateHasChanged();
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // Normal stop — no error
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            isStreaming = false;
+            StateHasChanged();
+        }
+    }
+
+    private void StopStream()
+    {
+        cts?.Cancel();
+        cts?.Dispose();
+        cts = null;
+    }
+
+    /// <summary>
+    /// Parses a Server-Sent Events (SSE) stream and yields <see cref="StockTick"/> instances.
+    /// </summary>
+    /// <param name="stream">The input stream containing SSE data.</param>
+    /// <param name="ct">A cancellation token to cancel the operation.</param>
+    /// <returns>An asynchronous stream of <see cref="StockTick"/> instances.</returns>
+    private static async IAsyncEnumerable<StockTick> ParseSseStreamAsync(
+        Stream stream,
+        [EnumeratorCancellation] CancellationToken ct)
+    {
+        // Use the SseParser to read the SSE stream and deserialize each data event into a StockTick object
+        var parser = SseParser.Create(stream, (_, data) =>
+            JsonSerializer.Deserialize<StockTick>(data, JsonOptions));
+
+        // Enumerate the parsed SSE events and yield StockTick instances
+        await foreach (var item in parser.EnumerateAsync(ct))
+        {
+            if (item.Data is StockTick tick)
+                yield return tick;
+        }
+    }
+
+    public void Dispose() => StopStream();
+}

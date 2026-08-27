@@ -1,0 +1,34 @@
+﻿@page "/aot-comparison"
+@using System.Diagnostics
+
+<PageTitle>AOT Comparison</PageTitle>
+
+<h3>AOT Comparison</h3>
+
+<button class="btn btn-primary" @onclick="RunTest">Run CPU Test</button>
+
+@if (_elapsedMs is not null)
+{
+    <p>Elapsed: @_elapsedMs ms</p>
+    <p>Checksum: @_checksum</p>
+}
+
+@code {
+    private long? _elapsedMs;
+    private double _checksum;
+
+    private void RunTest()
+    {
+        var sw = Stopwatch.StartNew();
+
+        double sum = 0;
+        for (int i = 1; i <= 20_000_000; i++)
+        {
+            sum += Math.Sqrt(i) * Math.Sin(i);
+        }
+
+        sw.Stop();
+        _checksum = sum; // consume result so loop isn't optimized away
+        _elapsedMs = sw.ElapsedMilliseconds;
+    }
+}

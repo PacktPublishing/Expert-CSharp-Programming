@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+option csharp_namespace = "GRPCService";
+
+package catalog;
+
+// ---------------------------------------------------------------
+// Domain messages
+// ---------------------------------------------------------------
+
+message BookMessage {
+    int32  id           = 1;
+    string title        = 2;
+    string author       = 3;
+    string price        = 4;   // "29.99 USD" – compact money string
+    string published_on = 5;   // ISO-8601 date "2024-01-15"
+    repeated string tags = 6;
+}
+
+message GetBookRequest
+{
+  int32 id = 1;
+}
+
+message ListBooksRequest
+{
+    string tag_filter = 1;
+}
+
+message AddBooksRequest
+{
+    BookMessage book = 1;
+}
+
+message AddBooksResponse
+{
+    int32 books_added = 1;
+}
+
+message SyncBookRequest
+{
+    BookMessage book = 1;
+}
+
+message SyncBookResponse
+{
+    int32 id = 1;
+    string status = 2;
+}
+
+
+// ---------------------------------------------------------------
+// Service definition  (unary, server-stream, client-stream, bidi)
+// ---------------------------------------------------------------
+
+service BookCatalog {
+  // Unary: fetch a single book by id
+  rpc GetBook (GetBookRequest) returns (BookMessage);
+
+  // Server-streaming: push all books matching a tag filter
+  rpc ListBooks (ListBooksRequest) returns (stream BookMessage);
+
+  // Client-streaming: bulk-add books, get a summary back
+  rpc AddBooks (stream AddBooksRequest) returns (AddBooksResponse);
+
+  // Bidirectional streaming: sync a catalog, receive per-book status
+  rpc SyncBooks (stream SyncBookRequest) returns (stream SyncBookResponse);
+}

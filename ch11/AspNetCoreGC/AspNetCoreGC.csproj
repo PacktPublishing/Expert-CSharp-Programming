@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    
+    <!--
+      ASP.NET Core enables Server GC automatically.
+      Enable DATAS so the runtime can shrink heap count during idle:
+        <GarbageCollectionAdaptationMode>1</GarbageCollectionAdaptationMode>
+      Set a hard memory limit when running in a container:
+        env: DOTNET_GCHeapHardLimit=209715200   (200 MB)
+    -->
+  </PropertyGroup>
+
+</Project>

@@ -1,4 +1,6 @@
-﻿Console.WriteLine("Enter a number");
+using System.Globalization;
+
+Console.WriteLine("Enter a number");
 
 string? input1 = Console.ReadLine();
 
@@ -17,7 +19,7 @@ string input2 = Console.ReadLine() ??
 
 try
 {
-    int number2 = int.Parse(input2); // This will throw an exception if the input is not a number
+    int number2 = int.Parse(input2, CultureInfo.CurrentCulture); // This will throw an exception if the input is not a number
     Console.WriteLine($"You entered {number2}");
 }
 catch (FormatException ex)

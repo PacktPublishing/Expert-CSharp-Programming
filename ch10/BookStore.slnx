@@ -1,0 +1,12 @@
+<Solution>
+  <Project Path="BookStore.Api/BookStore.Api.csproj" />
+  <Project Path="BookStore.AppHost/BookStore.AppHost.csproj" />
+  <Project Path="BookStore.Core/BookStore.Core.csproj" />
+  <Project Path="BookStore.E2ETests/BookStore.E2ETests.csproj" />
+  <Project Path="BookStore.IntegrationTests/BookStore.IntegrationTests.csproj" />
+  <Project Path="BookStore.LoadTests/BookStore.LoadTests.csproj" Id="42bcc737-4531-4646-bed9-ba40596add86" />
+  <Project Path="BookStore.ServiceDefaults/BookStore.ServiceDefaults.csproj" />
+  <Project Path="BookStore.TUnitTests/BookStore.TUnitTests.csproj" />
+  <Project Path="BookStore.UnitTests/BookStore.UnitTests.csproj" />
+  <Project Path="BookStore.Web/BookStore.Web.csproj" />
+</Solution>

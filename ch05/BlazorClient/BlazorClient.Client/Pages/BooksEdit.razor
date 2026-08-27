@@ -1,0 +1,74 @@
+@page "/books/edit/{Id:int}"
+@rendermode InteractiveWebAssembly
+@inject IBooksService Client
+@inject NavigationManager Nav
+
+<h3>Edit Book</h3>
+
+@if (_error is not null)
+{
+    <div class="alert alert-danger">@_error</div>
+}
+
+@if (_model is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <EditForm Model="_model" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label class="form-label" for="title">Title</label>
+            <InputText id="title" class="form-control" @bind-Value="_model.Title" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="publisher">Publisher</label>
+            <InputText id="publisher" class="form-control" @bind-Value="_model.Publisher" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary ms-2" @onclick="Cancel">Cancel</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    private Book? _model;
+    private string? _error;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _error = null;
+        try
+        {
+            _model = await Client.GetBookByIdAsync(Id);
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (_model is null)
+            return;
+
+        _error = null;
+        try
+        {
+            var affected = await Client.UpdateBookAsync(_model);
+            Nav.NavigateTo("/books");
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+    }
+
+    private void Cancel() => Nav.NavigateTo("/books");
+}

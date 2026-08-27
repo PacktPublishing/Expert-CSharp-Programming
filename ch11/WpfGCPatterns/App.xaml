@@ -1,0 +1,12 @@
+<!-- ============================================================
+     WpfGCPatterns — App.xaml
+     Standard WPF application entry point.
+     NOTE: This project targets net10.0-windows and must be
+           built and run on a Windows machine.
+     ============================================================ -->
+<Application x:Class="WpfGCPatterns.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources />
+</Application>

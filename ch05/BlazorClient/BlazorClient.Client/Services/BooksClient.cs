@@ -1,52 +1,115 @@
-﻿using Books.Services;
+﻿using System.Diagnostics;
+using System.Net.Http.Json;
 
 using Books.Data;
-
-using System.Net.Http.Json;
+using Books.Services;
 
 namespace BlazorClient.Client.Services;
 
-public class BooksClient(HttpClient httpClient, ILogger<BooksClient> logger) : IBooksService
+public class BooksClient(HttpClient httpClient, ILogger<BooksClient> logger, [FromKeyedServices("BooksClientActivity")] ActivitySource activitySource) : IBooksService
 {
-    public Task<Book> CreateBookAsync(Book book, CancellationToken cancellationToken = default)
+    public async Task<Book> CreateBookAsync(Book book, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        using var activity = activitySource.StartActivity("CreateBookAsync", ActivityKind.Client);
+        try
+        {
+            var response = await httpClient.PostAsJsonAsync("/api/books", book, cancellationToken);
+            response.EnsureSuccessStatusCode();
+            var created = await response.Content.ReadFromJsonAsync<Book>(cancellationToken: cancellationToken);
+            return created ?? throw new InvalidOperationException("API returned no book on create.");
+        }
+        catch (HttpRequestException ex)
+        {
+            logger.LogError(ex, "Error creating book");
+            throw;
+        }
     }
 
-    public Task<int> DeleteBookAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<int> DeleteBookAsync(int id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        using var activity = activitySource.CreateActivity("DeleteBookAsync", ActivityKind.Client);
+        try
+        {
+
+            var response = await httpClient.DeleteAsync($"/api/books/{id}", cancellationToken);
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return 0;
+            }
+            response.EnsureSuccessStatusCode();
+            return 1;
+        }
+        catch (HttpRequestException ex)
+        {
+            logger.LogError(ex, "Error deleting book {BookId}", id);
+            throw;
+        }
     }
 
-    public Task<Book?> GetBookByIdAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<Book?> GetBookByIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        using var activity = activitySource.StartActivity("GetBookByIdAsync", ActivityKind.Client);
+        try
+        {
+            var response = await httpClient.GetAsync($"/api/books/{id}", cancellationToken);
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<Book>(cancellationToken: cancellationToken);
+        }
+        catch (HttpRequestException ex)
+        {
+            logger.LogError(ex, "Error getting book {BookId}", id);
+            throw;
+        }
     }
 
     public async Task<IEnumerable<Book>> GetBooksAsync(CancellationToken cancellationToken = default)
     {
+        using var activity = activitySource.StartActivity("GetBooksAsync", ActivityKind.Client);
         try
         {
-            var response = await httpClient.GetAsync("/apibooks", cancellationToken);
+            var response = await httpClient.GetAsync("/api/books", cancellationToken);
             response.EnsureSuccessStatusCode();
-            var s = await response.Content.ReadAsStringAsync();
             var books = await response.Content.ReadFromJsonAsync<IEnumerable<Book>>(cancellationToken: cancellationToken);
-            //var books = await httpClient.GetFromJsonAsync<IEnumerable<Book>>("books", cancellation);
+            activity?.SetStatus(ActivityStatusCode.Ok);
             return books ?? [];
         }
         catch (HttpRequestException ex) // thrown by EnsureSuccessStatusCode
         {
+            if (activity is not null)
+            { 
+                TagList tags = new()
+                {
+                    { "books.client", "getbooks" },
+                    { "error", "true" }
+                };
+                activity.AddException(ex, tags);
+            }
             logger.LogError(ex, "Error getting books");
-            throw;
-        }
-        catch (Exception ex)
-        {
             throw;
         }
     }
 
-    public Task<int> UpdateBookAsync(Book book, CancellationToken cancellationToken = default)
+    public async Task<int> UpdateBookAsync(Book book, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        using var activity = activitySource.StartActivity("GetBooksAsync", ActivityKind.Client);
+        try
+        {
+            var response = await httpClient.PutAsJsonAsync($"/api/books/{book.Id}", book, cancellationToken);
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                return 0;
+            }
+            response.EnsureSuccessStatusCode();
+            return 1;
+        }
+        catch (HttpRequestException ex)
+        {
+            logger.LogError(ex, "Error updating book {BookId}", book.Id);
+            throw;
+        }
     }
 }

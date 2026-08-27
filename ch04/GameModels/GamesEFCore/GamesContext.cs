@@ -1,4 +1,4 @@
-﻿using GameModels;
+using GameModels;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace GamesEFCore;
 
-internal class GamesContext(DbContextOptions<GamesContext> options) : DbContext(options)
+internal sealed class GamesContext(DbContextOptions<GamesContext> options) : DbContext(options)
 {
     public DbSet<Game> Games => Set<Game>();
     public DbSet<Move> Moves => Set<Move>();
@@ -51,13 +51,13 @@ internal class GamesContext(DbContextOptions<GamesContext> options) : DbContext(
     }
 }
 
-internal class ShapeAndColorListValueConverter() : ValueConverter<ShapeAndColor[], string>(
+internal sealed class ShapeAndColorListValueConverter() : ValueConverter<ShapeAndColor[], string>(
     convertToProviderExpression: shapesAndColors => JsonSerializer.Serialize(shapesAndColors, (JsonSerializerOptions?)null),
     convertFromProviderExpression: s => JsonSerializer.Deserialize<ShapeAndColor[]?>(s, (JsonSerializerOptions?)null) ?? Array.Empty<ShapeAndColor>())
 {
 }
 
-internal class ShapeAndColorListValueComparer() : ValueComparer<ShapeAndColor[]>(
+internal sealed class ShapeAndColorListValueComparer() : ValueComparer<ShapeAndColor[]>(
     equalsExpression: (c1, c2) => c1!.SequenceEqual(c2!),
     hashCodeExpression: c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
     snapshotExpression: c => c.ToArray())

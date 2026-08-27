@@ -1,6 +1,6 @@
 ﻿int[] data = [1, 5, 8, 11, 22, 23, 27, 33];
 
-Span<int> span = data.AsSpan();
+Span<int> span = data; // Implicit conversion from int[] to Span<int>
 
 SpanIterator<int> iterator = new(span);
 while (iterator.MoveNext(out int value))

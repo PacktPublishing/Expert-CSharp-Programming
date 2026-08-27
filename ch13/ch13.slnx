@@ -1,0 +1,27 @@
+<Solution>
+  <Folder Name="/Common/">
+    <Project Path="Common/Blazor.ServiceDefaults/Blazor.ServiceDefaults.csproj" />
+    <Project Path="Common/ServiceDefaults/ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/GRPC/">
+    <Project Path="GRPC/GRPC.AppHost/GRPC.AppHost.csproj" Id="4006abf5-4219-4b80-9c07-1a55090380bf" />
+    <Project Path="GRPC/GRPCClient/GRPCClient.csproj" />
+    <Project Path="GRPC/GRPCService/GRPCService.csproj" />
+  </Folder>
+  <Folder Name="/SignalR/">
+    <Project Path="SignalR/SignalR.AppHost/SignalR.AppHost.csproj" Id="5a4c74d1-ebda-4104-8f87-2d8ad6403f65" />
+    <Project Path="SignalR/SignalR.Blazor.Client/SignalR.Blazor.Client.csproj" />
+    <Project Path="SignalR/SignalR.Blazor/SignalR.Blazor.csproj" />
+    <Project Path="SignalR/SignalR.Service/SignalR.Service.csproj" Id="720caf93-c1e5-43c2-86ea-4ad5da6d5964" />
+  </Folder>
+  <Folder Name="/SSE/">
+    <Project Path="SSE/SSE.AppHost/SSE.AppHost.csproj" />
+    <Project Path="SSE/SSE.Blazor/SSE.Blazor.Client/SSE.Blazor.Client.csproj" />
+    <Project Path="SSE/SSE.Blazor/SSE.Blazor/SSE.Blazor.csproj" />
+    <Project Path="SSE/SSE.Service/SSE.Service.csproj" />
+  </Folder>
+  <Project Path="AsyncStreamingChannels/AsyncStreamingChannels.csproj" Id="10070bcb-4677-4ca9-b3cb-8c87b75038fa" />
+  <Project Path="JsonSerialization/JsonSerialization.csproj" Id="c878f462-1ad2-46ed-9ae1-b6a2095c1ae3" />
+  <Project Path="MemoryStreamSample/MemoryStreamSample.csproj" />
+  <Project Path="PipelinesSample/PipelinesSample.csproj" />
+</Solution>

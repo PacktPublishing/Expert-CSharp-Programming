@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!--
+      WPF apps run with Workstation GC by default.
+      The UI thread must stay responsive; Gen-2 pauses are the enemy.
+      Switch to SustainedLowLatency around any animation/render loop,
+      and return to Interactive when idle.
+    -->
+  </PropertyGroup>
+
+</Project>
