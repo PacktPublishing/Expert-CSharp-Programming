@@ -50,8 +50,7 @@ builder.Services.AddTransient<IDateTimeProvider, UtcDateTimeProvider>();
 // Register extra tooling only in Development to keep production lean.
 if (builder.Environment.IsDevelopment())
 {
-    // API explorer feeds Swagger/OpenAPI UI
-    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddOpenApi();
 }
 
 Console.WriteLine($"🌍 Starting in environment: {builder.Environment.EnvironmentName}");
@@ -65,6 +64,7 @@ if (app.Environment.IsDevelopment())
 {
     // Show rich error details only in Development (never in Production).
     app.UseDeveloperExceptionPage();
+    app.MapOpenApi();
 }
 else
 {
