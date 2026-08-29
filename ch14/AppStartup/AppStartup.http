@@ -1,0 +1,40 @@
+@AppStartup_HostAddress = https://localhost:15100
+
+### Greeting
+GET {{AppStartup_HostAddress}}/
+Accept: application/json
+
+### Current UTC time
+GET {{AppStartup_HostAddress}}/time
+Accept: application/json
+
+### App configuration (name, version, max items)
+GET {{AppStartup_HostAddress}}/config
+Accept: application/json
+
+### Environment info
+GET {{AppStartup_HostAddress}}/environment
+Accept: application/json
+
+### List all orders
+GET {{AppStartup_HostAddress}}/orders
+Accept: application/json
+
+### Get order by id
+GET {{AppStartup_HostAddress}}/orders/1
+Accept: application/json
+
+### Get order by id — not found
+GET {{AppStartup_HostAddress}}/orders/999
+Accept: application/json
+
+### Add a new order
+POST {{AppStartup_HostAddress}}/orders
+Content-Type: application/json
+
+{
+  "id": 0,
+  "customerName": "Carol White",
+  "total": 249.95,
+  "placedAt": "2026-08-28T00:00:00Z"
+}
