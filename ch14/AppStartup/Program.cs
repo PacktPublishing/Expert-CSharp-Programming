@@ -4,6 +4,7 @@
 
 using AppStartup;
 
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Options;
 
 // Program.cs — Application Startup & Builder Patterns (Chapter 14)
@@ -46,6 +47,8 @@ builder.Services.AddScoped<IOrderRepository, SqlOrderRepository>();
 // Transient — a new instance every time it is injected
 builder.Services.AddTransient<IDateTimeProvider, UtcDateTimeProvider>();
 
+builder.Services.AddTransient(typeof(IMessageFormatter<>), typeof(JsonMessageFormatter<>));
+
 // ─── 4. Environment-aware registration ───────────────────────────────────
 // Register extra tooling only in Development to keep production lean.
 if (builder.Environment.IsDevelopment())
@@ -53,7 +56,7 @@ if (builder.Environment.IsDevelopment())
     builder.Services.AddOpenApi();
 }
 
-Console.WriteLine($"🌍 Starting in environment: {builder.Environment.EnvironmentName}");
+Console.WriteLine($"Starting in environment: {builder.Environment.EnvironmentName}");
 
 // ─── 5. Build the application ─────────────────────────────────────────────
 var app = builder.Build();
@@ -105,13 +108,25 @@ app.MapGet("/environment", (IWebHostEnvironment env) =>
         isProduction = env.IsProduction(),
     }));
 
+app.MapGet("/format/customer", (IMessageFormatter<Customer> formatter) =>
+{
+    Customer customer = new(1, "Ada");
+    return TypedResults.Text(formatter.Format(customer), "application/json");
+});
+
+app.MapGet("/format/order", (IMessageFormatter<Order> formatter) =>
+{
+    Order order = new(42, "Ada", 99.95m, DateTime.UtcNow);
+    return TypedResults.Text(formatter.Format(order), "application/json");
+});
+
 app.MapGet("/orders", async (IOrderRepository repo) =>
     TypedResults.Ok(await repo.GetAllAsync()));
 
-app.MapGet("/orders/{id:int}", async (int id, IOrderRepository repo) =>
+app.MapGet("/orders/{id:int}", async Task<Results<Ok<Order>, NotFound>> (int id, IOrderRepository repo) =>
     await repo.GetByIdAsync(id) is Order order
         ? TypedResults.Ok(order)
-        : Results.NotFound());
+        : TypedResults.NotFound());
 
 app.MapPost("/orders", async (Order order, IOrderRepository repo) =>
 {
@@ -123,13 +138,15 @@ app.MapGet("/error", () =>
     TypedResults.Problem("An unexpected error occurred."));
 
 Console.WriteLine("🚀 AppStartup sample is running. Try these endpoints:");
-Console.WriteLine("GET  /            → greeting");
-Console.WriteLine("GET  /time        → current UTC time");
-Console.WriteLine("GET  /config      → app name & version from appsettings.json");
-Console.WriteLine("GET  /environment → active environment info");
-Console.WriteLine("GET  /orders      → list all orders");
-Console.WriteLine("GET  /orders/{id} → get order by id");
-Console.WriteLine("POST /orders      → add a new order");
+Console.WriteLine("GET  /                  → greeting");
+Console.WriteLine("GET  /time              → current UTC time");
+Console.WriteLine("GET  /config            → app name & version from appsettings.json");
+Console.WriteLine("GET  /environment       → active environment info");
+Console.WriteLine("GET  /format/customer   → format a sample customer as JSON");
+Console.WriteLine("GET  /format/order      → format a sample order as JSON");
+Console.WriteLine("GET  /orders            → list all orders");
+Console.WriteLine("GET  /orders/{id}       → get order by id");
+Console.WriteLine("POST /orders            → add a new order");
 Console.WriteLine();
 
 app.Run();

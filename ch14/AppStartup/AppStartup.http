@@ -16,6 +16,14 @@ Accept: application/json
 GET {{AppStartup_HostAddress}}/environment
 Accept: application/json
 
+### Format a sample customer
+GET {{AppStartup_HostAddress}}/format/customer
+Accept: application/json
+
+### Format a sample order
+GET {{AppStartup_HostAddress}}/format/order
+Accept: application/json
+
 ### List all orders
 GET {{AppStartup_HostAddress}}/orders
 Accept: application/json

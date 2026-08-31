@@ -4,7 +4,7 @@
 
 namespace AppStartup;
 
-public record Order(int Id, string CustomerName, decimal Total, DateTime PlacedAt);
+public record class Order(int Id, string CustomerName, decimal Total, DateTime PlacedAt);
 
 public interface IOrderRepository
 {
