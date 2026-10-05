@@ -9,9 +9,18 @@
 
   <ItemGroup>
     <!-- Generic host brings IConfiguration, IOptions, and friends -->
-    <PackageReference Include="Microsoft.Extensions.Hosting"  />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
     <!-- Provides .ValidateDataAnnotations() on OptionsBuilder<T> -->
     <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

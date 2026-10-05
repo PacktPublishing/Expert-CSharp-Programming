@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="AppStartup/AppStartup.csproj" />
+  <Project Path="Configuration/Configuration.csproj" />
+  <Project Path="GenericHost/GenericHost.csproj" />
+</Solution>
