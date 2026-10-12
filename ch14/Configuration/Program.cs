@@ -56,4 +56,3 @@ builder.Services.AddHostedService<ConfigDemoService>();
 
 var host = builder.Build();
 await host.RunAsync();
-

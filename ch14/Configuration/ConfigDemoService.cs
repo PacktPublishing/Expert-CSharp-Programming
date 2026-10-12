@@ -43,29 +43,29 @@ public sealed class ConfigDemoService(
         // ── Section 2: IOptions<T> — startup snapshot ─────────────────────
         // IOptions<T> is a singleton; its .Value is computed once and cached.
         // Best for settings that never change while the app is running.
-        Console.WriteLine("②  IOptions<DatabaseOptions> — startup snapshot");
+        Console.WriteLine("② IOptions<DatabaseOptions> — startup snapshot");
         DatabaseOptions db = dbOptions.Value;
-        Console.WriteLine($"   ConnectionString        = {db.ConnectionString}");
-        Console.WriteLine($"   CommandTimeoutSeconds   = {db.CommandTimeoutSeconds}");
-        Console.WriteLine($"   EnableRetry             = {db.EnableRetry}");
-        Console.WriteLine($"   MaxRetryCount           = {db.MaxRetryCount}");
+        Console.WriteLine($"  ConnectionString        = {db.ConnectionString}");
+        Console.WriteLine($"  CommandTimeoutSeconds   = {db.CommandTimeoutSeconds}");
+        Console.WriteLine($"  EnableRetry             = {db.EnableRetry}");
+        Console.WriteLine($"  MaxRetryCount           = {db.MaxRetryCount}");
         Console.WriteLine();
 
         // ── Section 3: IOptionsMonitor<T> — live-reload ───────────────────
         // IOptionsMonitor<T> re-reads from configuration whenever the source
         // file changes. Access CurrentValue for the current snapshot.
-        Console.WriteLine("③  IOptionsMonitor<FeatureFlags> — live reload");
+        Console.WriteLine("③ IOptionsMonitor<FeatureFlags> — live reload");
         FeatureFlags flags = flagsMon.CurrentValue;
-        Console.WriteLine($"   EnableDarkMode          = {flags.EnableDarkMode}");
-        Console.WriteLine($"   EnableBetaFeatures      = {flags.EnableBetaFeatures}");
-        Console.WriteLine($"   MaxUploadSizeMb         = {flags.MaxUploadSizeMb}");
+        Console.WriteLine($"  EnableDarkMode          = {flags.EnableDarkMode}");
+        Console.WriteLine($"  EnableBetaFeatures      = {flags.EnableBetaFeatures}");
+        Console.WriteLine($"  MaxUploadSizeMb         = {flags.MaxUploadSizeMb}");
 
         // Register a change callback — fires when appsettings.json is saved.
         flagsMon.OnChange(updated =>
             logger.LogInformation(
                 "🔄 FeatureFlags reloaded — EnableBetaFeatures: {Beta}",
                 updated.EnableBetaFeatures));
-        Console.WriteLine("   (Change callback registered — edit appsettings.json to see live reload)");
+        Console.WriteLine("  (Change callback registered — edit appsettings.json to see live reload)");
         Console.WriteLine();
 
         // ── Section 4: Environment variable overrides ─────────────────────
@@ -73,21 +73,21 @@ public sealed class ConfigDemoService(
         // Example:
         //   DATABASE__COMMANDTIMEOUTSECONDS=99 dotnet run
         //   → overwrites Database:CommandTimeoutSeconds in IConfiguration
-        Console.WriteLine("④  Environment-variable override tip");
-        Console.WriteLine("   Set  DATABASE__COMMANDTIMEOUTSECONDS=99  before running");
-        Console.WriteLine("   to override Database:CommandTimeoutSeconds at runtime.");
+        Console.WriteLine("④ Environment-variable override tip");
+        Console.WriteLine("  Set  DATABASE__COMMANDTIMEOUTSECONDS=99  before running");
+        Console.WriteLine("  to override Database:CommandTimeoutSeconds at runtime.");
         Console.WriteLine();
 
         // ── Section 5: Command-line override ──────────────────────────────
         // dotnet run -- --Database:CommandTimeoutSeconds=5
-        Console.WriteLine("⑤  Command-line override tip");
-        Console.WriteLine("   Run: dotnet run -- --Database:CommandTimeoutSeconds=5");
-        Console.WriteLine("   Command-line args have the highest priority.");
+        Console.WriteLine("⑤ Command-line override tip");
+        Console.WriteLine("  Run: dotnet run -- --Database:CommandTimeoutSeconds=5");
+        Console.WriteLine("  Command-line args have the highest priority.");
         Console.WriteLine();
 
         Console.WriteLine("✅ Configuration demo ready. Press Ctrl+C to exit.");
-        Console.WriteLine("   While running, try changing 'EnableBetaFeatures' in appsettings.json");
-        Console.WriteLine("   and save — IOptionsMonitor will log the updated value without a restart.");
+        Console.WriteLine("  While running, try changing 'EnableBetaFeatures' in appsettings.json");
+        Console.WriteLine("  and save — IOptionsMonitor will log the updated value without a restart.");
         // Keep the host running so the IOptionsMonitor.OnChange callback can fire.
         // Press Ctrl+C (or send SIGTERM) to trigger graceful shutdown.
         return Task.CompletedTask;
