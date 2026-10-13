@@ -5,7 +5,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 // ─────────────────────────────────────────────────────────────────────────
-// BuiltInLoggingDemo — demonstrates ILogger<T> and log levels
+// LoggingDemo — demonstrates ILogger<T> and log levels
 // ─────────────────────────────────────────────────────────────────────────
 sealed class LoggingDemo(
     ILogger<LoggingDemo> logger,
