@@ -1,0 +1,33 @@
+﻿@page "/"
+@inject IOptions<ClientAppOptions> AppOptions
+@inject IWebAssemblyHostEnvironment HostEnvironment
+@inject IGreetingClient GreetingClient
+@inject ILogger<Home> Logger
+
+<PageTitle>Blazor WASM Startup</PageTitle>
+
+<h1>Blazor WebAssembly Startup</h1>
+
+<p><strong>Environment:</strong> @HostEnvironment.Environment</p>
+<p><strong>App:</strong> @AppOptions.Value.Name @AppOptions.Value.Version</p>
+<p><strong>Refresh interval:</strong> @AppOptions.Value.RefreshSeconds s</p>
+
+<button @onclick="LoadGreetingAsync">Load greeting</button>
+
+@if (!string.IsNullOrWhiteSpace(_greeting))
+{
+    <p>@_greeting</p>
+}
+
+@code {
+    private string? _greeting;
+
+    private async Task LoadGreetingAsync()
+    {
+        _greeting = await GreetingClient.GetGreetingAsync();
+
+        Logger.LogInformation(
+            "Greeting rendered in {Environment}",
+            HostEnvironment.Environment);
+    }
+}

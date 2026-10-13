@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="AppStartup/AppStartup.csproj" />
+  <Project Path="BlazorWasmStartup/BlazorWasmStartup.csproj" Id="356c088e-5e2d-47fc-b98a-00351e9b1434" />
+  <Project Path="Configuration/Configuration.csproj" />
+  <Project Path="GenericHost/GenericHost.csproj" />
+  <Project Path="Logging/Logging.csproj" />
+  <Project Path="WpfMvvmToolkit/WpfMvvmToolkit.csproj" />
+</Solution>
