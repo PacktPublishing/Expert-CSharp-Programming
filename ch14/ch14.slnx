@@ -2,4 +2,5 @@
   <Project Path="AppStartup/AppStartup.csproj" />
   <Project Path="Configuration/Configuration.csproj" />
   <Project Path="GenericHost/GenericHost.csproj" />
+  <Project Path="Logging/Logging.csproj" />
 </Solution>
