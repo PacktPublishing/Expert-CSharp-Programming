@@ -2,22 +2,13 @@
 // Author: Christian Nagel.
 // Licensed under the MIT License.
 
-//
-// Demonstrates:
-//   1. Built-in Microsoft.Extensions.Logging providers (Console, Debug)
-//   2. Log levels and category-based filtering via appsettings.json
-//   3. Structured logging — named message-template placeholders
-//   4. Serilog as a drop-in replacement with output templates and file sink
-//   5. High-performance logging with [LoggerMessage] source generator (Part C)
-//   6. ILogger<T> injection via DI
-
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 // ─────────────────────────────────────────────────────────────────────────
 // BuiltInLoggingDemo — demonstrates ILogger<T> and log levels
 // ─────────────────────────────────────────────────────────────────────────
-sealed class BuiltInLoggingDemo(
-    ILogger<BuiltInLoggingDemo> logger,
+sealed class LoggingDemo(
+    ILogger<LoggingDemo> logger,
     OrderService orderSvc,
     PaymentService paymentSvc,
     IHostApplicationLifetime lifetime) : IHostedService
@@ -28,12 +19,12 @@ sealed class BuiltInLoggingDemo(
         // Levels in ascending severity: Trace → Debug → Information → Warning
         //                               → Error → Critical
         // The active minimum level (from config) determines what is emitted.
-        logger.LogTrace("🔍 Trace  — finest detail, usually disabled in production");
-        logger.LogDebug("🐛 Debug  — development diagnostics");
-        logger.LogInformation("ℹ️  Information — normal operational events");
-        logger.LogWarning("⚠️  Warning — unexpected but recoverable situation");
-        logger.LogError("❌ Error   — operation failed, needs attention");
-        logger.LogCritical("🔥 Critical — system cannot continue, immediate action needed");
+        logger.LogTrace("Trace - finest detail, usually disabled in production");
+        logger.LogDebug("Debug - development diagnostics");
+        logger.LogInformation("Information - normal operational events");
+        logger.LogWarning("Warning - unexpected but recoverable situation");
+        logger.LogError("Error - operation failed, needs attention");
+        logger.LogCritical("Critical - system cannot continue, immediate action needed");
 
         Console.WriteLine();
 

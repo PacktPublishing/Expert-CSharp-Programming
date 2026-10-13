@@ -2,12 +2,6 @@
 // Author: Christian Nagel.
 // Licensed under the MIT License.
 
-// ─────────────────────────────────────────────────────────────────────────
-// AppLogMessages — [LoggerMessage] source generator extension methods
-// (defined in AppLogMessages.cs — source generators require a separate file
-//  when the main file uses top-level statements)
-// ─────────────────────────────────────────────────────────────────────────
-
 using Microsoft.Extensions.Logging;
 
 /// <summary>
