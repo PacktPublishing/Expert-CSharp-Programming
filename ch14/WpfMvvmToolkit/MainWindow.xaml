@@ -1,0 +1,30 @@
+<Window x:Class="WpfMvvmToolkit.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding WindowTitle}" Height="280" Width="520">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="WPF + Generic Host + CommunityToolkit.Mvvm"
+                   FontSize="18"
+                   FontWeight="Bold"
+                   Margin="0,0,0,12"/>
+
+        <TextBlock Grid.Row="1"
+                   Text="{Binding Greeting}"
+                   Margin="0,0,0,10"/>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,10">
+            <Button Content="Refresh time" Command="{Binding RefreshCommand}" Padding="10,5" Margin="0,0,8,0"/>
+            <TextBlock VerticalAlignment="Center" Text="{Binding LastUpdatedUtc}"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="3" Text="{Binding StartupNote}" TextWrapping="Wrap" Foreground="DimGray"/>
+    </Grid>
+</Window>
